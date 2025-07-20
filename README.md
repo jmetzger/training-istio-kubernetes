@@ -18,6 +18,9 @@
      * [CIS Benchmarking Kubernetes]()
      * [Exercise: kube-bench - scanning with cis-benchmark-kubernetes](security/cis-benchmark-kubernetes/exercise.md)
 
+  1. Encrypting Node-2-Node traffic (wireguard with calico)
+     * [Securing Node-2-Node with calico and wireguard](security/wireguard-calico/overview-and-exercise.md)
+
   1. Checklist
      * [Security Checklists](/security/checklist/security-checklist.md)
    
