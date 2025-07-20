@@ -14,6 +14,10 @@
      * [The route from development to production to secure](security/overview/route-2-production.md)
      * [Kill Chain](kill-chain.md)
 
+  1. Benchmarking / Security Scans
+     * [CIS Benchmarking Kubernetes]()
+     * [Exercise: kube-bench - scanning with cis-benchmark-kubernetes](security/cis-benchmark-kubernetes/exercise.md)
+
   1. Checklist
      * [Security Checklists](/security/checklist/security-checklist.md)
    
