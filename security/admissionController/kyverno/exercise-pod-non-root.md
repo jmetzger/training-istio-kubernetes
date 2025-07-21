@@ -10,7 +10,7 @@
 ### Step 1: Create Project Directory Structure
 
 ```bash
-cd ~
+cd
 mkdir -p manifests/kyverno-non-root-pod
 cd manifests/kyverno-non-root-pod
 ```
