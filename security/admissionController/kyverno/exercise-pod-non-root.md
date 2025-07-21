@@ -91,16 +91,14 @@ spec:
             - monitoring
 
     validate:
-      message: "Pod must run as non-root user (runAsUser > 0 and runAsNonRoot: true)"
+      message: "Pod must run as non-root user (runAsNonRoot: true required)"
       pattern:
         spec:
-          securityContext:
+          =(securityContext):
             runAsNonRoot: true
-            runAsUser: ">0"
           containers:
-          - securityContext:
+          - =(securityContext):
               runAsNonRoot: true
-              runAsUser: ">0"
 ```
 
 ### Step 4: Apply the Policy
