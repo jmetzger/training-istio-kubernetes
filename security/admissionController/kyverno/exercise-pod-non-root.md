@@ -113,6 +113,15 @@ kubectl get clusterpolicy
 kubectl describe clusterpolicy require-non-root-user
 ```
 
+```
+Achtung: Es funktioniert nur, wenn die Policy wirklich Ready ist !!
+```
+
+<img width="1073" height="76" alt="image" src="https://github.com/user-attachments/assets/3d23c157-6ede-4687-98c2-7630bd69707c" />
+
+
+
+
 ### Step 5: Test with Root User Pod (Should Fail)
 
 Create a test pod that should be rejected:
