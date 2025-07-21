@@ -192,6 +192,7 @@ nano test-non-root-pod.yaml
 ```
 
 ```
+
 apiVersion: v1
 kind: Pod
 metadata:
@@ -199,15 +200,11 @@ metadata:
   namespace: default
 spec:
   securityContext:
-    runAsUser: 1001
     runAsNonRoot: true
-    runAsGroup: 1001
-    fsGroup: 1001
   containers:
   - name: nginx
     image: bitnami/nginx:1.27.0
     securityContext:
-      runAsUser: 1001
       runAsNonRoot: true
       allowPrivilegeEscalation: false
       readOnlyRootFilesystem: false
@@ -239,7 +236,7 @@ kubectl delete -f .
 ## Expected Results
 
 1. **Root Pod Test**: Should fail with policy violation message about requiring non-root user
-2. **Non-Root Pod Test**: Should succeed and run with UID 1001
+2. **Non-Root Pod Test**: Should succeed 
 3. **Policy Verification**: Kyverno should log admission decisions
 
 ## Notes
