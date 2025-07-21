@@ -3,6 +3,13 @@
 ## Walkthrough
 
 ```
+cd
+mkdir -p manifests/kube-bench-cis 
+cd manifests
+cd kube-bench-cis
+```
+
+```
 wget https://raw.githubusercontent.com/aquasecurity/kube-bench/main/job.yaml
 kubectl apply -f job.yaml
 kubectl get pods
