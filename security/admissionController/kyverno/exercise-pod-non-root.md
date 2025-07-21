@@ -220,6 +220,35 @@ kubectl get pod test-non-root-pod
 kubectl exec test-non-root-pod -- id
 ```
 
+## Step 6.1 Test with SecurityContext:runasNonRoot in container 
+
+```
+nano  test-non-root-pod-v2.yaml
+```
+
+```
+apiVersion: v1
+kind: Pod
+metadata:
+  name: test-non-root-pod
+  namespace: default
+spec:
+  securityContext:
+    runAsNonRoot: true
+  containers:
+  - name: nginx
+    image: bitnami/nginx:1.27.0
+    securityContext:
+      runAsNonRoot: true
+      allowPrivilegeEscalation: false
+      readOnlyRootFilesystem: false
+```
+
+```
+kubectl apply -f  test-non-root-pod-v2.yaml
+```
+
+
 ## Verification and Cleanup
 
 ```bash
