@@ -49,6 +49,7 @@ helm upgrade --install kyverno kyverno/kyverno \
   --wait
 
 # Verify installation (should show 3 replicas for each controller)
+# Wichtig: Das dauert einen Moment 
 kubectl get pods -n kyverno
 kubectl get deployment -n kyverno
 ```
