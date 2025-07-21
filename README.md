@@ -72,7 +72,7 @@
      * [Connaisseur: Verifying images before Deployment](/security/admissionController/connaisseur-image-verification/02-walkthrough.md)
    
   1. Obey Security Policy (AdmissionControllers - Part II)
-     * [Exercise Kyverno - non-root-pod](/security/admissionController/exercise-pod-non-root.md)
+     * [Exercise Kyverno - non-root-pod](/security/admissionController/kyverno/exercise-pod-non-root.md)
    
   1. Pod Security
      * [Automount ServiceAccounts or not ?](security/by.layer/pods-container/serviceAccount/do-not-mount-if-not-needed.md)
