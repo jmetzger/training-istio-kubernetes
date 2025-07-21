@@ -72,8 +72,7 @@ metadata:
     policies.kyverno.io/category: Pod Security Standards (Restricted)
     policies.kyverno.io/severity: medium
     policies.kyverno.io/description: >-
-      Containers must run as non-root users. This policy ensures that the securityContext.runAsUser 
-      field is set to a value greater than 0 and securityContext.runAsNonRoot is set to true.
+      Containers must run as non-root users. This policy ensures that the securityContext.runAsNonRoot is set to true
 spec:
   validationFailureAction: Enforce
   background: true
@@ -86,9 +85,15 @@ spec:
           - Pod
     exclude:
         resources:
-          namespaces:
+           namespaces:
             - kube-system
             - monitoring
+            - metallb-system
+            - calico-system
+            - ingress-nginx
+            - calico-apiserver
+            - kyverno
+            - tigera-operator
 
     validate:
       message: "Pod must run as non-root user (runAsNonRoot: true required)"
