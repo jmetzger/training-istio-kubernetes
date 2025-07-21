@@ -30,7 +30,7 @@ helm repo update
 helm upgrade --install kyverno kyverno/kyverno \
   --namespace kyverno \
   --create-namespace \
-  --version 3.2.6 \
+  --version 3.4.4 \
   --wait
 
 # Verify installation
