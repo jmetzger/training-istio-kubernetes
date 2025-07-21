@@ -15,22 +15,39 @@ mkdir -p manifests/kyverno-non-root-pod
 cd manifests/kyverno-non-root-pod
 ```
 
-### Step 2: Install Kyverno using Helm
+### Step 2: Create Values File and Install Kyverno using Helm
+
+Create a values file for high availability configuration:
+
+```bash
+cat > manifests/values.yaml << 'EOF'
+admissionController:
+  replicas: 3
+backgroundController:
+  replicas: 3
+cleanupController:
+  replicas: 3
+reportsController:
+  replicas: 3
+EOF
+```
 
 ```bash
 # Add Kyverno Helm repository
 helm repo add kyverno https://kyverno.github.io/kyverno/
 helm repo update
 
-# Install Kyverno in kyverno namespace (creates namespace if not exists)
+# Install Kyverno in kyverno namespace with custom values
 helm upgrade --install kyverno kyverno/kyverno \
   --namespace kyverno \
   --create-namespace \
   --version 3.4.4 \
+  --values manifests/values.yaml \
   --wait
 
-# Verify installation
+# Verify installation (should show 3 replicas for each controller)
 kubectl get pods -n kyverno
+kubectl get deployment -n kyverno
 ```
 
 ### Step 3: Create Kyverno Policy for Non-Root Enforcement
