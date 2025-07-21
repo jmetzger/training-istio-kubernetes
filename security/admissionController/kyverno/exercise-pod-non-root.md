@@ -161,7 +161,7 @@ nano test-root-pod-v2.yaml
 ```
 
 ```
-# Variante: nichts ist gesetzt 
+# Variante 2: Feld ist gesetzt aber falsch  
 apiVersion: v1
 kind: Pod
 metadata:
