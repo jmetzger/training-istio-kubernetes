@@ -17,15 +17,21 @@ helm install cert-manager --namespace cert-manager --create-namespace --version 
 ```
 # You can create your token here
 https://cloud.digitalocean.com/account/api/tokens/new
+```
 
+<img width="847" height="242" alt="image" src="https://github.com/user-attachments/assets/6946bf0f-8117-4a70-b10f-fcf9d4a623b4" />
+
+
+```
+# we save the token under /tmp/do_dns_token 
 # now you need to encode it
-echo -n 'your-access-token' | base64
+cat /tmp/do_dns_token | base64
 ```
 
 ## Step 2.5: Subdomains einrichten in digitalocean - dns 
 
 ```
-TBD 
+# Already done 
 ```
 
 ## Step 3: Create secret based on that 
@@ -51,6 +57,10 @@ data:
   # insert your DO access token here
   access-token: "base64 encoded access-token here"
 ```
+
+```
+# adjust the lines afterwards !!!
+cat /tmp/do_dns_token | base64 >> 01-secret.yml
 
 ```
 kubectl -n cert-manager apply -f .
