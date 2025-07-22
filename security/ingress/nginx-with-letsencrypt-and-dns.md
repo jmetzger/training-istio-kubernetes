@@ -101,6 +101,11 @@ kubectl apply -f .
 
 ## Step 5: manifests for certificate (wildcard) 
 
+
+```
+nano 03-certificate.yml
+```
+
 ```
 apiVersion: cert-manager.io/v1
 kind: Certificate
