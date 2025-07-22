@@ -45,6 +45,10 @@ spec:
 
 ```
 kubectl apply -f 01-pod.yaml
+kubectl get pods 
+```
+
+```
 kubectl describe pod nginxrun
 kubectl logs nginxrun 
 ```
