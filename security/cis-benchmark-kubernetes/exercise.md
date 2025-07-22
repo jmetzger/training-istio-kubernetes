@@ -64,7 +64,38 @@ For example, chmod 600 /lib/systemd/system/kubelet.service
 kubectl get nodes -o wide | grep k8s-w1
 ```
 
+```
+ssh 11trainingdo@<ip-des-w1-worker-nodes>
+```
+
+```
+sudo su -
+```
+
+```
+find /lib -name "kubelet.service"
+find /usr/lib -name "kubelet.service"
+```
+
+```
+chmod -R 600 /usr/lib/systemd/system/kubelet.service*
+
+# Zur Überprüfung ob Rechteänderung auch für kubelet.service.d/kubeadm.conf
+# gut ist -> weil wieder hochfährt 
+systemctl restart kubelet
+```
+```
+exit
+```
+
+
 ### After Fix: Walkhrough 
+
+```
+kubectl delete -f job.yaml
+kubectl apply -f job.yam
+kubectl logs job/kube-bench > report-afterfix.txt 
+```
 
 ```
 [PASS] 4.1.1 Ensure that the kubelet service file permissions are set to 600 or more restrictive (Automated)
