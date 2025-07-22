@@ -11,8 +11,19 @@ cd kube-bench-cis
 
 ```
 wget https://raw.githubusercontent.com/aquasecurity/kube-bench/main/job.yaml
+```
+
+```
+# nodeName in template/spec: ergänzen wie folgt
+spec:
+  template:
+    spec:
+      nodeName: k8s-w1 
+```
+
+```
 kubectl apply -f job.yaml
-kubectl get pods
+kubectl get pods -o wide 
 # Durch Euren Pod ersetzen
 # kubectl logs kube-bench-j76s9
 # Oder: einfacher -> zeigt logs des 1. Pods des jobs
