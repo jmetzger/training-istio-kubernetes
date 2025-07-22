@@ -97,6 +97,8 @@ spec:
 
 ```
 kubectl apply -f .
+# Funkioniert ? clusterissuer muss auf ready stehen 
+kubectl describe clusterissuer 
 ```
 
 ## Step 5: manifests for certificate (wildcard) 
@@ -129,7 +131,7 @@ kubectl apply -f .
 
 ```
 kubectl get certificates
-kubectl describe certificates let-cert 
+kubectl describe certificates le-cert 
 kubectl get secret tls-secret -o yaml 
 ```
 
