@@ -61,6 +61,7 @@ data:
 ```
 # adjust the lines afterwards !!!
 cat /tmp/do_dns_token | base64 >> 01-secret.yml
+```
 
 ```
 kubectl -n cert-manager apply -f .
