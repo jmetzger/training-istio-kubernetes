@@ -33,6 +33,22 @@ kubectl logs job/kube-bench > report.txt
 
 ### FAIL: 
 
+```
+[FAIL] 4.1.1 Ensure that the kubelet service file permissions are set to 600 or more restrictive (Automated)
+```
+
+```
+# Remediations
+4.1.1 Run the below command (based on the file location on your system) on the each worker node.
+For example, chmod 600 /lib/systemd/system/kubelet.service
+```
+
+### Fix: Walkthrough 
+
+```
+# ip - adresse ausfindig machen 
+kubectl get nodes -o wide | grep cp 
+```
 
 ## Reference:
 
