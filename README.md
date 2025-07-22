@@ -1,9 +1,12 @@
-# Kubernetes Security - en
+# Kubernetes Security
 
 ## Agenda 
 
   1. Vorbereitung
      * [Self-Service Cluster ausrollen](/monitoring/training-stack/install.md)
+
+  1. Grundlagen / Recap
+     * [Architektur Kubernetes](/kubernetes/architecture.md)
 
   1. Starting
      * [The truth about security](/security/truth.md)
