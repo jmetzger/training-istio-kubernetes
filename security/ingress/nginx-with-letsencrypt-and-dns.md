@@ -1,7 +1,5 @@
 # Setup Ingress with Letsencrypt and dns 
 
-# Install Cert-Manager and usage 
-
 ## Step 1: Install Cert Manager 
 
 ```
