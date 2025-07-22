@@ -98,7 +98,7 @@ spec:
           - all
 # hinzufügen
           add:
-          - CAP_NET_RAW
+          - NET_RAW
 ```
 
 
