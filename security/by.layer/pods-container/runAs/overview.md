@@ -50,6 +50,22 @@ kubectl describe pod nginxrun
 kubectl logs nginxrun 
 ```
 
+## Lösung 1.1 Alternative image verwenden 
+
+```
+kubectl delete -f 01-pod.yaml
+```
+
+```
+# - image: nginx:1.23 -> durch 
+- image: bitnami/nginx:1.23 
+```
+
+```
+kubectl apply -f .
+```
+
+
 ## Exercise 2: (works) 
 
 ```
