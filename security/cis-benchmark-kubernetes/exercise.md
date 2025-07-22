@@ -58,7 +58,7 @@ For example, chmod 600 /lib/systemd/system/kubelet.service
 
 ```
 # ip - adresse ausfindig machen 
-kubectl get nodes -o wide | grep cp 
+kubectl get nodes -o wide | grep k8s-w1
 ```
 
 ## Reference:
