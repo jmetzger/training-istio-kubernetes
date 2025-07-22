@@ -3,8 +3,8 @@
   * ausgerollt mit terraform (binary ist installiert) - snap install --classic terraform 
   * beinhaltet
       1. 1 controlplane
-      1. 2 worker nodes
-      1. metallb mit ips der Nodes (hacky but works)
+      1. 3 worker nodes
+      1. metallb mit ip's (IP-Adressen) der Nodes (hacky but works)
       1. ingress mit wildcard-domain:  *.tlnx.do.t3isp.de
    
 ## Walktrough 
