@@ -61,6 +61,12 @@ For example, chmod 600 /lib/systemd/system/kubelet.service
 kubectl get nodes -o wide | grep k8s-w1
 ```
 
+### After Fix: Walkhrough 
+
+```
+[PASS] 4.1.1 Ensure that the kubelet service file permissions are set to 600 or more restrictive (Automated)
+```
+
 ## Reference:
 
   * https://hub.docker.com/r/aquasec/kube-bench
