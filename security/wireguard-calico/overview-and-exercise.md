@@ -18,16 +18,6 @@
 ## Walktrough 
 
 ```
-# in older version of calico 
-# felixconfiguration ist nicht namespace-fähig / also global 
-kubectl patch felixconfiguration default --type='merge' -p '{"spec":{"wireguardEnabled":true}}'
-calicoctl get node -o yaml | grep -A 4 -B 4 wireguard
-kubectl debug -it node/k8s-w1 --image=busybox -- ip addr list wireguard.cali
-```
-
-
-```
-# in older version of calico 
 # felixconfiguration ist nicht namespace-fähig / also global 
 calicoctl patch felixconfiguration default --type='merge' -p '{"spec":{"wireguardEnabled":true}}'
 calicoctl get node -o yaml | grep -A 4 -B 4 wireguard
