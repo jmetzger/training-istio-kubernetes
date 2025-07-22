@@ -1,5 +1,10 @@
 # Enable wireguard in calico 
 
+## Prerequisites: 
+
+  * Install calicoctl as binary on client 
+  * curl -L https://github.com/projectcalico/calico/releases/download/v3.30.2/calicoctl-linux-amd64 -o calicoctl
+
 ## Generally speaking: 
 
   * Calico offers an easy way to enable Wireguard within your cluster
@@ -16,7 +21,7 @@
 # in older version of calico 
 # felixconfiguration ist nicht namespace-fähig / also global 
 kubectl patch felixconfiguration default --type='merge' -p '{"spec":{"wireguardEnabled":true}}'
-kubectl get node -o yaml | grep -A 4 -B 4 wireguard
+calicoctl get node -o yaml | grep -A 4 -B 4 wireguard
 kubectl debug -it node/k8s-w1 --image=busybox -- ip addr list wireguard.cali
 ```
 
