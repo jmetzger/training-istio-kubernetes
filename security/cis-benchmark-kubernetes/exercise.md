@@ -83,6 +83,8 @@ chmod -R 600 /usr/lib/systemd/system/kubelet.service*
 # Zur Überprüfung ob Rechteänderung auch für kubelet.service.d/kubeadm.conf
 # gut ist -> weil wieder hochfährt 
 systemctl restart kubelet
+# ist er neu gestartet ?
+systemctl status kubelet 
 ```
 ```
 exit
