@@ -136,7 +136,7 @@ kubectl get certificaterequest
 
 
 kubectl get certificates
-kubectl describe certificates le-cert 
+kubectl describe certificates le-crt 
 kubectl get secret tls-secret -o yaml 
 ```
 
