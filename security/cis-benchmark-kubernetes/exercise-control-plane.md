@@ -71,7 +71,7 @@ kubectl logs job/kube-bench > report.txt
 
 ### Erklärung 
 
-<img width="926" height="235" alt="image" src="https://github.com/user-attachments/assets/c14a7154-79e7-405b-8a79-41af38d8b047" />
+<img width="646" height="113" alt="image" src="https://github.com/user-attachments/assets/b9363593-d0a4-4b26-8d24-88bf3d4d2a6e" />
 
 ### FAIL: 
 
