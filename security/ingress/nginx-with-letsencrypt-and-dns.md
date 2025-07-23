@@ -304,3 +304,9 @@ spec:
               port:
                 number: 80
 ```
+
+```
+kubectl apply -f .
+kubectl get ingress
+kubectl describe ingress ingress-app
+```
