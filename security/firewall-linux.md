@@ -42,6 +42,7 @@ iptables -A INPUT -p tcp --dport 179 -s 10.0.0.0/24 -j ACCEPT
 ```bash
 # API Server
 iptables -A INPUT -p tcp --dport 6443 -s 10.0.0.0/24 -j ACCEPT
+# and additionally from client - infrastructure where you run kubectl 
 
 # etcd
 iptables -A INPUT -p tcp --dport 2379:2380 -s 10.0.0.0/24 -j ACCEPT
