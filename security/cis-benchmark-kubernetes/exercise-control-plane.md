@@ -1,5 +1,14 @@
 # Exercise kube-bench (for control plane) - Scanning Cluster based on CIS Benchmark Kubernetes
 
+## PreChecks / Cleanup 
+
+```
+# if you have a job kube-bench from the last exercise -> delete it
+kubectl get jobs | grep kube-bench
+# Only if it was there 
+kubecl delete jobs kube-bench 
+```
+
 ## Walkthrough
 
 ```
