@@ -8,7 +8,7 @@ kind: GlobalNetworkPolicy
 metadata:
   name: default-deny
 spec:
-  namespaceSelector: kubernetes.io/metadata.name != "kube-system"
+  namespaceSelector: kubernetes.io/metadata.name != "kube-system" && kubernetes.io/metadata.name != "calico-system"
   types:
   - Ingress
   - Egress
