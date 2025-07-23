@@ -113,8 +113,11 @@ nano kube-apiserver.yaml
 
 <img width="764" height="146" alt="image" src="https://github.com/user-attachments/assets/af1d9561-eba2-4e54-bfea-133475d4ed27" />
 
-
-
+```
+kubectl cluster-info
+kubectl -n kube-system get pods
+kubectl -n kube-system describe pods kube-apiserver
+```
 
 ```
 exit
