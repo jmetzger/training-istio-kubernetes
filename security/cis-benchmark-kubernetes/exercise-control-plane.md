@@ -1,4 +1,4 @@
-# Exercise kube-bench - Scanning Cluster based on CIS Benchmark Kubernetes
+# Exercise kube-bench (for control plane) - Scanning Cluster based on CIS Benchmark Kubernetes
 
 ## Walkthrough
 
