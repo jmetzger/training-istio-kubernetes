@@ -1,6 +1,6 @@
 # Setup audit logging 
 
-## Hints (this is on a system, where kubernetes-api-server runs as static pod
+## Hints (this is on a system, where kubernetes-api-server runs as static pod, e.g. kubeadm)
 
   * When the config unter /etc/kubernetes/manifests/kupe-apiserver.yaml changes
     * kubelet automatically detects this and restarts the server
@@ -16,7 +16,7 @@
 
 ```
 # we want to 
-watch crictl pods | grep api
+kubectl -n kube-system get pods -w 
 ```
 
 ## Step 2: 2nd -> session (on control plane): create a policy
