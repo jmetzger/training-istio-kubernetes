@@ -174,3 +174,31 @@ kubectl run -it --rm access --image=busybox
 # In der Bbusybox 
 wget -O - http://my-nginx 
 ```
+
+## Step 5 (Optional): Traffic vom Ingress Controller erlauben
+
+```
+nano ingress-network-policy.yaml
+```
+
+```
+# 04-allow-ingress-controller-to-nginx.yml
+apiVersion: projectcalico.org/v3
+kind: NetworkPolicy
+metadata:
+  name: allow-ingress-controller-to-nginx
+spec:
+  selector: web == 'my-nginx'
+  types:
+  - Ingress
+  ingress:
+  - action: Allow
+    source:
+      namespaceSelector: kubernetes.io/metadata.name == "ingress-nginx"
+    destination:
+      ports: [80, 443]
+```
+
+```
+kubectl apply -f .
+```
