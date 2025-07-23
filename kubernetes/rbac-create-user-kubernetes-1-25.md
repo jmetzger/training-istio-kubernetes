@@ -11,6 +11,10 @@ cd manifests/rbac
 ###  Mini-Step 1: definition of the user 
 
 ```
+nano service-account.yml
+```
+
+```
 # vi service-account.yml 
 apiVersion: v1
 kind: ServiceAccount
