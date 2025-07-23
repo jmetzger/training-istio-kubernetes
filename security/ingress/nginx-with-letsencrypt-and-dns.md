@@ -284,7 +284,7 @@ spec:
   tls:
     - hosts:
         - app.tln<nr>.do.t3isp.de
-      secretName: tls-cert
+      secretName: tls-secret
   rules:
   - host: "app.tln<nr>.do.t3isp.de"
     http:
