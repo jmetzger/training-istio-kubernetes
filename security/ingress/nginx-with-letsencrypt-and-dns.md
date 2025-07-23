@@ -60,6 +60,7 @@ data:
 
 ```
 # adjust the lines afterwards !!!
+# Achtung: Zeilenumbruch rausnehmen !
 cat /tmp/do_dns_token | base64 >> 01-secret.yml
 ```
 
