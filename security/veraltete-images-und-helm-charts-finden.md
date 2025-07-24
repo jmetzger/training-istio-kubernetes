@@ -3,7 +3,8 @@
 ## Empfohlene Tools 
 
   * Trivy Operator 
-  * kube-version-tracker  
+  * [kube-version-tracker](https://artifacthub.io/packages/helm/cert-manager/version-checker)
+  * https://github.com/jetstack/version-checker 
 
 ## Trivvy -> speziell Trivvy Operator 
 
