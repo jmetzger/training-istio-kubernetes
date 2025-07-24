@@ -275,7 +275,7 @@ kubectl run -it --rm access --image=busybox
 wget -O - http://svc-nginx
 # das nicht
 wget -O - http://svc-nginx.fremd
-# das geht
+# das geht auch nicht 
 wget -O - http://www.google.de
 ```
 
