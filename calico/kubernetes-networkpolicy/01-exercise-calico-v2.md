@@ -61,6 +61,7 @@ kubectl create ns somewhere
 kubectl run -n somewhere nginx-other-namespace --image=nginx
 # Get ip and note down -> e.g. 192.168.46.20
 kubectl -n somewhere get pods -o wide 
+```
 
 ```
 cd
@@ -135,12 +136,17 @@ wget -O - http://www.google.de
 nslookup www.google.de
 ```
 
+```
+# test mit pod im somewhere namespace
+# wget -O - http://<ip-deines-somewhere-pods>
+# z.B. 
+wget -O - 192.168.46.20
+# --> geht auch nicht 
+```
 
 ## Step 3: Traffic erlauben egress von busybox 
 
-
-
-
+  * Achtung: Sei wachsam Holzauge 
 
 ```
 cd
