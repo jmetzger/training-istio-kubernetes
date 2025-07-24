@@ -25,7 +25,7 @@ nano 01-ns.yml
 ```
 
 ```
-# Step 1: create namespace  
+# Step 1: create namespace and activae pod-security  
 
 
 apiVersion: v1
