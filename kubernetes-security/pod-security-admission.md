@@ -119,10 +119,7 @@ spec:
 
 ```
 # pod kann erstellt werden, wird aber nicht gestartet 
-kubectl delete -f 02-nginx.yml 
 kubectl apply -f 02-nginx.yml 
-kubectl -n test-ns1 get pods
-kubectl -n test-ns1 describe pods nginx 
 ```
 
 ```
@@ -156,9 +153,12 @@ spec:
 ```
 kubectl delete -f 02-nginx.yml
 kubectl apply -f 02-nginx.yml
-kubectl -n test-ns1 get pods 
+# von api-server angenommen, ausgerollt, aber kann nicht gestartet werden
+kubectl -n test-ns1 get pods
+kbuectl -n test-ns1 describe pods 
 ```
 
+<img width="1454" height="106" alt="image" src="https://github.com/user-attachments/assets/a3565e6c-04da-413c-942c-3a325394500b" />
 
 ## Praktisches Beispiel für Version ab 1.2.23 -Lösung - Container als NICHT-Root laufen lassen
 
