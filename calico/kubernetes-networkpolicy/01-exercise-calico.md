@@ -46,11 +46,8 @@ kubectl apply -f .
 ## Step 2: Namespace nptest ausrollen aus manifests/04-service und testen
 
 ```
-# pod in anderem namespace starten
-kubectl create ns somewhere
-kubectl run -n somewhere nginx-other-namespace --image=nginx
-# Get ip and note down -> e.g. 192.168.46.20
-kubectl -n somewhere get pods -o wide 
+kubectl create ns nptest
+kubectl config set-context --current --namespace=nptest
 ```
 
 ```
