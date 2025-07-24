@@ -92,9 +92,7 @@ spec:
 ```
 
 ```
-kubectl delete -f 02-nginx.yml
 kubectl apply -f 02-nginx.yml
-kubectl -n test-ns1 get pods 
 ```
 
 ```
