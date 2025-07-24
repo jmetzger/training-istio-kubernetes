@@ -1,5 +1,10 @@
 # Tools zum Aufspüren von veralteten Helm - Charts und Images 
 
+## Empfohlene Tools 
+
+  * Trivy Operator 
+  * kube-version-tracker  
+
 ## Trivvy -> speziell Trivvy Operator 
 
 ```
@@ -73,3 +78,51 @@ report:
 
 ```
 
+## Nutzung von Trivy und kube-version-tracker 
+
+
+### Variante 1: CronJob - 
+
+   * Die entsprechende Vulnerability - Reports auswerten und dann bei incident an Ziel schicken (Slack)
+
+```
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: vulnreport-check
+  namespace: monitoring
+spec:
+  schedule: "0 7 * * *"  # täglich 07:00
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+          - name: vuln-checker
+            image: bitnami/kubectl:latest
+            command:
+            - /bin/bash
+            - -c
+            - |
+              set -e
+              echo "🔍 Kubernetes Trivy Vulnerability Summary:" > /tmp/summary.txt
+
+              kubectl get vulnerabilityreports -A -o json | \
+              jq -r '.items[] |
+                select(.report.vulnerabilities != null) |
+                [.metadata.namespace, .metadata.name, (.report.vulnerabilities[]? | select(.severity=="CRITICAL" or .severity=="HIGH") | .vulnerabilityID + " (" + .severity + ")")] |
+                @tsv' | while IFS=$'\t' read ns name vuln; do
+                  echo "🔴 $vuln in $ns/$name" >> /tmp/summary.txt
+              done
+
+              curl -X POST -H 'Content-type: application/json' \
+                --data "{\"text\":\"$(cat /tmp/summary.txt | sed 's/"/\\"/g' | tr '\n' '\\n')\"}" \
+                $SLACK_WEBHOOK_URL
+            env:
+            - name: SLACK_WEBHOOK_URL
+              valueFrom:
+                secretKeyRef:
+                  name: slack-webhook
+                  key: url
+          restartPolicy: OnFailure
+```
