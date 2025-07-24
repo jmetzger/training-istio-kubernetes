@@ -3,12 +3,20 @@
 ## Step 1: Set global policy
 
 ```
+cd
+mkdir -p manifests/calico
+cd manifests/calico
+nano 01-gp.yml
+```
+
+```
 apiVersion: projectcalico.org/v3
 kind: GlobalNetworkPolicy
 metadata:
   name: default-deny
 spec:
-  namespaceSelector: kubernetes.io/metadata.name != "kube-system" && kubernetes.io/metadata.name != "calico-system"
+  namespaceSelector: has(kubernetes.io/metadata.name) && kubernetes.io/metadata.name not in {"kube-system", "calico-system", "tigera-operator"}
+  # namespaceSelector: kubernetes.io/metadata.name != "kube-system" && kubernetes.io/metadata.name != "calico-system" && kubernetes.io/metadata.name != 'tigera-operator'
   types:
   - Ingress
   - Egress
