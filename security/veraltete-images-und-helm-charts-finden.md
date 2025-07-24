@@ -92,7 +92,7 @@ metadata:
   name: vulnreport-check
   namespace: monitoring
 spec:
-  schedule: "0 7 * * *"  # täglich 07:00
+  schedule: "0 7 * * *"  # täglich um 07:00 Uhr
   jobTemplate:
     spec:
       template:
@@ -101,23 +101,34 @@ spec:
           - name: vuln-checker
             image: bitnami/kubectl:latest
             command:
-            - /bin/bash
+            - /bin/sh
             - -c
             - |
-              set -e
               echo "🔍 Kubernetes Trivy Vulnerability Summary:" > /tmp/summary.txt
 
-              kubectl get vulnerabilityreports -A -o json | \
-              jq -r '.items[] |
-                select(.report.vulnerabilities != null) |
-                [.metadata.namespace, .metadata.name, (.report.vulnerabilities[]? | select(.severity=="CRITICAL" or .severity=="HIGH") | .vulnerabilityID + " (" + .severity + ")")] |
-                @tsv' | while IFS=$'\t' read ns name vuln; do
-                  echo "🔴 $vuln in $ns/$name" >> /tmp/summary.txt
+              # Alle Reports iterieren
+              for report in $(kubectl get vulnerabilityreports -A -o=jsonpath='{range .items[*]}{.metadata.namespace}{";"}{.metadata.name}{"\n"}{end}'); do
+                ns=$(echo "$report" | cut -d';' -f1)
+                name=$(echo "$report" | cut -d';' -f2)
+
+                # Alle CRITICAL + HIGH CVEs extrahieren
+                vulns=$(kubectl get vulnerabilityreports -n "$ns" "$name" -o=jsonpath="{range .report.vulnerabilities[?(@.severity=='CRITICAL' || @.severity=='HIGH')]}{.vulnerabilityID}{' ('}{.severity}{')'}{'\n'}{end}")
+
+                if [ ! -z "$vulns" ]; then
+                  while IFS= read -r v; do
+                    echo "🔴 $v in $ns/$name" >> /tmp/summary.txt
+                  done <<< "$vulns"
+                fi
               done
 
-              curl -X POST -H 'Content-type: application/json' \
-                --data "{\"text\":\"$(cat /tmp/summary.txt | sed 's/"/\\"/g' | tr '\n' '\\n')\"}" \
-                $SLACK_WEBHOOK_URL
+              # Wenn kritische Funde vorhanden, an Slack senden
+              if [ -s /tmp/summary.txt ]; then
+                payload=$(cat /tmp/summary.txt | sed 's/"/\\"/g' | tr '\n' '\\n')
+                curl -X POST -H 'Content-type: application/json' \
+                  --data "{\"text\":\"$payload\"}" "$SLACK_WEBHOOK_URL"
+              else
+                echo "✅ Keine kritischen Sicherheitslücken gefunden."
+              fi
             env:
             - name: SLACK_WEBHOOK_URL
               valueFrom:
@@ -125,4 +136,5 @@ spec:
                   name: slack-webhook
                   key: url
           restartPolicy: OnFailure
+
 ```
