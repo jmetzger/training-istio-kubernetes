@@ -1,1 +1,43 @@
+# Hashicrop Vault 
+
+## Zentrale Externer Server mit 3 Nodes (Produktion) 
+
+## 3-Wege für Kubernetes Daten zu bekommen 
+
+  * VSO (Vault Secrets Operator)
+  * SideCar Injection
+  * Volumes 
+
+## VSO 
+
+  * Ich bestücke eine neue CRT mit dem Wunsch eines Credentials "Vault Static Secret"
+
+```
+apiVersion: secrets.hashicorp.com/v1beta1
+kind: VaultStaticSecret
+metadata:
+  name: webapp-config
+  namespace: default
+spec:
+  # Reference to VaultAuth in another namespace
+  vaultAuthRef: vault-secrets-operator-system/default
+  
+  # Vault mount path (where the secret engine is mounted)
+  mount: secret
+  
+  # Path to the secret within the mount
+  path: webapp/config
+  
+  # Type of secret engine
+  type: kv-v2
+  
+  # Destination Kubernetes secret configuration
+  destination:
+    create: true
+    name: webapp-secret
+    type: Opaque
+  
+  # How often to refresh the secret from Vault
+  refreshAfter: 30s
+```
 
