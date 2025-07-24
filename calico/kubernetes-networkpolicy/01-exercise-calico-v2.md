@@ -152,7 +152,7 @@ wget -O - http://svc-nginx.fremd
 # --> geht auch nicht 
 ```
 
-## Step 3: Traffic erlauben egress von busybox 
+## Step 5: Traffic erlauben egress von busybox 
 
 ```
 # vi 02-egress-allow-busybox.yml
@@ -193,7 +193,7 @@ wget -O - http://svc-nginx.fremd
 
 ```
 
-## Step 4: Traffic erlauben für nginx 
+## Step 6: Traffic erlauben für nginx 
 
 ```
 # 03-allow-ingress-my-nginx.yml 
@@ -222,8 +222,10 @@ kubectl run -it --rm access --image=busybox
 ```
 
 ```
-# In der Busybox 
-wget -O - http://my-nginx 
+# In der Busybox das geht ->
+wget -O - http://svc-nginx
+# das nicht
+wget -O - http://svc-nginx.fremd  
 ```
 
 ## Step 5 (Optional): Traffic vom Ingress Controller erlauben
