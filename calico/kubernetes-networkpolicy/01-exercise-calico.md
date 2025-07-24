@@ -263,7 +263,7 @@ spec:
 ```
 
 ```
-kubectl apply -f .
+kubectl apply -f 04-traffic-allowed-inside-namespace.yml
 ```
 
 ```
