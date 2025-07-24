@@ -19,6 +19,8 @@ cd manifests/calico
 nano 01-gp.yml
 ```
 
+  * Best practice no "order" here, will be processed last then
+
 ```
 apiVersion: projectcalico.org/v3
 kind: GlobalNetworkPolicy
