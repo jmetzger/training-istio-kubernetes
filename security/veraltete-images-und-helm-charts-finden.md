@@ -4,7 +4,8 @@
 
   * Trivy Operator 
   * [kube-version-tracker](https://artifacthub.io/packages/helm/cert-manager/version-checker)
-  * https://github.com/jetstack/version-checker 
+  * https://github.com/jetstack/version-checker
+  * Nova: Scanning for helm - Charts: https://nova.docs.fairwinds.com/quickstart/
 
 ## Trivvy -> speziell Trivvy Operator 
 
