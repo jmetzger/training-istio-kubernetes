@@ -229,7 +229,57 @@ wget -O - http://svc-nginx.fremd
 wget -O - http://www.google.de
 ```
 
-## Step 7 (Optional): Traffic vom Ingress Controller erlauben
+## Step 7: Optional: Traffic innerhalb des Namespaces erlauben
+
+```
+# alte Regeln rausnehmen
+kubectl delete -f 02-egress-allow-busybox.yml
+kubectl delete -f 03-allow-ingress-my-nginx.yml
+```
+
+```
+nano 04-traffic-allowed-inside-namespace.yml
+```
+
+```
+apiVersion: projectcalico.org/v3
+kind: NetworkPolicy
+metadata:
+  name: allow-intra-namespace
+spec:
+  order: 100
+  selector: all()
+  types:
+    - Ingress
+    - Egress
+  ingress:
+    - action: Allow
+      source:
+        selector: all()
+  egress:
+    - action: Allow
+      destination:
+        selector: all()
+```
+
+```
+kubectl apply -f .
+```
+
+```
+kubectl run -it --rm access --image=busybox 
+```
+
+```
+# In der Busybox das geht ->
+wget -O - http://svc-nginx
+# das nicht
+wget -O - http://svc-nginx.fremd
+# das geht
+wget -O - http://www.google.de
+```
+
+## Step 8 (Optional): Traffic vom Ingress Controller erlauben
 
 ```
 nano ingress-network-policy.yaml
