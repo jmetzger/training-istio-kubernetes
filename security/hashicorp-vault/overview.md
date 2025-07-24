@@ -41,3 +41,22 @@ spec:
   refreshAfter: 30s
 ```
 
+### Nachteil 
+
+  * Das automatisch erstellte Secret wird in etc gespeichert, solange wie das VaultStaticSecret existiert
+
+
+## Vault Sidecar Injector 
+
+### Vorteile 
+
+  * Sicherste Variante
+  * Es wird kein Secret erstellt, passwort wird direkt im Pod zur Verfügung gestellt (in einer Datei)
+
+### Nachteile
+
+  * Relativ viele Einträge im Pod über Annotations zu machen, damit das funktioniert
+  * Overhead über SideCar (weil jeder Pod ein Sidecar bekommt)
+  * Bekommt mit, wenn sich das Passwort ändert 
+
+## Volumes 
