@@ -10,6 +10,13 @@
 - Nutzt Envoy-Proxies als Sidecars
 - Fängt gesamten Netzwerkverkehr ab
 
+## Vorher: Ohne Service-Mesh 
+
+<img width="1184" height="305" alt="image" src="https://github.com/user-attachments/assets/e4e446be-b25b-465a-9682-4fc6a83c7969" />
+
+## Nachher: Mit Service-Mesh 
+
+
 
 ## Source 1:
 
