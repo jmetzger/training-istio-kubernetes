@@ -16,7 +16,20 @@
 2. istiod übersetzt → Envoy-Config
 3. Push an alle Proxies
 4. Proxies setzen um
-```mermaid
+
+## Grafik (Komponenten) 
+
+<img width="1611" height="705" alt="image" src="https://github.com/user-attachments/assets/40e5ae24-11b1-4450-9e7d-335340624d1a" />
+
+## Grafik (Ablauf) 
+
+<img width="1270" height="842" alt="image" src="https://github.com/user-attachments/assets/de4052d0-0140-4148-89b8-19638a25b2ae" />
+
+
+
+**Komponenten**
+
+```
 graph TB
     subgraph "Control Plane"
     ISTIOD[istiod]
@@ -57,7 +70,7 @@ graph TB
 ```
 
 **Traffic Flow:**
-```mermaid
+```
 sequenceDiagram
     participant Admin as Admin/DevOps
     participant Istiod as Control Plane (istiod)
