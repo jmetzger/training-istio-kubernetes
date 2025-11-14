@@ -14,9 +14,17 @@
 
 ```
 # /tmp/.env - Datei wurde vom Trainer vorbereitet
-# Inhalt
-TF_VAR_do_token="DAS_TOKEN_FUER_DIGITALOCEAN"
+# Inhalt / export -> damit Umgebungsvariable 
+export TF_VAR_do_token="DAS_TOKEN_FUER_DIGITALOCEAN"
 ```
+
+```
+Folgende Berechtigungen wurden für das Token gesetzt
+```
+
+<img width="793" height="656" alt="image" src="https://github.com/user-attachments/assets/5b1b279c-e6fa-4ec3-9948-e4cc21e1eaf6" />
+
+
 
 ```
 cd
