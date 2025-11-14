@@ -16,11 +16,12 @@
 
 ## Nachher: Mit Service-Mesh 
 
+<img width="763" height="895" alt="image" src="https://github.com/user-attachments/assets/18764919-344f-4696-b6c7-ced3f459dd80" />
 
 
-## Source 1:
+## Mermaid-Quelltexte 
 
-```mermaid
+```
 graph TB
     subgraph "Ohne Service Mesh"
     direction LR
@@ -29,9 +30,7 @@ graph TB
     B1 -.-> C1
     end
 ```
-
-
-```mermaid
+```
 graph TB
     subgraph "Mit Service Mesh - Sidecar Pattern"
     direction TB
