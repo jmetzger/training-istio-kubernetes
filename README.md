@@ -55,6 +55,7 @@
 
 1. Erweiterbarkeit & Automatisierung mit Istio
    * WebAssembly (Wasm) für Istio-Erweiterungen
+   * [Wo läuft WASM (WebAssembly) im Rahmen von istio ?](istio/wasm/plugins/where-is-the-wasm-runtime.md)
    * Automatisierung mit GitOps & ArgoCD
    * Eigene Istio-Erweiterungen mit WebAssembly schreiben
 
