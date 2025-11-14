@@ -15,7 +15,17 @@
 - Komplexität aus Anwendungscode → Infrastruktur
 - Platform-Teams: zentrale Policies
 - Entwickler: Fokus auf Business-Logik
-  
+
+## Vorher: Ohne ServiceMesh 
+
+
+
+## Nachher: Mit ServiceMesh
+
+<img width="868" height="452" alt="image" src="https://github.com/user-attachments/assets/a7bb0460-8b1e-42d9-bab6-daa7ac7a4e49" />
+
+
+
 ```mermaid
 graph TD
     subgraph "Problem: Jeder Service implementiert selbst"
