@@ -21,7 +21,9 @@ graph TB
     A1 -.-> C1[Service C]
     B1 -.-> C1
     end
-    
+
+```mermaid
+graph TB
     subgraph "Mit Service Mesh - Sidecar Pattern"
     direction TB
     
@@ -39,10 +41,10 @@ graph TB
     direction LR
     SC[Service C] --> EC[EnvoySidecar]
     end
-    
-    EA |mTLS| EB
-    EA |mTLS| EC
-    EB |mTLS| EC
+
+    EA -->|mTLS| EB
+    EA -->|mTLS| EC
+    EB -->|mTLS| EC
     end
     
     style EA fill:#4285f4
