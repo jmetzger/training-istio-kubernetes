@@ -26,7 +26,7 @@
 
 ### A2. Technische Voraussetzungen
 
-- Laufender Kubernetes-Cluster (kind, k3d, Minikube, EKS, GKE, …).
+- Laufender Kubernetes-Cluster
 - `kubectl` konfiguriert.
 - `curl`, `bash`.
 - Internetzugang aus der Shell, um Istio & CRDs zu holen.
