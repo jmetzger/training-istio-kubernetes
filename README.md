@@ -14,7 +14,7 @@
    * [Self-Service Cluster destroy](/istio/training-stack/uninstall.md)
     
 1. Installation & Bereitstellung von Istio
-   * [Systemanforderungen & Kubernetes-Cluster-Vorbereitung]
+   * [Systemanforderungen & Kubernetes-Cluster-Vorbereitung](istio/requirements/overview.md)
    * Istio-Installation mit istioctl
    * Istio-Installation mit Helm
    * Installation mit Istio-Operator
