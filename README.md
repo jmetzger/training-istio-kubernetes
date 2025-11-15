@@ -14,8 +14,10 @@
    * [Self-Service Cluster destroy](/istio/training-stack/uninstall.md)
     
 1. Installation & Bereitstellung von Istio
-   * Systemanforderungen & Kubernetes-Cluster-Vorbereitung
-   * Istio-Installation mit istioctl, Helm & Istio-Operator
+   * [Systemanforderungen & Kubernetes-Cluster-Vorbereitung]
+   * Istio-Installation mit istioctl
+   * Istio-Installation mit Helm
+   * Installation mit Istio-Operator
    * Einführung in Sidecar Injection & Proxy-Konzepte
 
 1. Steuerung des Netzwerkverhaltens in Istio
