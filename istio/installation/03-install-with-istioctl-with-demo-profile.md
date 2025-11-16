@@ -6,9 +6,7 @@
 
 ## Hint for production 
 
-  * Bet option is default 
-
-
+  * Best option (in most cases) is default 
 
 ## in our case: Including demo (tracing is activated) 
 
