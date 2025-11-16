@@ -1,5 +1,7 @@
 # Architektur & Komponenten von Istio
 
+![Archiktur Istio](https://istio.io/latest/docs/ops/deployment/architecture/arch.svg)
+
 **Data Plane:**
 - Envoy-Proxies als Sidecars
 - Fangen Traffic ab
