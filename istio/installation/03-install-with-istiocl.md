@@ -35,7 +35,6 @@ cat istio-manifest.yaml | grep -i -A20 "^Kind" | less
 ### Schritt 1: istio runterladen und installieren 
 
 ```
-VERSION_ISTIO="1.28.0"
 cd 
 curl -L https://istio.io/downloadIstio | sh -
 mv istio-* istio
