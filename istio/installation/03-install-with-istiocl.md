@@ -39,6 +39,7 @@ cd
 curl -L https://istio.io/downloadIstio | sh -
 mv istio-* istio
 echo "export PATH=~/istio/bin:$PATH" >> ~/.bashrc
+source ~/.bashrc 
 ```
 
 
