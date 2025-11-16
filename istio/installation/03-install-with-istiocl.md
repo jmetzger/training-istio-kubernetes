@@ -36,14 +36,11 @@ cat istio-manifest.yaml | grep -i -A20 "^Kind" | less
 
 ```
 cd 
+# current version of istio is 1.28.0
 curl -L https://istio.io/downloadIstio | sh -
-mv istio-* istio
-echo "export PATH=~/istio/bin:$PATH" >> ~/.bashrc
+echo "export PATH=~/istio-1.28.0/bin:$PATH" >> ~/.bashrc
 source ~/.bashrc 
 ```
-
-
-
 
 ## Reference: Get started 
 
