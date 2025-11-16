@@ -6,17 +6,13 @@
 
 ## Hint for production 
 
-
+  * Bet option is default 
 
 
 
 ## in our case: Including demo (tracing is activated) 
 
   * Not suitable for production !!
-
-### Walkthrough 
-
-
 
 ## Show what a profile does 
 
@@ -38,6 +34,7 @@ cat istio-manifest.yaml | grep -i -A20 "^Kind" | less
 cd 
 # current version of istio is 1.28.0
 curl -L https://istio.io/downloadIstio | sh -
+ln -s ~/istio-1.28.0 ~/istio
 echo "export PATH=~/istio-1.28.0/bin:$PATH" >> ~/.bashrc
 source ~/.bashrc 
 ```
@@ -45,8 +42,35 @@ source ~/.bashrc
 ### Schritt 2: bash completion integrieren 
 
 ```
-cp ~/istio-1.28.0/tools/istioctl.bash ~/istioctl.bash 
+cp ~/istio/tools/istioctl.bash ~/istioctl.bash 
 source ~/istioctl.bash
+```
+
+### Schritt 3: Installation 
+
+```
+# cat ~/istio/samples/bookinfo/demo-profile-no-gateways.yaml
+# Wird vom ControlPlane ausgewertet
+# Hier wird das ingressgateway abgeschaltet,
+# Weil wir das nicht benötigen, wenn wir
+# die Kubernetes Gateway API verwenden 
+apiVersion: install.istio.io/v1alpha1
+kind: IstioOperator
+spec:
+  profile: demo
+  components:
+    ingressGateways:
+    - name: istio-ingressgateway
+      enabled: false
+    egressGateways:
+    - name: istio-egressgateway
+      enabled: false
+```
+
+
+```
+# Der Trend geht Richtung Kubernetees Gateway API
+istioctl install -f ~/istio/samples/bookinfo/demo-profile-no-gateways.yaml -y
 ```
 
 ## Reference: Get started 
