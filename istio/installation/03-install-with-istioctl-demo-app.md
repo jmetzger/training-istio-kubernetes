@@ -46,7 +46,7 @@ cp ~/istio/tools/istioctl.bash ~/istioctl.bash
 source ~/istioctl.bash
 ```
 
-### Schritt 3: Installation 
+### Schritt 3: Installation with demo (by using operator)
 
 ```
 # cat ~/istio/samples/bookinfo/demo-profile-no-gateways.yaml
