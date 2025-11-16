@@ -45,7 +45,7 @@ source ~/.bashrc
 ### Schritt 2: bash completion integrieren 
 
 ```
-cp ~/istio-1.28.0/tools/istoctl.bash ~/istioctl.bash 
+cp ~/istio-1.28.0/tools/istioctl.bash ~/istioctl.bash 
 source ~/istioctl.bash
 ```
 
