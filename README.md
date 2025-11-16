@@ -16,9 +16,10 @@
 1. Installation & Bereitstellung von Istio
    * [Systemanforderungen & Kubernetes-Cluster-Vorbereitung](istio/requirements/overview.md)
    * [Installations-Config-Profile](istio/installation/02-installation-config-profiles.md)
-   * Istio-Installation mit istioctl / Istio-Operator
+   * [Istio-Installation mit istioctl / Istio-Operator](istio/exercises/01-exercise-injection.md)
+   * [Istio Sidecar-Injection](istio/exercises/01-exercise-injection.md)
    * Istio-Installation mit Helm
-   * Einführung in Sidecar Injection & Proxy-Konzepte
+   * [Istio Proxy-Konzepte]
    * [Deinstallation von Istio](istio/installation/05-uninstall.md)
 
 1. Steuerung des Netzwerkverhaltens in Istio
