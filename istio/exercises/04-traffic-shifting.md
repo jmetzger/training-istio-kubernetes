@@ -117,8 +117,11 @@ spec:
 EOF
 
 kubectl apply -n bookinfo -f route-reviews-v3.yaml
-kubectl get httproute -n bookinfo reviews -o yaml | head -n 30
+kubectl get httproute -n bookinfo reviews -o yaml | head -n 50
 ```
+
+<img width="749" height="434" alt="image" src="https://github.com/user-attachments/assets/037de8c8-a50d-40fa-bd58-41a6719e3f25" />
+
 
 ```bash
 $BOOKINFO_URL="deine-ip"
