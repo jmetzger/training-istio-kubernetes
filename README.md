@@ -26,6 +26,7 @@
 
 1. Steuerung des Netzwerkverhaltens in Istio
    * Virtual Services, Destination Rules & Gateway-API
+   * [Übung: Header-basiertes Routing](istio/exercises/02-exercise-request-routing.md)
    * Load Balancing, Header- & Pfadbasiertes Routing
    * Erstellen von Routing- & Load-Balancing-Regeln
 
