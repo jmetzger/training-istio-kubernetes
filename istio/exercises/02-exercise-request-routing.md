@@ -55,7 +55,7 @@ spec:
 EOF
 
 kubectl apply -f httproute-reviews-v1.yaml
-kubectl get httproute reviews -n bookinfo
+kubectl -n bookinfo get httproute reviews -n bookinfo
 ```
 
 ---
@@ -89,7 +89,7 @@ spec:
 EOF
 
 kubectl apply -f httproute-reviews-jason-v2.yaml
-kubectl get httproute reviews -n bookinfo -o yaml
+kubectl -n bookinfo get httproute reviews -n bookinfo -o yaml
 ```
 
 ---
