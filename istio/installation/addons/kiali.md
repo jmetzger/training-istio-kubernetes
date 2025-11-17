@@ -43,3 +43,36 @@ kubectl apply -f .
 ```
 
 ### Step 3: Setup Ingress 
+
+```
+nano ingress.yaml
+```
+
+```
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: kiali
+  namespace: istio-system
+  annotations:
+    nginx.ingress.kubernetes.io/auth-type: basic
+    nginx.ingress.kubernetes.io/auth-secret: kiali-basic-auth
+    nginx.ingress.kubernetes.io/auth-realm: 'Authentication Required - kiali'
+spec:
+  rules:
+    - host: kiali.tlnXX.do.t3isp.de
+      # ⬆️ Each trainee replaces "XX" with their number, e.g. kiali.tln10.do.t3isp.de
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: kiali
+                port:
+                  number: 20001
+```
+
+```
+kubectl apply -f .
+```
