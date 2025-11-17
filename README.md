@@ -47,7 +47,7 @@
 1. Monitoring, Logging & Observability
    * Distributed Tracing mit Jaeger
    * Metriken & Dashboards mit Prometheus & Grafana
-   * Service-Visualisierung mit Kiali
+   * [Service-Visualisierung mit Kiali // Installation](istio/installation/addons/kiali.md)
    * Analyse & Debugging von Service-Mesh-Daten
 
 1. Skalierung, Erweiterbarkeit & Performance-Optimierung
