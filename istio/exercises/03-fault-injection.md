@@ -16,5 +16,24 @@ cd manifests/fault-injection
 ```
 cp -a ~/istio/samples/bookinfo/networking/virtual-service-all-v1.yaml . 
 cp -a ~/istio/samples/bookinfo/networking/virtual-service-reviews-test-v2.yaml .
-kubectl apply -f . 
+kubectl -n bookinfo apply -f . 
 ```
+
+### Step 2: Fault-Injection - Abort (500er)
+
+```
+cp -a ~/istio/samples/bookinfo/networking/virtual-service-ratings-test-abort.yaml . 
+kubectl apply -f virtual-service-ratings-test-abort.yaml 
+```
+
+
+### Step 3: Seite aufrufen und als jason einloggen
+
+  * <dein-ip-des-gateway>/productpage 
+
+<img width="929" height="171" alt="image" src="https://github.com/user-attachments/assets/37b241df-dd02-44c1-bd18-2797b405bac5" />
+
+### Step 4: Ausloggen oder als andere Nutzer einloggen
+
+
+  * Reviews gehen wieder 
