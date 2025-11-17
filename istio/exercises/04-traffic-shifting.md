@@ -38,6 +38,14 @@ kubectl apply -n bookinfo -f route-reviews-v1.yaml
 kubectl get httproute -n bookinfo reviews -o yaml | head -n 30
 ```
 
+### 2. Testen 
+
+```
+# Seite öffnen
+http://<deine-ip>/productpage
+
+# Egal wie oft du die Seite lädst, es bleibt immer v1
+```
 
 
 
