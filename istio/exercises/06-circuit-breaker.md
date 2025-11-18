@@ -83,3 +83,30 @@ spec:
 ```
 kubectl apply -f .
 ```
+
+```
+# Last von intern erzeugen:
+
+kubectl -n bookinfo run curl-cb-test \
+  --image=curlimages/curl \
+  --restart=Never \
+  --command -- sh -c 'while true; do \
+    date; \
+    echo "=> Request to productpage"; \
+    curl -s -o /dev/null -w "HTTP %{http_code}\n" http://productpage:9080/productpage || echo "curl failed"; \
+    sleep 0.2; \
+  done'
+```
+
+```
+kubectl -n bookinfo get po curl-cb-test
+```
+
+```
+NAME           READY   STATUS    RESTARTS   AGE
+curl-cb-test   2/2     Running   0          30s
+```
+
+```
+kubectl -n bookinfo logs -f curl-db-test
+```
