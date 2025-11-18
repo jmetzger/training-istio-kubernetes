@@ -9,7 +9,7 @@
 ```
 cd 
 mkdir -p manifests/prometheus
-cd manifests/kiali
+cd manifests/prometheus
 cp -a ~/istio/samples/addons/prometheus.yaml .
 kubectl apply -f .
 kubectl -n istio-system get pods
