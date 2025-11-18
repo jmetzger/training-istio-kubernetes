@@ -1,4 +1,4 @@
-# Install kiali inkl. Ingress (Ingress-Controller must be installed) 
+# Install prometheus inkl. Ingress (Ingress-Controller must be installed) 
 
 ## Prerequisites 
 
