@@ -6,7 +6,7 @@ cd ~/manifests/retry
 ```
 
 ```
-ratings-retry.yaml
+nano ratings-retry.yaml
 ```
 
 ```
