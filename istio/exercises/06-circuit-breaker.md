@@ -1,112 +1,161 @@
-# Circuit Breaker
+# Istio Circuit Breaking – Übung (Sidecar Mode, Namespace `bookinfo`)
 
-## Vorbereitung 
+## Voraussetzungen
 
-```
-cd
-mkdir -p manifests/circuit-breaker
-cd manifests/circuit-breaker 
+* Istio ist installiert (Sidecar Mode).
+* Namespace `bookinfo` ist mit automatischer Sidecar-Injection gelabelt:
 
-cp -a ~/istio/samples/bookinfo/platform/kube/bookinfo-version.yaml .
-kubectl -n bookinfo apply -f . 
-
+```bash
+kubectl label namespace bookinfo istio-injection=enabled --overwrite
 ```
 
-## Voraussetzungen 
+* Das Istio-Repo liegt unter `~/istio` (Samples unter `~/istio/samples/...`).
 
-  * /productpage muss so konfiguriert sie, dass sie zu service 3 geht, falls nein
+---
 
-```
-nano 01-100_prozent_v3.yaml
-```
+## 1️⃣ Arbeitsverzeichnis anlegen
 
-```
-apiVersion: gateway.networking.k8s.io/v1
-kind: HTTPRoute
-metadata:
-  name: reviews
-  namespace: bookinfo
-spec:
-  parentRefs:
-  - group: ""
-    kind: Service
-    name: reviews
-    port: 9080
-  rules:
-  - backendRefs:
-    - name: reviews-v3
-      port: 9080
+```bash
+mkdir -p ~/manifests/circuit-breaker
+cd ~/manifests/circuit-breaker
 ```
 
-```
-kubectl apply -f . 
+---
+
+## 2️⃣ httpbin im Namespace `bookinfo` deployen
+
+```bash
+kubectl apply -n bookinfo -f ~/istio/samples/httpbin/httpbin.yaml
+kubectl get pods -n bookinfo -l app=httpbin
 ```
 
-## Destination Rule einsetzen 
+Warte, bis der Pod `Running` ist.
 
-  * httpRoute unterstützt kein CircuitBreaker
-  * Dieser muss mit DestinationRule eingerichtet werden, der Host legt fest, für welchen Service das gilt
+---
+
+## 3️⃣ DestinationRule mit Circuit Breaker anlegen
+
+Erzeuge eine Manifestdatei im Übungsverzeichnis:
 
 ```
-nano destinationrule-reviews-cb.yaml
+nano dr-httpbin-circuit-breaker.yaml
 ```
 
 ```
-apiVersion: networking.istio.io/v1beta1
+apiVersion: networking.istio.io/v1
 kind: DestinationRule
 metadata:
-  name: reviews-circuit-breaker
+  name: httpbin
   namespace: bookinfo
 spec:
-  host: reviews
+  host: httpbin
   trafficPolicy:
     connectionPool:
       tcp:
-        # Sehr wenig Verbindungen, damit der Effekt gut sichtbar ist
         maxConnections: 1
       http:
-        # Maximal eine ausstehende HTTP-Anfrage pro Verbindung
         http1MaxPendingRequests: 1
-        # Nur eine Anfrage pro Verbindung, damit Verbindungen oft neu aufgebaut werden
         maxRequestsPerConnection: 1
     outlierDetection:
-      # Schon bei einem 5xx-Fehler wird ein Pod als "fehlerhaft" markiert
       consecutive5xxErrors: 1
-      # Wie oft geprüft wird
       interval: 1s
-      # Wie lange ein fehlerhafter Pod aus dem Load-Balancing entfernt wird
-      baseEjectionTime: 30s
-      # Maximaler Prozentsatz der Pods, die "ausgeschlossen" werden können
+      baseEjectionTime: 3m
       maxEjectionPercent: 100
 ```
 
-```
-kubectl apply -f .
+> 🔐 **Hinweis (mTLS):**
+> Wenn dein Mesh **strict mTLS** nutzt und du 503er bekommst, ergänze in `trafficPolicy` noch:
+>
+> ```yaml
+>   tls:
+>     mode: ISTIO_MUTUAL
+> ```
+
+Apply & prüfen:
+
+```bash
+kubectl apply -f dr-httpbin-circuit-breaker.yaml
+kubectl get destinationrule httpbin -n bookinfo -o yaml
 ```
 
-```
-# Last von intern erzeugen:
+---
 
-kubectl -n bookinfo run curl-cb-test \
-  --image=curlimages/curl \
-  --restart=Never \
-  --command -- sh -c 'while true; do \
-    date; \
-    echo "=> Request to productpage"; \
-    curl -s -o /dev/null -w "HTTP %{http_code}\n" http://productpage:9080/productpage || echo "curl failed"; \
-    sleep 0.2; \
-  done'
+## 4️⃣ Fortio-Client im Mesh deployen
+
+```bash
+kubectl apply -n bookinfo -f ~/istio/samples/httpbin/sample-client/fortio-deploy.yaml
+kubectl get pods -n bookinfo -l app=fortio
 ```
 
-```
-kubectl -n bookinfo get po curl-cb-test
+Exportiere den Pod-Namen:
+
+```bash
+export FORTIO_POD=$(kubectl get pods -n bookinfo -l app=fortio -o 'jsonpath={.items[0].metadata.name}')
+echo "$FORTIO_POD"
 ```
 
-```
-NAME           READY   STATUS    RESTARTS   AGE
-curl-cb-test   2/2     Running   0          30s
+---
+
+## 5️⃣ Sanity-Check: Ein einzelner Request
+
+```bash
+kubectl exec -n bookinfo "$FORTIO_POD" -c fortio -- \
+  /usr/bin/fortio curl -quiet http://httpbin:8000/get
 ```
 
+Erwartung: **HTTP 200 OK** mit JSON-Antwort.
+
+---
+
+## 6️⃣ Circuit Breaker „anrucken“ (2 Verbindungen)
+
+```bash
+kubectl exec -n bookinfo "$FORTIO_POD" -c fortio -- \
+  /usr/bin/fortio load -c 2 -qps 0 -n 20 -loglevel Warning \
+  http://httpbin:8000/get
 ```
-kubectl -n bookinfo logs -f curl-db-test
+
+* `-c 2` → 2 gleichzeitige Verbindungen
+* `-n 20` → 20 Requests
+
+Erwartung: Die meisten Requests sind 200, einige ggf. 503.
+
+---
+
+## 7️⃣ Circuit Breaker deutlich auslösen (3 Verbindungen)
+
+```bash
+kubectl exec -n bookinfo "$FORTIO_POD" -c fortio -- \
+  /usr/bin/fortio load -c 3 -qps 0 -n 30 -loglevel Warning \
+  http://httpbin:8000/get
 ```
+
+Erwartung: **Deutlich mehr 503** (Circuit Breaking greift).
+
+---
+
+## 8️⃣ Envoy-Stats im Sidecar prüfen
+
+```bash
+kubectl exec -n bookinfo "$FORTIO_POD" -c istio-proxy -- \
+  pilot-agent request GET stats | grep httpbin.bookinfo.svc.cluster.local | grep pending
+```
+
+Achte auf Werte wie `upstream_rq_pending_overflow` → zeigt an, wie viele Requests wegen Circuit Breaking abgewiesen wurden.
+
+---
+
+## 9️⃣ Aufräumen
+
+```bash
+# Circuit-Breaker-Regel entfernen
+kubectl delete -f dr-httpbin-circuit-breaker.yaml
+
+# Fortio-Client entfernen
+kubectl delete -n bookinfo -f ~/istio/samples/httpbin/sample-client/fortio-deploy.yaml
+
+# httpbin entfernen
+kubectl delete -n bookinfo -f ~/istio/samples/httpbin/httpbin.yaml
+```
+
+---
