@@ -49,7 +49,8 @@
    * Metriken & Dashboards mit Prometheus & Grafana
    * [Installation Prometheus Addon with Ingress](istio/installation/addons/prometheus.md)
    * [Installation Grafana Addon with Ingress](istio/installation/addons/grafana.md)
-   * [Service-Visualisierung mit Kiali // Installation](istio/installation/addons/kiali.md)
+   * [Installaton Kiali // Installation](istio/installation/addons/kiali.md)
+   * [Visualisierung mit Kiali](istio/exercises/04-kiali.md)
    * Analyse & Debugging von Service-Mesh-Daten
 
 1. Skalierung, Erweiterbarkeit & Performance-Optimierung
