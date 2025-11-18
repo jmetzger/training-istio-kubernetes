@@ -44,7 +44,10 @@ kubectl apply -f .
   * Dieser muss mit DestinationRule eingerichtet werden, der Host legt fest, für welchen Service das gilt
 
 ```
-cat << 'EOF' > ~/manifests/circuit-breaker/destinationrule-reviews-cb.yaml
+nano destinationrule-reviews-cb.yaml
+```
+
+```
 apiVersion: networking.istio.io/v1beta1
 kind: DestinationRule
 metadata:
@@ -71,7 +74,6 @@ spec:
       baseEjectionTime: 30s
       # Maximaler Prozentsatz der Pods, die "ausgeschlossen" werden können
       maxEjectionPercent: 100
-EOF
 ```
 
 ```
