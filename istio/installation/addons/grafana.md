@@ -59,6 +59,10 @@ metadata:
     nginx.ingress.kubernetes.io/auth-type: basic
     nginx.ingress.kubernetes.io/auth-secret: grafana-basic-auth
     nginx.ingress.kubernetes.io/auth-realm: 'Authentication Required - grafana'
+    nginx.ingress.kubernetes.io/hsts: "false"
+    nginx.ingress.kubernetes.io/hsts-max-age: "0"
+    nginx.ingress.kubernetes.io/hsts-include-subdomains: "false"
+    nginx.ingress.kubernetes.io/hsts-preload: "false"
 spec:
   ingressClassName: "nginx"
   rules:
