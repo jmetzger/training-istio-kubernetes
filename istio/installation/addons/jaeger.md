@@ -11,7 +11,7 @@
 ```
 cd 
 mkdir -p manifests/jaeger
-cd manifests/kiali
+cd manifests/jaeger
 cp -a ~/istio/samples/addons/jaeger.yaml .
 kubectl apply -f .
 kubectl -n istio-system get pods
