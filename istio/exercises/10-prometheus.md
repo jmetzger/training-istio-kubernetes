@@ -44,13 +44,7 @@ istio_requests_total{destination_service="productpage.bookinfo.svc.cluster.local
 
 <img width="1789" height="467" alt="image" src="https://github.com/user-attachments/assets/49881c0f-b462-4ff0-98e3-8bebc22a6566" />
 
-   * .. unterscheiden sich diese bspw. an dieser Stelle durch den Response - Code
-
-<img width="1789" height="467" alt="image" src="https://github.com/user-attachments/assets/86fbc051-07e8-440a-bca1-3282cebd504c" />
-
-
-
-
+   * .. unterscheiden sich diese bspw. an dieser Stelle durch den Response - Code (200, 403 etc.)
 
 ```
 # 2. Total count of all requests to v3 of the reviews service:
