@@ -66,7 +66,7 @@ kubectl exec "$(kubectl get pod -l app=curl -n foo -o jsonpath={.items..metadata
 ## Step 5: We create an AuthorizationPolicy 
 
 >[!NOTE]
->requestPrincipal set to testing@secure.istio.io/testing@secure.istio.io. >Istio constructs the requestPrincipal by combining the iss and sub of >the JWT token with a / separator.
+>requestPrincipal set to testing@secure.istio.io/testing@secure.istio.io. Istio constructs the requestPrincipal by combining the iss and sub of the JWT token with a / separator.
  
 
 
