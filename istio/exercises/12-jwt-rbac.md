@@ -171,6 +171,12 @@ kubectl exec "$(kubectl get pod -l app=curl -n foo -o jsonpath={.items..metadata
 kubectl exec "$(kubectl get pod -l app=curl -n foo -o jsonpath={.items..metadata.name})" -c curl -n foo -- curl "http://httpbin.foo:8000/headers" -sS -o /dev/null -H "Authorization: Bearer $TOKEN" -w "%{http_code}\n"
 ```
 
+## Step 12: Cleanup 
+
+```
+kubectl delete namespace foo
+```
+
 
 ## Reference: 
 
