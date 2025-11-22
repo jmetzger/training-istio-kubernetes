@@ -16,13 +16,13 @@ kubectl apply -f <(istioctl kube-inject -f ~/istio/samples/httpbin/httpbin.yaml)
 kubectl apply -f <(istioctl kube-inject -f ~/istio/samples/curl/curl.yaml) -n foo
 ```
 
-### Step 2: Can we connect ? 
+## Step 2: Can we connect ? 
 
 ```
 kubectl exec "$(kubectl get pod -l app=curl -n foo -o jsonpath={.items..metadata.name})" -c curl -n foo -- curl http://httpbin.foo:8000/ip -sS -o /dev/null -w "%{http_code}\n"
 ```
 
-### Step 3: Create a RequestAuthentication 
+## Step 3: Create a RequestAuthentication 
 
 ```
 nano 01-ra.yml 
