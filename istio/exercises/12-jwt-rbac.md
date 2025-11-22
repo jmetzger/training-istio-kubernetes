@@ -55,15 +55,15 @@ kubectl apply -f .
 kubectl exec "$(kubectl get pod -l app=curl -n foo -o jsonpath={.items..metadata.name})" -c curl -n foo -- curl "http://httpbin.foo:8000/headers" -sS -o /dev/null -H "Authorization: Bearer invalidToken" -w "%{http_code}\n"
 ```
 
-## Step 4: But: without a jwt work 
+## Step 5: But: without a jwt -> its work 
 
-  * ... Because ! -> There is not AuthorizationPolicy
+  * ... Because ! -> There is no AuthorizationPolicy
 
 ```
 kubectl exec "$(kubectl get pod -l app=curl -n foo -o jsonpath={.items..metadata.name})" -c curl -n foo -- curl "http://httpbin.foo:8000/headers" -sS -o /dev/null -w "%{http_code}\n"
 ```
 
-## Step 5: We create an AuthorizationPolicy 
+## Step 6: We create an AuthorizationPolicy 
 
 >[!NOTE]
 >requestPrincipal set to testing@secure.istio.io/testing@secure.istio.io. Istio constructs the requestPrincipal by combining the iss and sub of the JWT token with a / separator.
@@ -93,7 +93,7 @@ spec:
 kubectl apply -f 02-ap.yaml
 ```
 
-## Step 6: Test access 
+## Step 7: Test access 
 
   * jwt consists of 3 parts
     * HEADER / PAYLOAD / SIGNATURE
