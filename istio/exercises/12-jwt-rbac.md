@@ -67,9 +67,47 @@ kubectl exec "$(kubectl get pod -l app=curl -n foo -o jsonpath={.items..metadata
 
 >[!NOTE]
 >requestPrincipal set to testing@secure.istio.io/testing@secure.istio.io. Istio constructs the requestPrincipal by combining the iss and sub of the JWT token with a / separator.
- 
 
+```
+nano 02-ap.yml
+```
 
+```
+apiVersion: security.istio.io/v1
+kind: AuthorizationPolicy
+metadata:
+  name: require-jwt
+  namespace: foo
+spec:
+  selector:
+    matchLabels:
+      app: httpbin
+  action: ALLOW
+  rules:
+  - from:
+    - source:
+       requestPrincipals: ["testing@secure.istio.io/testing@secure.istio.io"]
+```
+
+```
+kubectl apply -f 02-ap.yaml
+```
+
+## Step 6: Test access 
+
+  * jwt consists of 3 parts
+    * HEADER / PAYLOAD / SIGNATURE
+    * Each part is base64 encoded
+  * cut -d. -f2 -> gets the 2nd part -> the payload 
+   
+```
+# This is the way we get the token
+TOKEN=$(curl https://raw.githubusercontent.com/istio/istio/release-1.28/security/tools/jwt/samples/demo.jwt -s) && echo "$TOKEN" | cut -d '.' -f2 - | base64 --decode
+```
+
+```
+echo $TOKEN
+```
 
 
 ## Reference: 
