@@ -146,7 +146,7 @@ spec:
 ```
 
 ```
-kubectl apply -f 02-ap-group.yaml
+kubectl apply -f 02-ap-group.yml
 ```
 
 ## Step 9: get token included a claim for a group 
