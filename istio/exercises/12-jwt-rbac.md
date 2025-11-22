@@ -119,6 +119,35 @@ kubectl exec "$(kubectl get pod -l app=curl -n foo -o jsonpath={.items..metadata
 kubectl exec "$(kubectl get pod -l app=curl -n foo -o jsonpath={.items..metadata.name})" -c curl -n foo -- curl "http://httpbin.foo:8000/headers" -sS -o /dev/null -w "%{http_code}\n"
 ```
 
+## Step 8: Update AuthorizationPolicy also needing a specific group 
+
+```
+nano 02-ap.yml
+```
+
+```
+kubectl apply -f - <<EOF
+apiVersion: security.istio.io/v1
+kind: AuthorizationPolicy
+metadata:
+  name: require-jwt
+  namespace: foo
+spec:
+  selector:
+    matchLabels:
+      app: httpbin
+  action: ALLOW
+  rules:
+  - from:
+    - source:
+       requestPrincipals: ["testing@secure.istio.io/testing@secure.istio.io"]
+    when:
+    - key: request.auth.claims[groups]
+      values: ["group1"]
+```
+
+
+
 
 
 ## Reference: 
