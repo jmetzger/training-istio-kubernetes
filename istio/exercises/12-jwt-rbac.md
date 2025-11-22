@@ -146,7 +146,19 @@ spec:
       values: ["group1"]
 ```
 
+## Step 9: get token included a claim for a group 
 
+* Get the JWT that sets the groups claim to a list of strings: group1 and group2:
+
+```
+TOKEN_GROUP=$(curl https://raw.githubusercontent.com/istio/istio/release-1.28/security/tools/jwt/samples/groups-scope.jwt -s) && echo "$TOKEN_GROUP" | cut -d '.' -f2 - | base64 --decode
+```
+
+## Step 20: Test it with that token (so group1 muss be included) 
+
+```
+kubectl exec "$(kubectl get pod -l app=curl -n foo -o jsonpath={.items..metadata.name})" -c curl -n foo -- curl "http://httpbin.foo:8000/headers" -sS -o /dev/null -H "Authorization: Bearer $TOKEN_GROUP" -w "%{http_code}\n"
+```
 
 
 
