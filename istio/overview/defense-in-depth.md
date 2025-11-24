@@ -5,6 +5,11 @@ Each layer is independent, so a failure in Layer A does *not* break Layer B or C
 
 Let’s walk through the layers:
 
+# Diagramm 
+
+<img width="579" height="922" alt="image" src="https://github.com/user-attachments/assets/572a7770-661a-4bdd-8562-13aedc238b10" />
+
+
 ---
 
 # **1️⃣ Identity Layer — Strong Workload Identity (SPIFFE/SVID)**
