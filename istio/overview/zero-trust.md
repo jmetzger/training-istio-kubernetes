@@ -1,11 +1,3 @@
-**Kurz & klar, Jochen:**
-
-**Zero-Trust in Istio bedeutet:**
-Nichts und niemandem wird pauschal vertraut — **jede** Verbindung im Mesh muss **explizit** authentifiziert und **autorisiert** werden.
-Es gibt **keine impliziten Vertrauenszonen** wie „alles im Cluster darf miteinander reden“.
-
----
-
 # 🔐 Zero-Trust in Istio – die 5 zentralen Prinzipien
 
 ## 1️⃣ **Strong Authentication (mTLS überall)**
