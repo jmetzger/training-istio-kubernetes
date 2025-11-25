@@ -99,6 +99,43 @@ spec:
 ```
 kubectl apply -f 03-reviews-from-productpage.yaml
 ```
+### Test in browser -> url (now productpage + reviews should work) 
 
+```
+# Wenn das nicht funktioniert SHIFT + Relaod 
+im browser: http://<ip>/productpage
+```
 
+```
+# oder
+curl http://<ip>/productpage 
+```
+
+## Step 4: Zugriffs auf details von productpage 
+
+```
+nano 04-details-from-productpage.yaml
+```
+
+```
+apiVersion: security.istio.io/v1beta1
+kind: AuthorizationPolicy
+metadata:
+  name: allow-productpage-to-details
+  namespace: bookinfo
+spec:
+  selector:
+    matchLabels:
+      app: details
+  action: ALLOW
+  rules:
+  - from:
+    - source:
+        principals:
+        - "cluster.local/ns/bookinfo/sa/bookinfo-productpage"
+```
+
+```
+kubectl apply -f 04-details-from-productpage.yaml
+```
 
