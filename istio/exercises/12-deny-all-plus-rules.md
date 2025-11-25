@@ -22,13 +22,11 @@ metadata:
 spec: {}
 ```
 
+```
 kubectl apply -f 01-restrict-access.yaml 
+```
 
 ### Test in browser url 
-
-```
-http://<ip>/productpage
-```
 
 ```
 http://<ip>/productpage
