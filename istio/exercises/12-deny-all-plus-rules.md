@@ -139,3 +139,16 @@ spec:
 kubectl apply -f 04-details-from-productpage.yaml
 ```
 
+### Test in browser -> url (now productpage + reviews + details should work) 
+
+```
+# Wenn das nicht funktioniert SHIFT + Relaod 
+im browser: http://<ip>/productpage
+```
+
+```
+# oder
+curl http://<ip>/productpage 
+```
+
+## Step 5: Zugriff auf ratings von reviews 
