@@ -111,7 +111,7 @@ im browser: http://<ip>/productpage
 curl http://<ip>/productpage 
 ```
 
-## Step 4: Zugriffs auf details von productpage 
+## Step 4: Zugriff auf details von productpage 
 
 ```
 nano 04-details-from-productpage.yaml
