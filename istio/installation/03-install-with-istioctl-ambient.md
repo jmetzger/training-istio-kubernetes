@@ -4,6 +4,8 @@
 >you need to adjust error from calico with 
 >kubectl edit felixconfigurations default -o yaml
 
+## Step 1: Installation and CRDs
+
 ```
 istioctl install --set profile=ambient --skip-confirmation
 # In addition you will need the gateway api - crd's
