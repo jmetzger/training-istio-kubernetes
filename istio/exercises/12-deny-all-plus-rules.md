@@ -62,4 +62,13 @@ kubectl apply -f 02-from-istio-gateway.yaml
 
 ## Test in browser -> url (now productpage should work) 
 
+```
+# Wenn das nicht funktioniert SHIFT + Relaod 
+im browser: http://<ip>/productpage
+```
+
+```
+# oder
+curl http://<ip>/productpage 
+```
 
