@@ -14,7 +14,7 @@
    * [Self-Service Cluster ausrollen](/istio/training-stack/install.md)
    * [Self-Service Cluster destroy](/istio/training-stack/uninstall.md)
     
-1. Installation & Bereitstellung von Istio
+1. Installation & Bereitstellung von Istio (sidecar) 
    * [Systemanforderungen & Kubernetes-Cluster-Vorbereitung](istio/requirements/overview.md)
    * [Installations-Config-Profile](istio/installation/02-installation-config-profiles.md)
    * [Istio-Installation mit istioctl und der IstioOperator - Resource](istio/installation/03-install-with-istioctl-with-demo-profile.md)
@@ -24,6 +24,10 @@
    * Istio-Installation mit Helm
    * [Istio Proxy-Konzepte]
    * [Deinstallation von Istio](istio/installation/05-uninstall.md)
+
+1. Installation von istio (ambient mode)
+   * [istio-installation mit istioctl - ambient](istio/installation/03-install-with-istioctl-ambient.md) 
+
 
 1. Steuerung des Netzwerkverhaltens in Istio
    * Virtual Services, Destination Rules & Gateway-API
