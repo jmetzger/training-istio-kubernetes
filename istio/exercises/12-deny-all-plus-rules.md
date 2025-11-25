@@ -152,3 +152,41 @@ curl http://<ip>/productpage
 ```
 
 ## Step 5: Zugriff auf ratings von reviews 
+
+```
+nano 05-ratings-from-reviews.yaml 
+```
+
+```
+apiVersion: security.istio.io/v1beta1
+kind: AuthorizationPolicy
+metadata:
+  name: allow-reviews-to-ratings
+  namespace: bookinfo
+spec:
+  selector:
+    matchLabels:
+      app: ratings
+  action: ALLOW
+  rules:
+  - from:
+    - source:
+        principals:
+        - "cluster.local/ns/bookinfo/sa/bookinfo-reviews"
+```
+
+```
+kubectl apply -f 05-ratings-from-reviews.yaml
+```
+
+### Test in browser -> url (now productpage + reviews + details should work) 
+
+```
+# Wenn das nicht funktioniert SHIFT + Relaod 
+im browser: http://<ip>/productpage
+```
+
+```
+# oder
+curl http://<ip>/productpage 
+```
