@@ -60,7 +60,7 @@ kubectl apply -f 02-from-istio-gateway.yaml
 ```
 
 
-## Test in browser -> url (now productpage should work) 
+### Test in browser -> url (now productpage should work) 
 
 ```
 # Wenn das nicht funktioniert SHIFT + Relaod 
@@ -71,4 +71,34 @@ im browser: http://<ip>/productpage
 # oder
 curl http://<ip>/productpage 
 ```
+
+## Step 3: Zugriff zu reviews von productpage erlauben 
+
+```
+nano 03-reviews-from-productpage.yaml
+```
+
+```
+apiVersion: security.istio.io/v1beta1
+kind: AuthorizationPolicy
+metadata:
+  name: allow-productpage-to-reviews
+  namespace: bookinfo
+spec:
+  selector:
+    matchLabels:
+      app: reviews
+  action: ALLOW
+  rules:
+  - from:
+    - source:
+        principals:
+        - "cluster.local/ns/bookinfo/sa/bookinfo-productpage"
+```
+
+```
+kubectl apply -f 03-reviews-from-productpage.yaml
+```
+
+
 
