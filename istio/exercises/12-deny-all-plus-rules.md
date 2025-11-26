@@ -1,5 +1,9 @@
 # Deny all AND then only specific stuff (in bookinfo) 
 
+## Graph 
+
+<img width="785" height="470" alt="image" src="https://github.com/user-attachments/assets/bd677a9f-59bd-4aaa-99ca-0dd52f98fda4" />
+
 ## Step 0: Prep:
 
 ```
