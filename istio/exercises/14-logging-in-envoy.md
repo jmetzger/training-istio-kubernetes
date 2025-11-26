@@ -10,7 +10,7 @@
 ```
 
 ```
-# Variante 2: händsich 
+# Variante 2: händisch
 kubectl get pods -n bookinfo -l app=productpage
 kubectl exec -it -n bookinfo <POD-aus-vorheriger-Ausgabe> -c istio-proxy -- curl -X POST "localhost:15000/logging?rbac=debug"
 kubectl logs <POd-aus-vorheriger-Ausgabe> -n bookinfo -c istio-proxy -f
