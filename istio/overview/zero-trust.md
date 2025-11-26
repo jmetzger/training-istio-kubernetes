@@ -15,7 +15,7 @@
 
 ## 2️⃣ **No implicit trust**
 
-Ohne Policies gilt heute in Istio:
+Mit einer deny - policy (oder einer einzigen Allow-Policy) gilt heute in Istio:
 **Alles ist DENY, bis du ALLOW definierst.**
 
 D. h. nur weil zwei Services im gleichen Namespace laufen, dürfen sie sich **nicht automatisch** gegenseitig aufrufen.
