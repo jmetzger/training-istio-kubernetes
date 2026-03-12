@@ -57,7 +57,7 @@ kubectl get deployments -n istio-system
 
 ```bash
 kubectl create namespace istio-ingress
-helm install istio-ingress istio/gateway -n istio-ingress --wait --version 1.29.1 
+helm install istio-ingress istio/gateway -n istio-ingress --wait --version 1.29.1 --set profile=default
 ```
 
 > **Hinweis:** Der Gateway-Namespace darf kein Label `istio-injection=disabled` haben.
