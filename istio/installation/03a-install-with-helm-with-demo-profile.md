@@ -41,7 +41,7 @@ Der Status von `istio-base` sollte `deployed` sein.
 ## Schritt 3: Istiod (Control Plane) installieren
 
 ```bash
-helm install istiod istio/istiod -n istio-system --wait --version 1.29.1  --set profile=default
+helm install istiod istio/istiod -n istio-system --wait --version 1.29.1  --set profile=demo
 ```
 
 Prüfen:
