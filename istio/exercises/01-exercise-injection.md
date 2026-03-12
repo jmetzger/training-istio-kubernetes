@@ -2,6 +2,7 @@
 
 ## 1. Verzeichnis anlegen
 ```bash
+cd
 mkdir -p ~/manifests/nginx
 ````
 
