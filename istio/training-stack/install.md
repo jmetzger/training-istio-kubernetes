@@ -32,19 +32,19 @@ git clone https://github.com/jmetzger/training-istio-kubernetes-stack-do-terrafo
 cd install
 cat /tmp/.env
 source /tmp/.env
-terraform init
-terraform apply -auto-approve
+tofu init
+tofu apply -auto-approve
 ```
 ## Hinweis
 
 ```
 # Sollte es nicht sauber durchlaufen
 # einfach nochmal
-terraform apply -auto-approve
+tofu apply -auto-approve
 
 # Wenn das nicht geht, einfach nochmal neu
-terraform destroy -auto-approve
-terraform apply -auto-approve
+tofu destroy -auto-approve
+tofu apply -auto-approve
 ```
 
 ## Testing for ingress-nginx 
