@@ -5,6 +5,16 @@
 - Kubernetes-Cluster läuft und `kubectl` ist konfiguriert
 - Helm 3 ist installiert (`helm version`)
 
+## Profile 
+
+  * Die Charts von istio verwenden as profile Konzept
+  * Diese werden nachher einfach mit dem defaults - Block gemerged
+  * Wenn wir z.B. eine Einstellungen für die Demo haben wollen (z.B. sampleTracing auf 100 statt auf 1), können wir das demo-profile verwenden
+  * Die Profile für die Helm-Charts findest Du hier (nicht alles, was es für die Installation mit istioctl gibt, gibt es auch mit helm !!): 
+    [Profile für Helm]https://github.com/istio/istio/tree/release-1.29.1/manifests/helm-profiles)
+  * Wichtig ! Sie werden nicht in allen Charts verwenden, wenn wir es überall angeben, müssen wir uns aber keine Gedanken machen, in welchem Start 
+
+
 ## Schritt 1: Helm-Repository hinzufügen
 
 ```bash
@@ -17,7 +27,7 @@ helm repo update
 Das Base-Chart installiert die Istio CRDs (Custom Resource Definitions):
 
 ```bash
-helm install istio-base istio/base -n istio-system --set defaultRevision=default --create-namespace
+helm install istio-base istio/base -n istio-system --set defaultRevision=default --set profile=demo --create-namespace --version 1.29.1
 ```
 
 Prüfen:
@@ -31,7 +41,7 @@ Der Status von `istio-base` sollte `deployed` sein.
 ## Schritt 3: Istiod (Control Plane) installieren
 
 ```bash
-helm install istiod istio/istiod -n istio-system --wait
+helm install istiod istio/istiod -n istio-system --wait --version 1.29.1 
 ```
 
 Prüfen:
@@ -47,7 +57,7 @@ kubectl get deployments -n istio-system
 
 ```bash
 kubectl create namespace istio-ingress
-helm install istio-ingress istio/gateway -n istio-ingress --wait
+helm install istio-ingress istio/gateway -n istio-ingress --wait --version 1.29.1 
 ```
 
 > **Hinweis:** Der Gateway-Namespace darf kein Label `istio-injection=disabled` haben.
