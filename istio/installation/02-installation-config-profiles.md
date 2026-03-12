@@ -1,4 +1,4 @@
-# Installatios-Konfigurations-Profile 
+# Installations-Konfigurations-Profile 
 
   * istio verwendet verschiedene vorgefertigte Profile, die das Ausrollen (installieren) erleichtern
   * Diese können in istioctl verwendet werden, aber auch mit dem helm-chart
