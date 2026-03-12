@@ -1,6 +1,7 @@
 # Install istioctl 
 
-  * Good tool for debugging 
+  * Good tool for debugging
+  * Download includes demo and additional tools  
 
 ### Schritt 1: istio runterladen und installieren 
 
