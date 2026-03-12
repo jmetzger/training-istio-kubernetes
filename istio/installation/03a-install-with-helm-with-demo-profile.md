@@ -101,6 +101,14 @@ helm -n kube-system upgrade --install metrics-server metrics-server/metrics-serv
 kubectl -n kube-system get pods
 ```
 
+```
+# hpa sollte jetzt die richtigen Infos haben
+kubectl -n istio-ingress get hpa 
+```
+
+<img width="1408" height="95" alt="image" src="https://github.com/user-attachments/assets/192af4aa-a741-4d58-bc9c-c65f04b1395f" />
+
+
 ## Konfiguration anpassen
 
 Default-Werte eines Charts anzeigen:
