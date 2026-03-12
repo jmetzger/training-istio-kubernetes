@@ -7,7 +7,7 @@
 
 ## Profile 
 
-  * Die Charts von istio verwenden as profile Konzept
+  * Die Charts von istio verwenden das "profile"-Konzept
   * Diese werden nachher einfach mit dem defaults - Block gemerged
   * Wenn wir z.B. eine Einstellungen für die Demo haben wollen (z.B. sampleTracing auf 100 statt auf 1), können wir das demo-profile verwenden
   * Die Profile für die Helm-Charts findest Du hier (nicht alles, was es für die Installation mit istioctl gibt, gibt es auch mit helm !!): 
