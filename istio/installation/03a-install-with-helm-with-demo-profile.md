@@ -61,6 +61,46 @@ helm install istio-ingress istio/gateway -n istio-ingress --wait --version 1.29.
 
 > **Hinweis:** Der Gateway-Namespace darf kein Label `istio-injection=disabled` haben.
 
+## Schritt 4.5: (Optional) Metrics-Server installieren 
+
+  * Der HorizontalPodAutoscaler der vom Gateway - Chart verwendet wird braucht den Metrics-Server um die CPU vom istio-ingressgateway - Pod auszulesen
+  * kubectl -n istio-ingress get hpa # Hier steht aktuell **Unknown**
+
+<img width="1527" height="94" alt="image" src="https://github.com/user-attachments/assets/9000a286-3407-452a-8092-43882df72817" />
+
+  * Um das zu beheben müssen wir den Metrics-Server installieren
+
+
+
+
+```
+helm repo add metrics-server https://kubernetes-sigs.github.io/metrics-server/
+```
+
+
+```
+cd 
+mkdir -p helm-charts/metrics-server
+cd helm-charts/metrics-server
+nano values.yaml
+```
+
+```
+args:
+  - --kubelet-insecure-tls
+```
+
+
+
+```
+helm -n monitoring upgrade --install metrics-server metrics-server/metrics-server --version 3.13.0 --create-namespace -f values.yaml 
+```
+
+```
+# Überprüfen, es dauert ein bisschen, bis er Ready
+kubectl -n monitoring get pods
+```
+
 ## Konfiguration anpassen
 
 Default-Werte eines Charts anzeigen:
