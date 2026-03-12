@@ -53,7 +53,7 @@ kubectl get deployments -n istio-system
 
 `istiod` sollte `READY 1/1` anzeigen.
 
-## Schritt 4 (Optional): Ingress Gateway installieren
+## Schritt 4 : Ingress Gateway installieren
 
 ```bash
 kubectl create namespace istio-ingress
