@@ -93,12 +93,12 @@ args:
 
 
 ```
-helm -n monitoring upgrade --install metrics-server metrics-server/metrics-server --version 3.13.0 --create-namespace -f values.yaml 
+helm -n kube-system upgrade --install metrics-server metrics-server/metrics-server --version 3.13.0 --create-namespace -f values.yaml 
 ```
 
 ```
 # Überprüfen, es dauert ein bisschen, bis er Ready
-kubectl -n monitoring get pods
+kubectl -n kube-system get pods
 ```
 
 ## Konfiguration anpassen
