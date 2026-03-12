@@ -39,11 +39,8 @@ tofu apply -auto-approve
 
 ```
 # Sollte es nicht sauber durchlaufen
-# einfach nochmal
-tofu apply -auto-approve
-
-# Wenn das nicht geht, einfach nochmal neu
-tofu destroy -auto-approve
+# Cluster nochmal löschen 
+./scripts/safe-destroy.sh
 tofu apply -auto-approve
 ```
 
