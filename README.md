@@ -28,8 +28,10 @@
    * [Deinstallation von Istio](istio/installation/05-uninstall.md)
 
 1. Installation von istio (sidecar) mit helm-charts
-   * [Istio-Installation mit istioctl und der IstioOperator - Resource](istio/installation/03b-install-with-helm)
-   * [istioctl für Debugging installieren]()
+   * [Istio-Installation mit istioctl und der IstioOperator - Resource](istio/installation/03a-install-with-helm-with-demo-profile.md)
+   * [istioctl als debugging - tool installieren](istio/installation/)
+    
+
 
 1. Installation von istio (ambient mode)
    * [istio-installation mit istioctl - ambient](istio/installation/03-install-with-istioctl-ambient.md) 
