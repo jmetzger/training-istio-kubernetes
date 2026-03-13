@@ -68,11 +68,13 @@ helm upgrade istiod istio/istiod -n istio-system \
   --set profile=demo \
   --set pilot.cni.enabled=true
 ```
+   * Achtung istiod wird nicht neugestartet, weil
+   * die Einstellung pilot.cni.enabled in der configmap  istio-sidecar-injector landet
+  * nur diese muss verändert werden
+  * Diese configmap wird geladen, wenn ein neuer Pod erstellt wird. Das macht istio über den Kubernetes Api-Server 
 
-Prüfen, ob istiod den Neustart sauber durchgeführt hat:
-
-```bash
-kubectl rollout status deployment/istiod -n istio-system
+```
+kubectl -n istio-system get cm istio-sidecar-injector
 ```
 
 ### 5. Bestehende Workloads neu starten
@@ -81,10 +83,10 @@ Bestehende Pods haben noch den alten `istio-init` Init-Container. Erst nach eine
 
 ```bash
 # Alle Deployments in einem Namespace neu starten
-kubectl rollout restart deployment -n <NAMESPACE>
+kubectl rollout restart deployment -n bookinfo 
 
 # Oder gezielt ein einzelnes Deployment
-kubectl rollout restart deployment/<DEPLOYMENT_NAME> -n <NAMESPACE>
+kubectl rollout restart deployment/<DEPLOYMENT_NAME> -n bookinfo 
 ```
 
 ### 6. Verifizierung
@@ -98,24 +100,18 @@ kubectl get daemonset istio-cni-node -n istio-system
 **Neue Pods haben keinen `istio-init` Init-Container mehr:**
 
 ```bash
-kubectl get pod <NEUER_POD> -n <NAMESPACE> -o jsonpath='{.spec.initContainers[*].name}'
+kubectl get pod <NEUER_POD> -n bookinfo -o jsonpath='{.spec.initContainers[*].name}'
 ```
 
-Erwartete Ausgabe: leer (kein `istio-init`)
-
-**Sidecar ist weiterhin injiziert:**
-
-```bash
-kubectl get pod <NEUER_POD> -n <NAMESPACE> -o jsonpath='{.spec.containers[*].name}'
-```
-
-Erwartete Ausgabe: `<APP_CONTAINER> istio-proxy`
+Erwartete Ausgabe: istio-validation istio-proxy
+  * istio-validation überprüft ob ide iptables - Regeln richtig gesetzt wurden 
 
 **Traffic funktioniert weiterhin:**
 
 ```bash
 # Aus einem Pod heraus testen
-kubectl exec <POD> -c <APP_CONTAINER> -- curl -s http://<SERVICE>.<NAMESPACE>.svc.cluster.local
+# istio-proxy hat curl mit drauf 
+kubectl -n bookinfo exec deploy/productpage-v1 -c istio-proxy -- curl -s http://reviews:9080/reviews/1r.local
 ```
 
 ## Troubleshooting
@@ -153,7 +149,7 @@ helm upgrade istiod istio/istiod -n istio-system \
   --set profile=demo \
   --set pilot.cni.enabled=false
 
-kubectl rollout restart deployment -n <NAMESPACE>
+kubectl rollout restart deployment -n bookinfo
 
 helm uninstall istio-cni -n istio-system
 ```
