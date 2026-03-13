@@ -104,7 +104,7 @@ kubectl get peerauthentication -n bookinfo
 
 ```bash
 # sleep als Debug-Client deployen
-kubectl -n bookinfo apply -f https://raw.githubusercontent.com/istio/istio/release-1.24/samples/sleep/sleep.yaml
+kubectl -n bookinfo apply -f https://raw.githubusercontent.com/istio/istio/release-1.25/samples/sleep/sleep.yaml
 kubectl -n bookinfo wait --for=condition=ready pod -l app=sleep --timeout=60s
 
 # Header bei ratings prüfen – XFCC-Header zeigt mTLS-Identität
@@ -136,6 +136,9 @@ EOF
 ### 3b) Verifizieren – Kommunikation im Mesh funktioniert weiterhin
 
 ```bash
+# Falls nicht vorher schon erstellt 
+kubectl -n bookinfo apply -f https://raw.githubusercontent.com/istio/istio/release-1.25/samples/sleep/sleep.yaml
+
 # productpage kann weiterhin details und reviews erreichen
 kubectl -n bookinfo exec deploy/sleep -- \
   curl -s -o /dev/null -w "%{http_code}" productpage:9080/productpage
@@ -145,6 +148,12 @@ kubectl -n bookinfo exec deploy/sleep -- \
   curl -s -o /dev/null -w "%{http_code}" ratings:9080/ratings/0
 ```
 
+```
+# gleich aufräumen
+kubectl -n bookinfo delete -f https://raw.githubusercontent.com/istio/istio/release-1.25/samples/sleep/sleep.yaml
+```
+
+
 ### 3c) Zugriff ohne Sidecar testen
 
 Starten Sie einen Pod **ohne** Sidecar und versuchen Sie, die Bookinfo-Services zu erreichen:
@@ -152,7 +161,7 @@ Starten Sie einen Pod **ohne** Sidecar und versuchen Sie, die Bookinfo-Services 
 ```bash
 # Pod ohne Sidecar in einem Namespace ohne Injection
 kubectl create ns no-mesh
-kubectl -n no-mesh apply -f https://raw.githubusercontent.com/istio/istio/release-1.24/samples/sleep/sleep.yaml
+kubectl -n no-mesh apply -f https://raw.githubusercontent.com/istio/istio/release-1.25/samples/sleep/sleep.yaml
 kubectl -n no-mesh wait --for=condition=ready pod --all --timeout=60s
 
 # Zugriff auf productpage versuchen
