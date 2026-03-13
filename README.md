@@ -14,18 +14,19 @@
    * [Self-Service Cluster ausrollen](/istio/training-stack/install.md)
    * [Self-Service Cluster destroy](/istio/training-stack/uninstall.md)
 
-1. Installation von istio (sidecar - Installation mit istioctl)
-   * [Istio-Installation mit istioctl und der IstioOperator - Resource](istio/installation/03-install-with-istioctl-with-demo-profile.md)
-    
-1. Installation & Bereitstellung von Istio (sidecar) 
+1. Installation/Konfiguration/Deinstallation von istio (sidecar - Installation mit istioctl)
    * [Systemanforderungen & Kubernetes-Cluster-Vorbereitung](istio/requirements/overview.md)
+   * [Istio-Installation mit istioctl und der IstioOperator - Resource](istio/installation/03-install-with-istioctl-with-demo-profile.md)
    * [Installations-Config-Profile](istio/installation/02-installation-config-profiles.md)
    * [Wie ändere ich die Config/Installation von istio - Beispiel egressGateway](istio/installation/04-change-installation-with-istioctl-and-istioOperator.md)
-   * [Istio demo-app *bookinfo* installieren](istio/installation/04-install-demo-app-bookinfo.md)
-   * [Istio Proxy-Konzepte]
    * [Deinstallation von Istio mit istioctl](istio/installation/05-uninstall.md)
-
+    
+1. Installation & Bereitstellung von Istio (sidecar) 
+  
+   * [Istio Proxy-Konzepte]
+     
 1. Installation von istio (sidecar) mit helm-charts
+   * [Systemanforderungen & Kubernetes-Cluster-Vorbereitung](istio/requirements/overview.md)
    * [Istio-Installation mit istioctl und der IstioOperator - Resource](istio/installation/03a-install-with-helm-with-demo-profile.md)
    * [istioctl als debugging - tool installieren](istio/installation/03b-install-istioctl.md)
     
