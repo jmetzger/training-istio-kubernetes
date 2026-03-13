@@ -29,6 +29,10 @@
    * [Systemanforderungen & Kubernetes-Cluster-Vorbereitung](istio/requirements/overview.md)
    * [Istio-Installation mit istioctl und der IstioOperator - Resource](istio/installation/03a-install-with-helm-with-demo-profile.md)
    * [istioctl als debugging - tool installieren](istio/installation/03b-install-istioctl.md)
+
+1. CNI-Plugin istio
+   * [Vorteile und Installation mit helm](istio/installation/06-cni-helm.md)
+
     
 1. Prinzip: Side-Car Injection
    * [Istio Sidecar-Injection](istio/exercises/01-exercise-injection.md)
