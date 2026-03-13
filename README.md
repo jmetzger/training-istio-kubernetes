@@ -67,6 +67,9 @@
    * [Chaos Engineering mit Istio](https://istio.io/latest/docs/examples/microservices-istio/production-testing/)
    * Belastungstests mit Fehlerinjektionen
 
+1. Debugging
+   * [Debugging mit debug/run pod](/istio/debug/01-debug-pod.md)
+
 1. Monitoring, Logging & Observability
    * [Distributed Tracing mit Jaeger](istio/exercises/09-tracing-jaeger.md)
    * Metriken & Dashboards mit Prometheus & Grafana
@@ -95,6 +98,7 @@
    * [Wo läuft WASM (WebAssembly) im Rahmen von istio ?](istio/wasm/plugins/where-is-the-wasm-runtime.md)
    * Automatisierung mit GitOps & ArgoCD
    * Eigene Istio-Erweiterungen mit WebAssembly schreiben
+  
 
 1. FAQ & Best Practices
    * Zusammenfassung der wichtigsten Erkenntnisse
