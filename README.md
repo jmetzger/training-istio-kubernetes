@@ -50,14 +50,8 @@
    * Erstellen von Routing- & Load-Balancing-Regeln
 
 1. Sicherheit, Fehlertoleranz & Observability    
-   * [Übung Zugriffskontrolle mit RBAC & JWT-Authentifizierung](istio/exercises/12-jwt-rbac.md)
    * Istio Authorization Policies (ingress/egress Security)
    
-1. Sichere Service-Kommunikation mit istio (Sicherheit)
-   * [Sicherheit & Zero Trust mit Istio](/istio/overview/zero-trust.md)
-   * [Was ist in istio deep-defense (defense in depth) ?](/istio/overview/defense-in-depth.md)   
-   * [Überblick Sichere Service-Kommunikation]()
-
 1. Service Resilience & Fehlertoleranz
    * [Circuit Breaker](istio/exercises/06-circuit-breaker.md)
    * [Retries](istio/exercises/07-retries.md)
@@ -68,6 +62,13 @@
 
 1. Debugging
    * [Debugging mit debug/run pod](/istio/debug/01-debug-pod.md)
+  
+1. Sichere Service-Kommunikation mit istio (Sicherheit)
+   * [Sicherheit & Zero Trust mit Istio](/istio/overview/zero-trust.md)
+   * [Was ist in istio deep-defense (defense in depth) ?](/istio/overview/defense-in-depth.md)   
+   * [Überblick 3 Säulen -  Sichere Service-Kommunikation](istio/overview/security/01-secure-service-communication.md)
+   * [Übung Säule 1: mTLS prüfen und aktivieren/deaktivieren]
+   * [Übung Säule 2 + 3: Authentication und Autohrization mit JWT und RBAC](istio/exercises/12-jwt-rbac.md)
 
 1. Monitoring, Logging & Observability
    * [Distributed Tracing mit Jaeger](istio/exercises/09-tracing-jaeger.md)
