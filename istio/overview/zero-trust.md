@@ -73,6 +73,3 @@ spiffe://cluster.local/ns/bookinfo/sa/productpage
 **Zero-Trust in Istio:
 „Authenticate everything, authorize explicitly, trust nobody automatically.“**
 
-
-* als **1-Folie** für dein Helm/Istio-Training
-* als **Übung** mit echten Policies (ALLOW → DENY Prinzip)
