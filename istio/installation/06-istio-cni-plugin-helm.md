@@ -58,6 +58,7 @@ Warten bis das CNI DaemonSet auf allen Nodes läuft:
 
 ```bash
 kubectl rollout status daemonset/istio-cni-node -n istio-system
+kubectl -n istio-system get ds istio-cni-node
 ```
 
 ### 4. istiod upgraden — CNI Plugin aktivieren
