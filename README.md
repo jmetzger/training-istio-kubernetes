@@ -81,7 +81,8 @@
    * Analyse & Debugging von Service-Mesh-Daten
 
 1. Skalierung, Erweiterbarkeit & Performance-Optimierung
-   * Skalierung von Istio & Performance-Optimierung
+   * [Skalierung von Istio - Möglichkeiten/Tipps&Tricks](istio/skalierung-performance/skalierung.md)
+   * [Performance-Optimierung](istio/skalierung-performance/performance.md)
    * Sidecar-Overhead & Ressourcenoptimierung
    * Ambient Mesh (sidecar-less Istio für Performance-Gewinn)
    * Multi-Cluster- & Hybrid-Umgebungen mit Istio
