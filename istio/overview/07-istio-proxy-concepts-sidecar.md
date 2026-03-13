@@ -1,4 +1,4 @@
-# Istio Proxy-Konzepte
+# Istio Proxy-Konzepte (sidecar)
 
 ## 1. Was ist Envoy?
 
