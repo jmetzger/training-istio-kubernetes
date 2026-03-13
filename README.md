@@ -14,8 +14,11 @@
    * [Self-Service Cluster ausrollen](/istio/training-stack/install.md)
    * [Self-Service Cluster destroy](/istio/training-stack/uninstall.md)
 
-1. Installation/Konfiguration/Deinstallation von istio (sidecar - Installation mit istioctl)
+1. istio sidecar (Grundlagen)
    * [Systemanforderungen & Kubernetes-Cluster-Vorbereitung](istio/requirements/overview.md)
+   * [Istio Proxy-Konzepte](istio/overview/07-istio-proxy-concepts-sidecar.md)
+   
+1. Installation/Konfiguration/Deinstallation von istio (sidecar - Installation mit istioctl)   
    * [Istio-Installation mit istioctl und der IstioOperator - Resource](istio/installation/03-install-with-istioctl-with-demo-profile.md)
    * [Installations-Config-Profile](istio/installation/02-installation-config-profiles.md)
    * [Wie ändere ich die Config/Installation von istio - Beispiel egressGateway](istio/installation/04-change-installation-with-istioctl-and-istioOperator.md)
@@ -23,7 +26,7 @@
     
 1. Installation & Bereitstellung von Istio (sidecar) 
   
-   * [Istio Proxy-Konzepte]
+   * 
      
 1. Installation von istio (sidecar) mit helm-charts
    * [Systemanforderungen & Kubernetes-Cluster-Vorbereitung](istio/requirements/overview.md)
