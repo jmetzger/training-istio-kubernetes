@@ -34,7 +34,8 @@ helm get values istiod -n istio-system
 Verifiziere, dass bestehende Pods einen `istio-init` Init-Container haben:
 
 ```bash
-kubectl get pod <POD_NAME> -n <NAMESPACE> -o jsonpath='{.spec.initContainers[*].name}'
+# alle pods im bookinfo - namespace 
+kubectl get pod -n <NAMESPACE> -o jsonpath='{.spec.initContainers[*].name}'
 ```
 
 Erwartete Ausgabe (vor CNI Plugin): `istio-init`
