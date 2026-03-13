@@ -101,7 +101,7 @@
    * Automatisierung mit GitOps & ArgoCD
   
 1. Misc
-   * [Größe bei der Header-Größe vs. istion](istio/misc/header-size-istio-vs-nginx.md)
+   * [Grenze bei der Header-Größe Istio vs. Nginx](istio/misc/header-size-istio-vs-nginx.md)
 
   
 
