@@ -99,6 +99,9 @@
 
 1. Erweiterbarkeit & Automatisierung mit Istio
    * Automatisierung mit GitOps & ArgoCD
+  
+1. Misc
+   * [Größe bei der Header-Größe vs. istion](istio/misc/header-size-istio-vs-nginx.md)
 
   
 
