@@ -38,7 +38,6 @@
 1. CNI-Plugin istio
    * [Vorteile und Installation mit helm](istio/installation/06-istio-cni-plugin-helm.md)
     
-
 1. Installation von istio (ambient mode)
    * [istio-installation mit istioctl - ambient](istio/installation/03-install-with-istioctl-ambient.md) 
 
@@ -93,10 +92,13 @@
    * A/B-Tests & Traffic Mirroring
    * Blue-Green- und Canary-Deployments mit Istio
 
-1. Erweiterbarkeit & Automatisierung mit Istio
+1. Erweiterbarkeit von Istio
    * WebAssembly (Wasm) für Istio-Erweiterungen
    * [Wo läuft WASM (WebAssembly) im Rahmen von istio ?](istio/wasm/plugins/where-is-the-wasm-runtime.md)
-   * Automatisierung mit GitOps & ArgoCD
    * Eigene Istio-Erweiterungen mit WebAssembly schreiben
+
+1. Erweiterbarkeit & Automatisierung mit Istio
+   * Automatisierung mit GitOps & ArgoCD
+
   
 
