@@ -35,7 +35,7 @@ Verifiziere, dass bestehende Pods einen `istio-init` Init-Container haben:
 
 ```bash
 # alle pods im bookinfo - namespace 
-kubectl get pod -n <NAMESPACE> -o jsonpath='{.spec.initContainers[*].name}'
+kubectl get pod -n bookinfo -o jsonpath='{.spec.initContainers[*].name}'
 ```
 
 Erwartete Ausgabe (vor CNI Plugin): `istio-init`
