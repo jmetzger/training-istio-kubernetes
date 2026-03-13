@@ -66,7 +66,7 @@
    * [Sicherheit & Zero Trust mit Istio](/istio/overview/zero-trust.md)
    * [Was ist in istio deep-defense (defense in depth) ?](/istio/overview/defense-in-depth.md)   
    * [Überblick 3 Säulen -  Sichere Service-Kommunikation](istio/overview/security/01-secure-service-communication.md)
-   * [Übung Säule 1: mTLS prüfen und aktivieren/deaktivieren]
+   * [Übung Säule 1: mTLS prüfen und aktivieren/deaktivieren](istio/overview/security/02-check-mtls-enable-disable.md)
    * [Übung Säule 2 + 3: Authentication und Autohrization mit JWT und RBAC](istio/exercises/12-jwt-rbac.md)
 
 1. Monitoring, Logging & Observability
