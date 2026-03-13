@@ -21,16 +21,7 @@ kubectl label ns bookinfo istio-injection=enabled
 
 ## Schritt 1: Bookinfo deployen
 
-```bash
-# Bookinfo-Anwendung deployen
-kubectl -n bookinfo apply -f https://raw.githubusercontent.com/istio/istio/release-1.24/samples/bookinfo/platform/kube/bookinfo.yaml
-
-# Warten bis alle Pods ready
-kubectl -n bookinfo wait --for=condition=ready pod --all --timeout=120s
-
-# Prüfen: 6 Pods (productpage, details, ratings, reviews-v1/v2/v3)
-kubectl -n bookinfo get pods
-```
+   * Bereit deployed
 
 **Architektur-Überblick:**
 
@@ -148,12 +139,6 @@ kubectl -n bookinfo exec deploy/sleep -- \
   curl -s -o /dev/null -w "%{http_code}" ratings:9080/ratings/0
 ```
 
-```
-# gleich aufräumen
-kubectl -n bookinfo delete -f https://raw.githubusercontent.com/istio/istio/release-1.25/samples/sleep/sleep.yaml
-```
-
-
 ### 3c) Zugriff ohne Sidecar testen
 
 Starten Sie einen Pod **ohne** Sidecar und versuchen Sie, die Bookinfo-Services zu erreichen:
@@ -176,6 +161,10 @@ kubectl -n no-mesh exec deploy/sleep -- \
 **Erwartetes Ergebnis:** Die Verbindungen schlagen fehl, da der Client kein mTLS-Zertifikat präsentiert. curl gibt den HTTP-Statuscode 000 aus (keine HTTP-Antwort) und bricht mit Exit Code 56 (CURLE_RECV_ERROR) ab – Envoy resettet die Verbindung bereits auf TLS-Ebene, bevor es zur HTTP-Kommunikation kommt.
 
 ---
+
+```
+kubectl delete ns no-mesh
+```
 
 ## Schritt 4: mTLS auf PERMISSIVE setzen
 
@@ -207,6 +196,8 @@ kubectl -n no-mesh exec deploy/sleep -- \
 **Frage:** Warum ist PERMISSIVE der Istio-Default und wann ist STRICT besser?
 
 ---
+
+##
 
 ## Schritt 5: Workload-spezifisches mTLS
 
@@ -334,7 +325,9 @@ kubectl -n bookinfo exec deploy/sleep -- curl -s ratings:9080/ratings/0
 ## Aufräumen
 
 ```bash
-kubectl delete ns bookinfo no-mesh
+kubectl -n bookinfo delete pod sleep
+kubectl -n bookinfo delete sa sleep 
+kubectl delete ns no-mesh
 ```
 
 ---
