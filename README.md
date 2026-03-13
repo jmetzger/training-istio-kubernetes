@@ -31,7 +31,7 @@
    * [istioctl als debugging - tool installieren](istio/installation/03b-install-istioctl.md)
 
 1. CNI-Plugin istio
-   * [Vorteile und Installation mit helm](istio/installation/06-cni-helm.md)
+   * [Vorteile und Installation mit helm](istio/installation/06-istio-cni-plugin-helm.md)
 
     
 1. Prinzip: Side-Car Injection
