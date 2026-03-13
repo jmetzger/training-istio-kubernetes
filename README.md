@@ -98,8 +98,3 @@
    * Eigene Istio-Erweiterungen mit WebAssembly schreiben
   
 
-1. FAQ & Best Practices
-   * Zusammenfassung der wichtigsten Erkenntnisse
-   * Diskussion von Best Practices für Enterprise-Anwendungen
-   * Fragen & weiterführende Ressourcen
-
