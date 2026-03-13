@@ -49,13 +49,14 @@
    * Load Balancing & Pfadbasiertes Routing
    * Erstellen von Routing- & Load-Balancing-Regeln
 
-1. Sicherheit, Fehlertoleranz & Observability
-   * [Sicherheit & Zero Trust mit Istio](/istio/overview/zero-trust.md)
-   * [Was ist in istio deep-defense (defense in depth) ?](/istio/overview/defense-in-depth.md) 
-   * [Service-zu-Service-Sicherheit mit mTLS (Mutual TLS) - Hintergründe & Analyse](istio/mtls/hintergruende-analyse.md) 
+1. Sicherheit, Fehlertoleranz & Observability    
    * [Übung Zugriffskontrolle mit RBAC & JWT-Authentifizierung](istio/exercises/12-jwt-rbac.md)
    * Istio Authorization Policies (ingress/egress Security)
-   * Sichere Service-Kommunikation mit Istio konfigurieren
+   
+1. Sichere Service-Kommunikation mit istio (Sicherheit)
+   * [Sicherheit & Zero Trust mit Istio](/istio/overview/zero-trust.md)
+   * [Was ist in istio deep-defense (defense in depth) ?](/istio/overview/defense-in-depth.md)   
+   * [Überblick Sichere Service-Kommunikation]()
 
 1. Service Resilience & Fehlertoleranz
    * [Circuit Breaker](istio/exercises/06-circuit-breaker.md)
