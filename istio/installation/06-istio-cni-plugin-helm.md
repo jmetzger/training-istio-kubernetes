@@ -15,7 +15,7 @@ Das Istio CNI Plugin ersetzt den `istio-init` Init-Container, der normalerweise 
 ## Voraussetzungen
 
 - Bestehende Istio-Installation via Helm (base + istiod) mit `profile=demo`
-- Helm 3.x
+- Helm >= 3.x
 - `kubectl` Zugriff auf den Cluster
 - Das CNI Plugin arbeitet als **Chained CNI Plugin** — es hängt sich an das bestehende CNI an (Flannel, Calico etc.). Bei Cilium-basierten Clustern (z.B. DigitalOcean DOKS, GKE Dataplane v2) vorher Kompatibilität prüfen.
 
