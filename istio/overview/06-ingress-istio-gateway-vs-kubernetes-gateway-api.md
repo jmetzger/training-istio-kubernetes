@@ -1,13 +1,11 @@
 # Ingress Istio-Gateway vs. Kubernetes Gateway API 
 
-## Istio Gateway (bookinfo/productpage) 
+## Istio Ingress-Gateway-Flow (bookinfo/productpage) 
 
 ## Bild-Quelltext (istio -> bookinfo/productpage)
 
-# Istio Ingress Traffic Flow mit DestinationRule
-
 ```mermaid
-graph TD
+graph LR
     Client[Client/Browser]
     IG[Istio IngressGateway<br/>Envoy Pod]
     GW[Gateway<br/>networking.istio.io]
@@ -45,9 +43,8 @@ graph TD
 
 <img width="1024" height="703" alt="image" src="https://github.com/user-attachments/assets/a8be8bb3-a761-4fc2-b482-9a6798b49eda" />
 
-
-   * Achtung:  Beim Sidecar-Mode wird nachwievor VirtualService benötigt (aber nur intern innerhalb des Cluster), der Traffic
-     * von ausserhalb wird über das Gateway dargestellt  
+   * Achtung:  VirtualService und Destination werden teilweise immer noch benötigt, auch wenn man mit der Gateway API arbeitet,
+     um bestimmte Feature abzubilden  
 
 ## Bild-Quelltext (Istio)
 
