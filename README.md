@@ -26,7 +26,7 @@
           
 1. Installation von istio (sidecar) mit helm-charts
    * [Systemanforderungen & Kubernetes-Cluster-Vorbereitung](istio/requirements/overview.md)
-   * [Istio-Installation mit istioctl und der IstioOperator - Resource](istio/installation/03a-install-with-helm-with-demo-profile.md)
+   * [Istio-Installation mit helm charts](istio/installation/03a-install-with-helm-with-demo-profile.md)
    * [istioctl als debugging - tool installieren](istio/installation/03b-install-istioctl.md)
 
 1. Prinzip: Side-Car Injection
