@@ -79,7 +79,7 @@
    * [Grafana Dashboards für istio](istio/exercises/11-grafana.md)
    * [Installaton Kiali // Installation](istio/installation/addons/kiali.md)
    * [Visualisierung mit Kiali](istio/exercises/05-kiali-traffic.md)
-   * Analyse & Debugging von Service-Mesh-Daten
+   * [Analyse & Debugging von Service-Mesh-Daten](istio/strategie/mesh-daten-analysieren-und-debuggen.md)
 
 1. Skalierung, Erweiterbarkeit & Performance-Optimierung
    * [Skalierung von Istio - Möglichkeiten/Tipps&Tricks](istio/skalierung-performance/skalierung.md)
