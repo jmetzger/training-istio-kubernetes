@@ -1,5 +1,15 @@
 # Request Routing 
 
+## Prerequisites
+
+  * Bookinfo - Projekt aufgesetzt.
+  * Destinations sind eingerichet (verschiedene Versionen der Services, z.B. reviews-v2
+
+```
+kubectl -n bookinfo get services
+```
+
+
 ## Vorher (ohne request routing) 
 
   * Es werden alle Pods angezeigt, die das Label: app:reviews haben
