@@ -9,6 +9,17 @@ Den Unterschied zwischen LEAST_CONN und ROUND_ROBIN sichtbar machen. Dafür depl
 - Kubernetes-Cluster mit Istio (inkl. Gateway API CRDs)
 - `kubectl` und `istioctl` konfiguriert
 
+
+## Schritt 0: traefik deinstallieren 
+
+  * Wir haben aktuelle keine freien IP's. Traefik ist installiert und belegt eine IP, brauchen wir aber aktuell nicht
+
+```
+helm list -A | grep -i traefik
+helm -n ingress uninstall traefik
+```
+
+
 ---
 
 ## Schritt 1: Namespace vorbereiten
