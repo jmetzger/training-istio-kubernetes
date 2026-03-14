@@ -155,6 +155,10 @@ Ergebnis: 3 Pods hinter einem Service – 2 schnelle (delay=0s), 1 langsamer (de
 
 ## Schritt 3: Gateway + HTTPRoute
 
+```
+nano gateway.yaml
+```
+
 ```yaml
 # gateway.yaml
 apiVersion: gateway.networking.k8s.io/v1
