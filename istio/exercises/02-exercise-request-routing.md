@@ -18,20 +18,7 @@ kubectl -n bookinfo get pods --show-labels | grep review
 kubectl -n bookinfo get svc | grep reviews  
 ```
 
-## Schritt 2: Für jede Version des Review-Pods (v1,v2,v3) einen eigenen Service 
-
-  * Das ist speziell mit gateway api so gelöst
-  * Hier brauche ich für jede Version einen eigenen Service (Achtung: mit ingress-gateway, virtualService und -DestinationRule ist das anders !!)
-
-```
-cd
-cd istio
-cat samples/bookinfo/platform/kube/bookinfo-versions.yaml
-kubectl -n bookinfo apply -f samples/bookinfo/platform/kube/bookinfo-versions.yaml
-kubectl -n bookinfo get svc -o wide
-```
-
-## Schritt 3: Vorher (ohne request routing) 
+## Schritt 2: Vorher (ohne request routing) 
 
   * Es werden alle Pods angezeigt, die das Label: app:reviews haben
   * D.h. jedesmal wenn ich die Seite öffne, wird eine andere Version angegezeigt (v1, v2 oder v3) - * d.h. es werden ganz normal die Services von Kubernetes verwendet **
@@ -59,12 +46,12 @@ $GATEWAY_URL/productpage
 ```
 
 
-## Schritt 4: Übung (jetzt request - routing) 
+## Schritt 3: Übung (jetzt request - routing) 
 
 **Voraussetzung:**
 
 - Bookinfo-App läuft bereits im Namespace `bookinfo`
-- Service Reviews ist deniert
+- Service Revies existiert 
 - Es gibt 3 verschieden Pods an Reviews (v1, v2 und v3)
 - Ingress/Gateway + `GATEWAY_URL` (IP: http://164.90.237.35/productpage aus der vorherigen Übung vorhanden
 
