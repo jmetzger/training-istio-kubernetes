@@ -112,6 +112,8 @@ kubectl get destinationrule httpbin -n bookinfo -o yaml
 
 ## 4️⃣ Fortio-Client im Mesh deployen
 
+ * Fortio ist ein Open-Source Load-Testing-Tool,
+
 ```bash
 kubectl apply -n bookinfo -f ~/istio/samples/httpbin/sample-client/fortio-deploy.yaml
 kubectl get pods -n bookinfo -l app=fortio
