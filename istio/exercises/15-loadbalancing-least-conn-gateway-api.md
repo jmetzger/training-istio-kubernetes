@@ -47,6 +47,10 @@ Ergebnis: 6 Reviews-Pods, je 2 pro Version.
 
 ## Schritt 4: DestinationRule mit LEAST_CONN für Reviews
 
+```
+nano destination-rule-reviews.yaml
+```
+
 ```yaml
 # destination-rule-reviews.yaml
 apiVersion: networking.istio.io/v1
