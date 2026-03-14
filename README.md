@@ -52,7 +52,7 @@
 1. Sicherheit, Fehlertoleranz & Observability    
    * Istio Authorization Policies (ingress/egress Security)
    
-1. Service Resilience & Fehlertoleranz
+1. Service Resilience & Fehlertoleranz (Gateway API)
    * [Circuit Breaker](istio/exercises/06-circuit-breaker.md)
    * [Retries](istio/exercises/07-retries.md)
    * [Rate Limiting](istio/exercises/08-rate-limiting.md)
@@ -100,7 +100,7 @@
 1. Erweiterbarkeit von Istio
    * WebAssembly (Wasm) für Istio-Erweiterungen
    * [Wo läuft WASM (WebAssembly) im Rahmen von istio ?](istio/wasm/plugins/where-is-the-wasm-runtime.md)
-   * Eigene Istio-Erweiterungen mit WebAssembly schreiben
+   * [Eigene Istio-Erweiterungen mit WebAssembly schreiben (RateLimit-Plugin)](istio/exercises/16-create-wasm-plugin-ratelimit.md)
 
 1. Erweiterbarkeit & Automatisierung mit Istio
    * Automatisierung mit GitOps & ArgoCD
