@@ -50,5 +50,4 @@ Bestehendes Projekt:
 
 **Achtung:** Nicht beide gleichzeitig auf denselben Service anwenden — das führt zu undefiniertem Verhalten. Entweder HTTPRoute **oder** VirtualService pro Service, nicht mischen.
 
-Istio arbeitet daran, die fehlenden Features über **Gateway API Policy Attachments** (z.B. `BackendPolicy`, `RetryPolicy`) nachzuziehen. Bis dahin bleibt der Hybrid-Ansatz: HTTPRoute für Routing, Istio-APIs für Policies.
 
