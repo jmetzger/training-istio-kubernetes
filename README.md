@@ -46,7 +46,7 @@
 1. Übungen Steuerung des Netzwerkverhaltens (Gateway API)
    * [Übung: Header-basiertes Routing](istio/exercises/02-exercise-request-routing.md)
    * [Übung: Traffic-Shifting / Load-Balancing](istio/exercises/04-traffic-shifting.md)
-   * Load Balancing & Pfadbasiertes Routing
+   * [Pfadbasiertes Routing](istio/exercises/)
    * Erstellen von Routing- & Load-Balancing-Regeln
 
 1. Sicherheit, Fehlertoleranz & Observability    
