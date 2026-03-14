@@ -23,33 +23,7 @@ cp -a ~/istio/samples/bookinfo/platform/kube/bookinfo-versions.yaml bookinfo-ver
 kubectl -n bookinfo apply -f .
 ```
 
-## Schritt 2: Gateway erstellen (North-South)
-
-```yaml
-# gateway.yaml
-apiVersion: gateway.networking.k8s.io/v1
-kind: Gateway
-metadata:
-  name: bookinfo-gateway
-  namespace: bookinfo
-spec:
-  gatewayClassName: istio
-  listeners:
-    - name: http
-      port: 80
-      protocol: HTTP
-      allowedRoutes:
-        namespaces:
-          from: Same
-```
-
-```bash
-kubectl apply -f gateway.yaml
-```
-
----
-
-## Schritt 3: Gateway-IP ermitteln und testen
+## Schritt 2: Gateway-IP ermitteln und testen
 
 ```bash
 export GATEWAY_IP=$(kubectl get gateway bookinfo-gateway -n bookinfo \
@@ -60,9 +34,7 @@ echo "Gateway IP: $GATEWAY_IP"
 echo "http://$GATEWAY_IP/productpage"
 ```
 
----
-
-## Schritt 5: Reviews-Service auf 6 Replicas skalieren
+## Schritt 3: Reviews-Service auf 6 Replicas skalieren
 
 ```bash
 kubectl scale deployment reviews-v1 reviews-v2 reviews-v3 \
@@ -73,7 +45,7 @@ Ergebnis: 6 Reviews-Pods, je 2 pro Version.
 
 ---
 
-## Schritt 6: DestinationRule mit LEAST_CONN für Reviews
+## Schritt 4: DestinationRule mit LEAST_CONN für Reviews
 
 ```yaml
 # destination-rule-reviews.yaml
@@ -95,7 +67,7 @@ kubectl apply -f destination-rule-reviews.yaml
 
 ---
 
-## Schritt 7: Verteilung beobachten (Baseline)
+## Schritt 5: Verteilung beobachten (Baseline)
 
 ```bash
 for i in $(seq 1 30); do
@@ -113,7 +85,7 @@ kubectl logs -n bookinfo -l app=productpage -c istio-proxy --tail=50 | \
 
 ---
 
-## Schritt 8: Last auf einem Reviews-Pod erzeugen
+## Schritt 6: Last auf einem Reviews-Pod erzeugen
 
 ```bash
 V1_POD=$(kubectl get pods -n bookinfo -l app=reviews,version=v1 \
@@ -126,7 +98,7 @@ kubectl exec -n bookinfo $V1_POD -c reviews -- \
 
 ---
 
-## Schritt 9: Verteilung unter Last vergleichen
+## Schritt 7: Verteilung unter Last vergleichen
 
 ### Mit LEAST_CONN (aktuelle Konfiguration)
 
@@ -170,7 +142,7 @@ kubectl patch destinationrule reviews -n bookinfo --type merge \
 
 ---
 
-## Schritt 10: Envoy-Konfiguration verifizieren
+## Schritt 8: Envoy-Konfiguration verifizieren
 
 ```bash
 PP_POD=$(kubectl get pods -n bookinfo -l app=productpage \
@@ -195,7 +167,7 @@ istioctl proxy-config cluster $PP_POD -n bookinfo \
 
 ---
 
-## Schritt 11: Last entfernen
+## Schritt 9: Last entfernen
 
 ```bash
 kubectl exec -n bookinfo $V1_POD -c reviews -- sh -c "killall dd"
@@ -208,39 +180,6 @@ kubectl exec -n bookinfo $V1_POD -c reviews -- sh -c "killall dd"
 Jetzt kombinieren wir beides: 80% Traffic an reviews-v3 (rote Sterne), 20% an reviews-v2 (schwarze Sterne). **Innerhalb** jeder Gruppe greift LEAST_CONN.
 
 Seit der GAMMA-Initiative (Gateway API for Mesh Management and Administration) unterstützt Istio `HTTPRoute` auch für **East-West Traffic**. Dafür setzt man `parentRefs` auf einen **Service** statt auf einen Gateway.
-
-### Zusätzliche Services pro Version anlegen
-
-```yaml
-# reviews-versioned-services.yaml
-apiVersion: v1
-kind: Service
-metadata:
-  name: reviews-v2
-  namespace: bookinfo
-spec:
-  selector:
-    app: reviews
-    version: v2
-  ports:
-    - port: 9080
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: reviews-v3
-  namespace: bookinfo
-spec:
-  selector:
-    app: reviews
-    version: v3
-  ports:
-    - port: 9080
-```
-
-```bash
-kubectl apply -f reviews-versioned-services.yaml
-```
 
 ### HTTPRoute mit Service als parentRef (East-West)
 
