@@ -2,11 +2,6 @@
 
 ## Istio Ingress-Gateway-Flow (bookinfo/productpage) 
 
-
-
-
-## Bild-Quelltext (istio -> bookinfo/productpage)
-
 ```mermaid
 graph LR
     Client[Client/Browser]
