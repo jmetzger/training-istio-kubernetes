@@ -6,7 +6,7 @@
 
 ## ## Gateway API -> Gateway Flow (bookinfo/productpage)
 
-![Flow](/images/Screenshot 2026-03-14 154128.png)
+![Flow](/images/istio/gateway-api-flow.png)
 
  * Achtung:  VirtualService und DestinationRule werden teilweise immer noch benötigt, auch wenn man mit der Gateway API arbeitet,
      um bestimmte Feature abzubilden  
