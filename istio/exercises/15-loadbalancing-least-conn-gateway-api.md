@@ -473,7 +473,15 @@ done
 
 > Alle Antworten kommen nur noch von `backend-fast` Pods – der langsame Pod ist per East-West HTTPRoute komplett aus dem Routing genommen.
 
----
+
+## Test von aussen 
+
+  * Das geht auch !
+
+```
+curl -s http://$GATEWAY_IP/lb-test
+```
+
 
 ## Aufräumen
 
