@@ -1,5 +1,8 @@
 # Traffic Shifting
 
+  * Schrittweise Umleitung von Netzwerk-Traffic zwischen zwei Service-Versionen
+
+
 ### 0. Vorbereitung
 
 ```bash
