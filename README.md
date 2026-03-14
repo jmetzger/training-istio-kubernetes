@@ -39,6 +39,7 @@
    * [Vorteile und Installation mit helm](istio/installation/06-istio-cni-plugin-helm.md)
     
 1. Steuerung des Netzwerkverhaltens in Istio
+   * [Istio Ingress Gateway vs. Gateway API](istio/overview/06-ingress-istio-gateway-vs-kubernetes-gateway-api.md)
    * Virtual Services, Destination Rules & Gateway-API
    * [Übung: Header-basiertes Routing](istio/exercises/02-exercise-request-routing.md)
    * [Übung: Traffic-Shifting / Load-Balancing](istio/exercises/04-traffic-shifting.md)
