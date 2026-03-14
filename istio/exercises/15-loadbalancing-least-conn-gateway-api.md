@@ -313,7 +313,14 @@ Erwartete Ausgabe:
 ```bash
 kubectl patch destinationrule backend -n lb-demo --type merge \
   -p '{"spec":{"trafficPolicy":{"loadBalancer":{"simple":"ROUND_ROBIN"}}}}'
+```
 
+```
+# Unbedingt warten, bis keine Ausgabe LEAST_ mehr kommt
+istioctl proxy-config cluster $GWPOD -n lb-demo   --fqdn "backend.lb-demo.svc.cluster.local" -o yaml | grep "lbPolicy"
+```
+
+```
 sleep 2
 
 echo "=== ROUND_ROBIN ==="
