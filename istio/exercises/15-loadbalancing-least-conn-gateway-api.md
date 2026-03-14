@@ -15,8 +15,8 @@ Traffic-Routing über die Gateway API (`HTTPRoute`) kombiniert mit Istio `Destin
 ## Schritt 1: Verteilung konfiguriert (für später in der Übung) 
 
 ```
-mkdir -p ~/manifests/traffic-shifting
-cd ~/manifests/traffic-shifting 
+mkdir -p ~/manifests/lb-least-conn
+cd ~/manifests/lb-least-conn
 
 # Die Service-Versionen anlegen
 cp -a ~/istio/samples/bookinfo/platform/kube/bookinfo-versions.yaml bookinfo-versions.yaml
