@@ -47,7 +47,7 @@
    * [Übung: Header-basiertes Routing](istio/exercises/02-exercise-request-routing.md)
    * [Übung: Traffic-Shifting / Load-Balancing](istio/exercises/04-traffic-shifting.md)
    * [Pfadbasiertes Routing](istio/exercises/13-pfadbasiertes-routing-gateway-api.md)
-   * [Übung: Load-Balancing-Regeln](istio/exercises/14-loadbalancing-routing-gateway-api.md)
+   * [Übung: LoadBalancing (LEAST_CONN) - Regeln](istio/exercises/15-loadbalancing-least-conn-gateway-api.md)
 
 1. Sicherheit, Fehlertoleranz & Observability    
    * Istio Authorization Policies (ingress/egress Security)
