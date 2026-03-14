@@ -13,7 +13,7 @@
 
 ## Gateway II 
 
-```
+```mermaid
 graph TD
     Client[Client/Browser]
     GW[Gateway<br/>gateway.networking.k8s.io]
