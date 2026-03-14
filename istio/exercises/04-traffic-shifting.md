@@ -118,7 +118,9 @@ spec:
     - name: reviews-v3
       port: 9080
 EOF
+```
 
+```
 kubectl apply -n bookinfo -f route-reviews-v3.yaml
 kubectl get httproute -n bookinfo reviews -o yaml | head -n 50
 ```
