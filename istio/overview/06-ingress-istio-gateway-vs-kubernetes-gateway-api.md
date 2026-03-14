@@ -11,6 +11,35 @@
    * Achtung:  VirtualService und Destination werden teilweise immer noch benötigt, auch wenn man mit der Gateway API arbeitet,
      um bestimmte Feature abzubilden  
 
+## Gateway II 
+
+```
+graph TD
+    Client[Client/Browser]
+    GW[Gateway<br/>gateway.networking.k8s.io]
+    GWC[GatewayClass<br/>istio / envoy / traefik]
+    HR[HTTPRoute<br/>routing rules]
+    REFS["backendRef: reviews-v1, weight: 80<br/>backendRef: reviews-v2, weight: 20"]
+    SvcV1[Service reviews-v1<br/>selector: version=v1]
+    SvcV2[Service reviews-v2<br/>selector: version=v2]
+    NOTE["⚡ Keine DestinationRule nötig —<br/>Gewichtung direkt in HTTPRoute backendRefs"]
+
+    Client -->|HTTP/HTTPS| GW
+    GW -.->|instance of| GWC
+    HR -.->|attached to| GW
+    HR --> REFS
+    REFS -->|"80%"| SvcV1
+    REFS -->|"20%"| SvcV2
+
+    style GWC fill:#eaf3de,stroke:#3b6d11
+    style GW fill:#eaf3de,stroke:#3b6d11
+    style HR fill:#eaf3de,stroke:#3b6d11
+    style REFS fill:#f1efe8,stroke:#5f5e5a
+    style SvcV1 fill:#e1f5ee,stroke:#0f6e56
+    style SvcV2 fill:#e1f5ee,stroke:#0f6e56
+    style NOTE fill:#faece7,stroke:#993c1d
+```
+
 ## Bild-Quelltext (Istio)
 
 ```
@@ -35,7 +64,7 @@ graph LR
 
 ## Bild-Quelltext (Kubernetes Gateway API)
 
-```mermaid
+```
 graph TB
     Client[Client/Browser]
     GWC[GatewayClass<br/>infrastructure.cluster.x-k8s.io]
