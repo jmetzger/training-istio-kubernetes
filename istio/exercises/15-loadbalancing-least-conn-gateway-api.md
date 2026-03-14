@@ -24,6 +24,12 @@ kubectl label namespace lb-demo istio-injection=enabled
 
 Alle Pods laufen hinter dem gleichen Service. Der einzige Unterschied: der langsame Pod wartet 2 Sekunden vor jeder Antwort.
 
+```
+cd 
+mkdir -p manifests/lb-least/conn
+cd manifests/lb-least/conn
+```
+
 ```yaml
 # backend.yaml
 apiVersion: v1
