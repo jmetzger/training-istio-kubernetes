@@ -2,7 +2,7 @@
 
 ## Istio Ingress-Gateway-Flow (bookinfo/productpage) 
 
-![/images/screenshot_20260314_142715.png](Flow)
+![Flow](/images/screenshot_20260314_142715.png)
 
 ```
 graph LR
