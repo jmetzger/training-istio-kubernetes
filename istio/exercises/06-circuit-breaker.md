@@ -77,6 +77,22 @@ spec:
       maxEjectionPercent: 100
 ```
 
+  * Erklärung TCP/http
+  * Request 1 → bekommt die eine Connection → wird verarbeitet
+  * Request 2 → Connection belegt → geht in die Pending Queue (1 Platz)
+  * Request 3 → Connection belegt, Queue voll → sofort 503
+
+```
+consecutive5xxErrors: 1 — Ein einziger 5xx-Fehler reicht, und der Endpoint fliegt raus. In Produktion eher 5–10, damit nicht ein einzelner Timeout sofort zur Eviction führt.
+
+interval: 1s — Envoy prüft jede Sekunde, ob ein Endpoint auffällig ist. Das ist der Auswertungszyklus. Default wäre 10s. Heißt: nach einem 5xx dauert es maximal 1 Sekunde, bis der Pod evicted wird.
+
+baseEjectionTime: 3m — Ein evicted Endpoint bleibt 3 Minuten draußen, bevor er wieder in den Pool darf. Wichtig: bei wiederholter Eviction multipliziert sich die Zeit — beim zweiten Mal 6 Minuten, beim dritten 9 Minuten usw. Das bestraft "Wiederholungstäter".
+
+maxEjectionPercent: 100 — Es dürfen alle Endpoints gleichzeitig evicted werden. Default ist 10%. Mit 100% kann es passieren, dass der Service komplett unerreichbar wird, weil kein einziger Endpoint mehr im Pool ist. In Produktion gefährlich — da willst du immer mindestens einen Endpoint behalten. Für die Demo ist es aber praktisch, weil du klar zeigen kannst: ein Fehler → Pod fliegt raus → alles 503.
+```
+
+
 > 🔐 **Hinweis (mTLS):**
 > Wenn dein Mesh **strict mTLS** nutzt und du 503er bekommst, ergänze in `trafficPolicy` noch:
 >
