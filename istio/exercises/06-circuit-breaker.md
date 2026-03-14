@@ -1,5 +1,19 @@
 # Istio Circuit Breaking – Übung (Sidecar Mode, Namespace `bookinfo`)
 
+## Aufgabe:
+
+```
+Der Circuit Breaker in Istio schützt deine Services davor, einen überlasteten oder fehlerhaften Backend-Service weiter mit Requests zu bombardieren.
+```
+
+## Wie ?
+
+Du konfigurierst im `DestinationRule` unter `trafficPolicy.connectionPool` und `outlierDetection` zwei Dinge:
+
+1. **Connection Pool Limits** (`connectionPool`) — begrenzt die Anzahl gleichzeitiger TCP-Connections und wartender HTTP-Requests. Wird das Limit überschritten, werden neue Requests sofort mit 503 abgelehnt statt endlos zu warten.
+
+1. **Outlier Detection** (`outlierDetection`) — erkennt ungesunde Endpoints. Wenn ein Pod z.B. 5× hintereinander 5xx zurückgibt, wird er temporär aus dem Load-Balancing-Pool entfernt ("evicted"). Nach einer Pause darf er wieder rein.
+
 ## Voraussetzungen
 
 * Istio ist installiert (Sidecar Mode).
