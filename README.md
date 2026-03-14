@@ -46,8 +46,8 @@
 1. Übungen Steuerung des Netzwerkverhaltens (Gateway API)
    * [Übung: Header-basiertes Routing](istio/exercises/02-exercise-request-routing.md)
    * [Übung: Traffic-Shifting / Load-Balancing](istio/exercises/04-traffic-shifting.md)
-   * [Pfadbasiertes Routing](istio/exercises/)
-   * Erstellen von Routing- & Load-Balancing-Regeln
+   * [Pfadbasiertes Routing](istio/exercises/13-pfadbasiertes-routing-gateway-api.md)
+   * [Übung: Load-Balancing-Regeln](istio/exercises/14-loadbalancing-routing-gateway-api.md)
 
 1. Sicherheit, Fehlertoleranz & Observability    
    * Istio Authorization Policies (ingress/egress Security)
@@ -89,14 +89,13 @@
    * Multi-Cluster- & Hybrid-Umgebungen mit Istio
    * Istio Federation & Cross-Cluster Traffic
 
-1. Erweiterte Routing-Techniken & Traffic-Optimierung
+1. Erweiterte Routing-Techniken & Traffic-Optimierung (Gateway API) 
    * Canary Releases & Progressive Deployments
    * A/B-Tests & Traffic Mirroring
    * Blue-Green- und Canary-Deployments mit Istio
 
 1. Installation von istio (ambient mode)
    * [istio-installation mit istioctl - ambient](istio/installation/03-install-with-istioctl-ambient.md) 
-
 
 1. Erweiterbarkeit von Istio
    * WebAssembly (Wasm) für Istio-Erweiterungen
