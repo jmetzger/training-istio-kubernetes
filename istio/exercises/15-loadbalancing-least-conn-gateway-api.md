@@ -225,6 +225,10 @@ Erwartete Antwort: `backend-fast-xxxxx delay=0s` oder `backend-slow-xxxxx delay=
 
 ## Schritt 4: DestinationRule mit LEAST_CONN
 
+```
+nano destination-rule.yaml
+```
+
 ```yaml
 # destination-rule.yaml
 apiVersion: networking.istio.io/v1
