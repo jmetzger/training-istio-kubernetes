@@ -252,11 +252,13 @@ kubectl apply -f destination-rule.yaml
 ## Schritt 5: Envoy-Konfiguration prüfen
 
 ```
-# Gateway-Pod ermitteln (Istio benennt ihn automatisch)
-GWPOD=$(kubectl get pods -n lb-demo -l istio.io/gateway-name=lb-gateway \
-  -o jsonpath='{.items[0].metadata.name}')
+GWPOD=$(kubectl get pods -n lb-demo -l gateway.networking.k8s.io/gateway-name=lb-gateway -o jsonpath='{.items[0].metadata.name}')
+```
 
-istioctl proxy-config cluster $GWPOD -n lb-demo | grep backend
+
+```
+istioctl proxy-config cluster $GWPOD -n lb-demo   --fqdn "backend.lb-demo.svc.cluster.local" -o yaml | grep "LEAST"
+  lbPolicy: LEAST_REQUEST
 ```
 
 ## Schritt 6: Test-Funktion definieren
