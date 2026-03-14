@@ -4,7 +4,7 @@
 
 ![Flow](/images/screenshot_20260314_142715.png)
 
-## ## Gateway API -> Gateway Flow (bookinfo/productpage)
+## Gateway API -> Gateway Flow (bookinfo/productpage)
 
 ![Flow](/images/istio/gateway-api-flow.png)
 
