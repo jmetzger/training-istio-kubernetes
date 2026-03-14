@@ -3,12 +3,33 @@
 ## Prerequisites
 
   * Bookinfo - Projekt aufgesetzt.
-  * Destinations sind eingerichet (verschiedene Versionen der Services, z.B. reviews-v2
+
+## Schritt 1: Vorbereitung: Status review-pods 
+
+  * Status: alle Pods sind unter einem Service erreichbar
 
 ```
-kubectl -n bookinfo get services
+# Es gibt 3 verschieden review-pods (v1, v2, v3) 
+kubectl -n bookinfo get pods --show-labels | grep review
 ```
 
+```
+# Ein Service zeigt auf alle pods (Alle versionen der Review - Pods)
+kubectl -n bookinfo get svc | grep reviews  
+```
+
+## Schritt 2: Für jede Version des Review-Pods (v1,v2,v3) einen eigenen Service 
+
+  * Das ist speziell mit gateway api so gelöst
+  * Hier brauche ich für jede Version einen eigenen Service (Achtung: mit ingress-gateway, virtualService und -DestinationRule ist das anders !!)
+
+```
+cd
+cd istio
+cat samples/bookinfo/platform/kube/bookinfo-versions.yaml
+kubectl -n bookinfo apply -f samples/bookinfo/platform/kube/bookinfo-versions.yaml
+kubectl -n bookinfo get svc -o wide
+```
 
 ## Vorher (ohne request routing) 
 
