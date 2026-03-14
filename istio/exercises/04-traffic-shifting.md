@@ -128,13 +128,11 @@ kubectl get httproute -n bookinfo reviews -o yaml | head -n 50
 <img width="749" height="434" alt="image" src="https://github.com/user-attachments/assets/037de8c8-a50d-40fa-bd58-41a6719e3f25" />
 
 
-```bash
-$BOOKINFO_URL="deine-ip"
-for i in {1..10}; do
-  curl -fsS "$BOOKINFO_URL/productpage" \
-    | grep -c 'glyphicon-star"' \
-    | awk '{print $1" Sterne"}'
-done
+```
+# Seite öffnen
+http://<deine-ip>/productpage
+
+# bei mehrmals laden immer v3
 ```
 
 ### 6. Aufräumen 
