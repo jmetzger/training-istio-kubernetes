@@ -41,7 +41,7 @@
 1. Steuerung des Netzwerkverhaltens in Istio
    * [Istio Ingress Gateway vs. Gateway API](istio/overview/06-ingress-istio-gateway-vs-kubernetes-gateway-api.md)
    * [Gateway API als Nachfolger von IngressGateway (Istio), VirtualService und DestinationRule](istio/overview/08-virtualservice-destinationrule-gateway-api.md)
-   * [Virtual Services, Destination Rules]()
+   * [Virtual Services, Destination Rules](istio/overview/09-funktionsweise-virtualservice-destinationrule.md)
 
 1. Übungen Steuerung des Netzwerkverhaltens (Gateway API)
    * [Übung: Header-basiertes Routing](istio/exercises/02-exercise-request-routing.md)
