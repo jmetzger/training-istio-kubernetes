@@ -2,7 +2,9 @@
 
 ## Istio Ingress-Gateway-Flow (bookinfo/productpage) 
 
-```mermaid
+![/images/screenshot_20260314_142715.png](Flow)
+
+```
 graph LR
     Client[Client/Browser]
     IG[Istio IngressGateway<br/>Envoy Pod]
