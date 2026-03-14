@@ -3,7 +3,7 @@
 ## Vorher (ohne request routing) 
 
   * Es werden alle Pods angezeigt, die das Label: app:reviews haben
-  * D.h. jedesmal wenn ich die Seite öffne, wird eine andere Version angegezeigt (v1, v2 oder v3)
+  * D.h. jedesmal wenn ich die Seite öffne, wird eine andere Version angegezeigt (v1, v2 oder v3) - * d.h. es werden ganz normal die Services von Kubernetes verwendet **
   * Service (selector: app:reviews)
 
 ```
