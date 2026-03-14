@@ -31,7 +31,7 @@ kubectl -n bookinfo apply -f samples/bookinfo/platform/kube/bookinfo-versions.ya
 kubectl -n bookinfo get svc -o wide
 ```
 
-## Vorher (ohne request routing) 
+## Schritt 3: Vorher (ohne request routing) 
 
   * Es werden alle Pods angezeigt, die das Label: app:reviews haben
   * D.h. jedesmal wenn ich die Seite öffne, wird eine andere Version angegezeigt (v1, v2 oder v3) - * d.h. es werden ganz normal die Services von Kubernetes verwendet **
@@ -42,7 +42,24 @@ kubectl -n bookinfo get svc reviews -o yaml
 kubectl -n bookinfo get pods -l app=reviews --show-labels
 ```
 
-## Übung (jetzt request - routing) 
+```
+# Gateway wurde in der Übung vorher angelegt
+# du findest so die IP des gateways raus 
+kubectl -n bookinfo get gateway
+```
+
+```
+GATEWAY_URL=<ip-aus-der-vorigen-Ausgabe-eintragen>
+```
+
+```
+# Im Browser mehrmals ausführen
+# Im Block mit den Reviews wechselt die Version 
+$GATEWAY_URL/productpage
+```
+
+
+## Schritt 4: Übung (jetzt request - routing) 
 
 **Voraussetzung:**
 
