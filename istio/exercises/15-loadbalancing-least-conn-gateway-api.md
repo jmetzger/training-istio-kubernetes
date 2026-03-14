@@ -26,8 +26,8 @@ Alle Pods laufen hinter dem gleichen Service. Der einzige Unterschied: der langs
 
 ```
 cd 
-mkdir -p manifests/lb-least/conn
-cd manifests/lb-least/conn
+mkdir -p manifests/lb-least-conn
+cd manifests/lb-least-conn
 ```
 
 ```yaml
