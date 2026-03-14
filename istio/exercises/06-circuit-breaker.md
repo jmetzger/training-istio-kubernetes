@@ -157,7 +157,7 @@ Erwartung: Die meisten Requests sind 200, einige ggf. 503.
 ```bash
 kubectl exec -n bookinfo "$FORTIO_POD" -c fortio -- \
   /usr/bin/fortio load -c 3 -qps 0 -n 30 -loglevel Warning \
-  http://httpbin:8000/get
+  http://httpbin:8000/get 2>&1 | grep "Code "
 ```
 
 Erwartung: **Deutlich mehr 503** (Circuit Breaking greift).
