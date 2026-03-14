@@ -94,6 +94,12 @@ kubectl -n bookinfo get httproute reviews -n bookinfo
 ```
 
 ```
+# Vergleich mit allen httproutes
+kubectl -n bookinfo get httproute
+# booking for north - south traffik
+```
+
+```
 # Anzeige im Browser - es ist immer die v1
 http://164.90.237.35/productpage
 ```
