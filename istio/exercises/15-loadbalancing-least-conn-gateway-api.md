@@ -378,6 +378,10 @@ Seit der GAMMA-Initiative unterstützt Istio `HTTPRoute` auch für **East-West T
 
 ### Client-Pod deployen
 
+```
+nano client.yaml
+```
+
 ```yaml
 # client.yaml
 apiVersion: apps/v1
