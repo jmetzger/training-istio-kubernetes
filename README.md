@@ -38,9 +38,6 @@
 1. CNI-Plugin istio
    * [Vorteile und Installation mit helm](istio/installation/06-istio-cni-plugin-helm.md)
     
-1. Installation von istio (ambient mode)
-   * [istio-installation mit istioctl - ambient](istio/installation/03-install-with-istioctl-ambient.md) 
-
 1. Steuerung des Netzwerkverhaltens in Istio
    * Virtual Services, Destination Rules & Gateway-API
    * [Übung: Header-basiertes Routing](istio/exercises/02-exercise-request-routing.md)
@@ -92,6 +89,10 @@
    * Canary Releases & Progressive Deployments
    * A/B-Tests & Traffic Mirroring
    * Blue-Green- und Canary-Deployments mit Istio
+
+1. Installation von istio (ambient mode)
+   * [istio-installation mit istioctl - ambient](istio/installation/03-install-with-istioctl-ambient.md) 
+
 
 1. Erweiterbarkeit von Istio
    * WebAssembly (Wasm) für Istio-Erweiterungen
