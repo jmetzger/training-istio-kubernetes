@@ -8,26 +8,20 @@ Traffic-Routing über die Gateway API (`HTTPRoute`) kombiniert mit Istio `Destin
 
 - Kubernetes-Cluster mit Istio (inkl. Gateway API CRDs)
 - `kubectl` und `istioctl` konfiguriert
+- demo - app in bookinfo deployed 
 
 ---
 
-## Schritt 1: Bookinfo deployen
+## Schritt 1: Verteilung konfiguriert (für später in der Übung) 
 
-```bash
-kubectl create namespace bookinfo
-kubectl label namespace bookinfo istio-injection=enabled
-
-kubectl apply -n bookinfo \
-  -f https://raw.githubusercontent.com/istio/istio/release-1.24/samples/bookinfo/platform/kube/bookinfo.yaml
 ```
+mkdir -p ~/manifests/traffic-shifting
+cd ~/manifests/traffic-shifting 
 
-Warten bis alle Pods laufen:
-
-```bash
-kubectl get pods -n bookinfo -w
+# Die Service-Versionen anlegen
+cp -a ~/istio/samples/bookinfo/platform/kube/bookinfo-versions.yaml bookinfo-versions.yaml
+kubectl -n bookinfo apply -f .
 ```
-
----
 
 ## Schritt 2: Gateway erstellen (North-South)
 
@@ -55,35 +49,7 @@ kubectl apply -f gateway.yaml
 
 ---
 
-## Schritt 3: HTTPRoute für Productpage (North-South)
-
-```yaml
-# httproute-productpage.yaml
-apiVersion: gateway.networking.k8s.io/v1
-kind: HTTPRoute
-metadata:
-  name: bookinfo-route
-  namespace: bookinfo
-spec:
-  parentRefs:
-    - name: bookinfo-gateway
-  rules:
-    - matches:
-        - path:
-            type: PathPrefix
-            value: /
-      backendRefs:
-        - name: productpage
-          port: 9080
-```
-
-```bash
-kubectl apply -f httproute-productpage.yaml
-```
-
----
-
-## Schritt 4: Gateway-IP ermitteln und testen
+## Schritt 3: Gateway-IP ermitteln und testen
 
 ```bash
 export GATEWAY_IP=$(kubectl get gateway bookinfo-gateway -n bookinfo \
