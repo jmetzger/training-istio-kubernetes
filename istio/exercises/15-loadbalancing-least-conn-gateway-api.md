@@ -30,6 +30,11 @@ mkdir -p manifests/lb-least-conn
 cd manifests/lb-least-conn
 ```
 
+```
+nano backend.yaml
+```
+
+
 ```yaml
 # backend.yaml
 apiVersion: v1
