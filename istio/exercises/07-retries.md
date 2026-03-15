@@ -161,6 +161,7 @@ kubectl exec -n "$NAMESPACE" -c reviews "$REVIEWS_POD" -- sh -c '
     echo "[Request $i] -> $code"
     sleep 1
   done
+'
 ```
 
 ```
