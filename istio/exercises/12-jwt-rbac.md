@@ -242,3 +242,4 @@ kubectl delete namespace foo
 ## Reference: 
 
   * https://istio.io/latest/docs/tasks/security/authorization/authz-jwt/
+  * JWT Debugger: https://www.jwt.io/
