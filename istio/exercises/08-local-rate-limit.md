@@ -151,4 +151,18 @@ while true; do curl -s "$GATEWAY_URL/productpage" -o /dev/null -w "%{http_code}\
 ```
 <img width="88" height="728" alt="image" src="https://github.com/user-attachments/assets/b70f8898-3a48-4569-8fe2-d998cdc50022" />
 
+## Analyse direkt im istio-proxy (sidecar) 
+
+```
+istioctl proxy-config listener -n bookinfo deploy/productpage-v1 --port 15006 -o json | grep -A40 local_ratelimit
+```
+
+### Erklärung - Ablauf 
+
+1. Ein Request kommt am Pod an (z.B. auf Port 9080)
+2. **iptables-Regeln** (von `istio-init` eingerichtet) fangen den Traffic ab und leiten ihn auf Port **15006** um
+3. Der `virtualInbound` Listener auf 15006 nimmt den Request entgegen
+4. Envoy schaut sich TLS, ALPN und den **Original-Zielport** an (via `original_dst` Listener Filter)
+5. Basierend darauf wird die passende **Filter Chain** ausgewählt (z.B. `0.0.0.0_9080` mTLS)
+6. Der Request durchläuft die HTTP Filter (inkl. Rate Limiting) und wird an den lokalen App-Container weitergeleitet
 
