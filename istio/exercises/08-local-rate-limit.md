@@ -70,7 +70,7 @@ kubectl apply -f rate-limit-20-5s-ok.yaml
 ```
 
 ```
-while true; do curl -s "$GATEWAY_URL/productpage" -o /dev/null -w "%{http_code}\n"; sleep 1; done
+while true; do curl -s "$GATEWAY_URL/productpage" -o /dev/null -w "%{http_code}\n"; done
 ```
 
 ```
@@ -115,8 +115,8 @@ spec:
             value:
               stat_prefix: http_local_rate_limiter
               token_bucket:
-                max_tokens: 15
-                tokens_per_fill: 15
+                max_tokens: 5
+                tokens_per_fill: 5
                 fill_interval: 5s
               filter_enabled:
                 runtime_key: local_rate_limit_enabled
