@@ -59,7 +59,7 @@
 
 1. Service Resilience & Fehlertoleranz (nur VirtualService)
    * [Bemerkungen zu nur VirtualService und nicht Gateway API - httproute](istio/overview/virtualservice-only-features-why.md)
-   * [Retries](istio/exercises/07-retries.md - VirtualService only !)
+   * [Retries VirtualService only !](istio/exercises/07-retries.md)
    * [Fehlerinjektion (z.B. 500er) VirtualService only !](istio/exercises/03-fault-injection.md)
 
 1. Debugging
