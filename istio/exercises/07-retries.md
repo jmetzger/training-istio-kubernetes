@@ -96,6 +96,10 @@ spec:
     targetPort: 8080
 ```
 
+```
+kubectl apply -f flaky-server.yaml
+```
+
 
 ## Schritt 2: VirtualHost ohne retries
 
@@ -120,6 +124,11 @@ spec:
         port:
           number: 8080
 ```
+
+```
+kubectl apply -f virtual-no-retries.yaml
+```
+
 
 ### Schritt 3: Testscript flaky erstellt  und ausführen 
 
