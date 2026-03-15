@@ -60,5 +60,5 @@ EOF
 ### Step 5: Cleanup 
 
 ``` 
-kubectl delete -f virtual-service-all-v1.yaml
+kubectl delete -f .
 ```
