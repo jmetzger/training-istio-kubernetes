@@ -60,5 +60,5 @@ EOF
 ### Step 5: Cleanup 
 
 ``` 
-kubectl delete -f .
+kubectl delete -f . --ingore-not-found 
 ```
