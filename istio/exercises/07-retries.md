@@ -2,6 +2,8 @@
 
 ## Wofür
 
+![alt text](image.png)
+
   * Wenn ein Pod nicht erreicht werden, und einen Code anderen Code als 200 zurückkommt, dann nochmal probieren 
 
 ## Vorbereitung: Test-Server erstellen, der 500er erstellt 
