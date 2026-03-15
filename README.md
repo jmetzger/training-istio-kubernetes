@@ -33,7 +33,7 @@
    * [Istio Sidecar-Injection](istio/exercises/01-exercise-injection.md)
 
 1. Demo-App
-   * [Istio demo-app *bookinfo* installieren](istio/installation/04-install-demo-app-bookinfo.md)
+   * [Istio demo-app *bookinfo* installieren (Gateway API - Variante)](istio/installation/04-install-demo-app-bookinfo.md)
 
 1. CNI-Plugin istio
    * [Vorteile und Installation mit helm](istio/installation/06-istio-cni-plugin-helm.md)
