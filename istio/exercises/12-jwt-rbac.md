@@ -125,6 +125,9 @@ kubectl exec "$(kubectl get pod -l app=curl -n foo -o jsonpath={.items..metadata
 
 >[!NOTE]
 >requestPrincipal set to testing@secure.istio.io/testing@secure.istio.io. Istio constructs the requestPrincipal by combining the iss and sub of the JWT token with a / separator.
+>
+>iss = issuer
+>sub = subject 
 
 ```
 nano 02-ap.yml
