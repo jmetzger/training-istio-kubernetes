@@ -103,6 +103,8 @@ kubectl apply -f flaky-server.yaml
 
 ## Schritt 2: VirtualHost ohne retries
 
+  * Hier könnte man auch httproute (east-west) verwenden 
+
 ```
 nano virtual-no-retries.yaml
 ```
