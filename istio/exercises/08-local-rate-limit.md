@@ -66,7 +66,7 @@ spec:
 ```
 
 ```
-kubectl apply -f rate-limit-20-5s-ok.yaml
+kubectl apply -f rate-limit-240-60s-ok.yaml
 ```
 
 ```
@@ -80,7 +80,7 @@ while true; do curl -s "$GATEWAY_URL/productpage" -o /dev/null -w "%{http_code}\
 <img width="87" height="411" alt="image" src="https://github.com/user-attachments/assets/adaa0259-730d-4ba7-aa8d-4e17be50c92b" />
 
 ```
-# now try with 15 per 5s
+# now try with 20 per 60s
 ```
 
 ```
@@ -136,11 +136,11 @@ spec:
 ```
 
 ```
-kubectl apply -f rate-limit-15-5s-not.yaml
+kubectl apply -f rate-limit-20-60s-not.yaml
 ```
 
 ```
-while true; do curl -s "$GATEWAY_URL/productpage" -o /dev/null -w "%{http_code}\n"; sleep 1; done
+while true; do curl -s "$GATEWAY_URL/productpage" -o /dev/null -w "%{http_code}\n"; done
 ```
 
 ```
