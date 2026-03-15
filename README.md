@@ -53,16 +53,15 @@
    * Istio Authorization Policies (ingress/egress Security)
    
 1. Service Resilience & Fehlertoleranz (Gateway API)
-   * [Circuit Breaker](istio/exercises/06-circuit-breaker.md)
-   * [Retries](istio/exercises/07-retries.md)
+   * [Circuit Breaker](istio/exercises/06-circuit-breaker.md) 
    * [Rate Limiting](istio/exercises/08-local-rate-limit.md)
-   * [Fehlerinjektion (z.B. 500er)](istio/exercises/03-fault-injection.md)
    * [Chaos Engineering mit Istio](https://istio.io/latest/docs/examples/microservices-istio/production-testing/)
    * Belastungstests mit Fehlerinjektionen
 
 1. Service Resilience & Fehlertoleranz (nur VirtualService)
    * [Bemerkungen zu nur VirtualService und nicht Gateway API - httproute](istio/overview/virtualservice-only-features-why.md)
-
+   * [Retries](istio/exercises/07-retries.md - VirtualService only !)
+   * [Fehlerinjektion (z.B. 500er) VirtualService only !](istio/exercises/03-fault-injection.md)
 
 1. Debugging
    * [Debugging mit debug/run pod](/istio/debug/01-debug-pod.md)
