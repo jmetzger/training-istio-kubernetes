@@ -14,6 +14,8 @@
 - **GraphQL-Support** — kein nativer GraphQL-zu-REST-Proxy oder Schema-Stitching
 - **Monetarisierung / Billing** — keine Usage-Tracking-Integration für Abrechnung
 
+## Was sind Features, die istio unterstützt 
+
 **Was oft verwechselt wird — das kann Istio durchaus:**
 - Rate Limiting (via WASM oder EnvoyFilter)
 - JWT-Validierung / OIDC
