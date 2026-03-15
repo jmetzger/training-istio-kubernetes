@@ -62,7 +62,7 @@ spec:
                 - append: false
                   header:
                     key: x-local-rate-limit
-                    value: 'true'ok.yaml
+                    value: 'true'
 ```
 
 ```
