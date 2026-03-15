@@ -14,7 +14,7 @@ GATEWAY_URL="http://<your-ip-of-gateway>"
 ```
 
 ```
-nano rate-limit-20-5s-ok.yaml
+nano rate-limit-240-60s-ok.yaml
 ```
 
 ```
@@ -84,7 +84,7 @@ while true; do curl -s "$GATEWAY_URL/productpage" -o /dev/null -w "%{http_code}\
 ```
 
 ```
-nano rate-limit-15-5s-not.yaml
+nano rate-limit-20-60s-not.yaml
 ```
 
 ```
@@ -115,9 +115,9 @@ spec:
             value:
               stat_prefix: http_local_rate_limiter
               token_bucket:
-                max_tokens: 5
-                tokens_per_fill: 5
-                fill_interval: 5s
+                max_tokens: 20
+                tokens_per_fill: 20
+                fill_interval: 60s
               filter_enabled:
                 runtime_key: local_rate_limit_enabled
                 default_value:
