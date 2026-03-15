@@ -10,7 +10,7 @@ mkdir -p manifests/local-rate-limit
 cd manifests/local-rate-limit
 # Get gateway ip 
 kubectl -n bookinfo get gateway bookinfo-gateway
-$GATEWAY_URL="http://<your-ip-of-gateway>"
+GATEWAY_URL="http://<your-ip-of-gateway>"
 ```
 
 ```
