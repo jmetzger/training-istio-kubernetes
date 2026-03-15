@@ -2,7 +2,7 @@
 
 ## Grundlagen 
 
-### Was sind jwks 
+### Was ist JWKS ? 
 
 **JWKS = JSON Web Key Set**
 
