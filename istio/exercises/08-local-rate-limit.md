@@ -32,6 +32,7 @@ spec:
       match:
         context: SIDECAR_INBOUND
         listener:
+          portNumber: 9080 # Port of Service / best practice -> be specific
           filterChain:
             filter:
               name: "envoy.filters.network.http_connection_manager"
@@ -102,6 +103,7 @@ spec:
       match:
         context: SIDECAR_INBOUND
         listener:
+          portNumber: 9080 # port of service -> best practice be specific
           filterChain:
             filter:
               name: "envoy.filters.network.http_connection_manager"
