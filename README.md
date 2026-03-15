@@ -56,7 +56,6 @@
    * [Circuit Breaker](istio/exercises/06-circuit-breaker.md) 
    * [Rate Limiting](istio/exercises/08-local-rate-limit.md)
    * [Chaos Engineering mit Istio](https://istio.io/latest/docs/examples/microservices-istio/production-testing/)
-   * Belastungstests mit Fehlerinjektionen
 
 1. Service Resilience & Fehlertoleranz (nur VirtualService)
    * [Bemerkungen zu nur VirtualService und nicht Gateway API - httproute](istio/overview/virtualservice-only-features-why.md)
