@@ -1,4 +1,8 @@
-# Retries 
+# Retries (VirtualService only !) 
+
+  * Retries in der Gateway API noch nicht implementiert)
+  * Wenn benötigt, dann für den Service (intern-mesh)-> keine httproute verwenden, sondern VirtualService
+  * So haben wir es hier auch implementiert 
 
 ## Wofür
 
