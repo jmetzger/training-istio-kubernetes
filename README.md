@@ -60,6 +60,10 @@
    * [Chaos Engineering mit Istio](https://istio.io/latest/docs/examples/microservices-istio/production-testing/)
    * Belastungstests mit Fehlerinjektionen
 
+1. Service Resilience & Fehlertoleranz (nur VirtualService)
+   * [Bemerkungen zu nur VirtualService und nicht Gateway API - httproute](istio/overview/virtualservice-only-features-why.md)
+
+
 1. Debugging
    * [Debugging mit debug/run pod](/istio/debug/01-debug-pod.md)
   
