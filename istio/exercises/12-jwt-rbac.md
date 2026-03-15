@@ -215,7 +215,7 @@ kubectl apply -f 02-ap-group.yml
 * Get the JWT that sets the groups claim to a list of strings: group1 and group2:
 
 ```
-TOKEN_GROUP=$(curl https://raw.githubusercontent.com/istio/istio/release-1.28/security/tools/jwt/samples/groups-scope.jwt -s) && echo "$TOKEN_GROUP" | cut -d '.' -f2 - | base64 --decode
+TOKEN_GROUP=$(curl https://raw.githubusercontent.com/istio/istio/release-1.29.1/security/tools/jwt/samples/groups-scope.jwt -s) && echo "$TOKEN_GROUP" | cut -d '.' -f2 - | base64 --decode
 ```
 
 ## Step 10: Test it with that token (so group1 must be included) 
