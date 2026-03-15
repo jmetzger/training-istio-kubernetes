@@ -211,7 +211,7 @@ kubectl apply -f virtualservice-mit-retries.yaml
 ```
 # nochmal testen
 # Wieviele 500er jetzt
-./test-flaky.sh
+./flaky-test.sh
 ```
 
 ```
