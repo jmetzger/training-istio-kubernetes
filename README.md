@@ -51,6 +51,7 @@
 
 1. Sicherheit, Fehlertoleranz & Observability    
    * Istio Authorization Policies (ingress/egress Security)
+   * [ZeroTrust für bookinfo Namespace bookinfo einrichten](istio/exercises/16-zerotrust-bookinfo-einrichten.md)
    
 1. Service Resilience & Fehlertoleranz (Gateway API)
    * [Circuit Breaker](istio/exercises/06-circuit-breaker.md) 
