@@ -218,6 +218,20 @@ kubectl apply -f virtualservice-mit-retries.yaml
 CTRL + C
 ```
 
+## Verifizieren direkt im Flaky-Pod
+
+  * Er gibt 200 oder 500 zurück 
+  * Für alle gleichen Anfragen, gibt es es eine Request_id 
+
+  ![Retries in flaky-server](image-2.png)
+
+```
+FLAKY_POD=$(kubectl get pod -n bookinfo -l app=flaky-server -o jsonpath='{.items[0].metadata.name}')
+kubectl logs -n bookinfo -c istio-proxy "$FLAKY_POD" 
+```
+
+
+
 ## Aufräumen 
 
 ```
