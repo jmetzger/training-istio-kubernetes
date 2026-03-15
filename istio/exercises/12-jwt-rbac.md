@@ -1,5 +1,63 @@
 # JWT-Token mit RBAC verwenden 
 
+## Grundlagen 
+
+### Was sind jwks 
+
+**JWKS = JSON Web Key Set**
+
+Ein JSON-Dokument, das die **öffentlichen Schlüssel** enthält, mit denen JWTs (JSON Web Tokens) verifiziert werden können.
+
+**Typisches Format:**
+```json
+{
+  "keys": [
+    {
+      "kty": "RSA",
+      "kid": "abc123",
+      "use": "sig",
+      "n": "0vx7agoebGc...",
+      "e": "AQAB"
+    }
+  ]
+}
+```
+
+**Wie es funktioniert:**
+1. Ein Identity Provider (Keycloak, Auth0, Google etc.) signiert JWTs mit seinem **Private Key**
+2. Der JWKS-Endpunkt (z.B. `https://idp.example.com/.well-known/jwks.json`) stellt die zugehörigen **Public Keys** bereit
+3. Istio (oder ein anderer Verifier) holt sich die Keys von dort und prüft damit die JWT-Signatur
+
+**In Istio konkret** — `RequestAuthentication`:
+```yaml
+apiVersion: security.istio.io/v1
+kind: RequestAuthentication
+spec:
+  jwtRules:
+  - issuer: "https://idp.example.com"
+    jwksUri: "https://idp.example.com/.well-known/jwks.json"
+```
+
+Istio cached die Keys und rotiert automatisch mit, wenn der IDP neue Keys veröffentlicht (via `kid` — Key ID).
+
+**Kurz:** JWKS ist der standardisierte Weg, wie ein JWT-Verifier an die Public Keys kommt, ohne sie manuell konfigurieren zu müssen.
+
+### Begriffe 
+
+**`kid`** (Key ID) — Eindeutige ID des Schlüssels. Damit weiß der Verifier, welcher Key aus dem Set zum JWT passt (das JWT hat `kid` im Header).
+
+**`use`** (Public Key Use) — Wofür der Key gedacht ist:
+- `"sig"` = Signaturprüfung (Standard bei JWT)
+- `"enc"` = Verschlüsselung
+
+**`n`** (Modulus) — Der RSA-Modulus, Base64url-kodiert. Das ist der mathematische Kern des öffentlichen RSA-Schlüssels.
+
+**`e`** (Exponent) — Der RSA-Exponent, Base64url-kodiert. Fast immer `"AQAB"` (= 65537 dezimal), der Standard-Public-Exponent.
+
+**Zusammenspiel:** `n` und `e` zusammen **sind** der öffentliche RSA-Schlüssel. Damit kann die JWT-Signatur mathematisch verifiziert werden, ohne den Private Key zu kennen.
+
+
+
 ## Step 0: Preparation 
 
 ```
