@@ -166,7 +166,7 @@ kubectl exec -n "$NAMESPACE" -c reviews "$REVIEWS_POD" -- sh -c '
 ```
 # 500er beobachte
 # Wieviele 500er 
-./test-flaky.sh
+./flaky-test.sh
 ```
 
 ```
