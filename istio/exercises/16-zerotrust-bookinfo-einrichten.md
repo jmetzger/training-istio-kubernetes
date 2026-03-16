@@ -27,6 +27,14 @@ Client → Gateway → productpage → reviews → ratings
 
 ---
 
+## Schritt 0: GATEWAY_URL setzten
+
+```
+# IP notieren 
+kubectl -n bookinfo get gateway 
+GATEWAY_IP=<ip-des-gateways>
+```
+
 ## Schritt 1: mTLS verifizieren
 
 Bevor Authorization Policies greifen, muss mTLS aktiv sein. Ohne mTLS funktionieren `source.principals` und `source.namespaces` nicht.
@@ -131,13 +139,59 @@ EOF
 ### Verifizieren
 
 ```bash
-curl -s -o /dev/null -w "%{http_code}" http://<GATEWAY_IP>/productpage
+curl -s -o /dev/null -w "%{http_code}" http://$GATEWAY_IP/productpage
 # Erwartung: 200 OK – aber die Seite zeigt Fehler für Reviews und Details (noch blockiert)
 ```
 
+  * Aber: Es ist 403. 
+
 ---
 
-## Schritt 4: productpage → details erlauben
+## Schritt 4: Problem rbac debuggen (am productpage - sidecar) 
+
+```
+# Kommt die Anfrage am productpage (sidecar- container an) ?
+# Dazu müssen wir zunächst wissen, ob rbac:debug gesetzt ist, nur dann sehen wir etwas
+istioctl proxy-config log deploy/productpage-v1 -n bookinfo | grep rbac
+# Falls nicht rbac: debug,  jetzt setzen:
+istioctl proxy-config log deploy/productpage-v1 -n bookinfo --level rbac:debug
+```
+
+```
+# Anfrage nochmal absetzen und Log überprüfen
+curl -s -o /dev/null -w "%{http_code}" http://$GATEWAY_IP/productpage
+# Es kommt nichts an
+kubectl logs -n bookinfo deploy/bookinfo-gateway-istio -c istio-proxy --tail=30 | grep rbac
+```
+
+  * **Resultat**: Da kommt nichts an, das Problem muss also davor sein: AM Gateway 
+
+
+## Schritt 5: Problem rbac (am gateway - pod) 
+
+### Situation: 
+
+  * Anfrage kommt garnicht bis productpage -> Sidecar
+  * Problem muss also vorher bereits existieren
+  * Vermutung: Am Gateway
+
+### Debuggen & Lösen 
+
+```
+# Gateway verifizieren
+kubectl -n bookinfo get gateway
+# Dies erzeugt einen Pod -> Das ist unser Freund 
+kubectl -n bookinfo get pods | grep gateway
+```
+
+```
+# rbac einschalten / Abfrage absenden und nochmal überprüfen 
+istioctl proxy-config log deploy/bookinfo-gateway-istio -n bookinfo --level rbac:debug
+curl -s http://$GATEWAY_IP/productpage
+kubectl logs -n bookinfo deploy/bookinfo-gateway-istio -c istio-proxy --tail=30 | grep rbac
+```
+
+## Schritt 5: productpage → details erlauben
 
 ```bash
 kubectl apply -f - <<EOF
