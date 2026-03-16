@@ -27,12 +27,20 @@ Client → Gateway → productpage → reviews → ratings
 
 ---
 
-## Schritt 0: GATEWAY_URL setzten
+## Schritt 0: GATEWAY_IP setzten
 
 ```
 # IP notieren 
 kubectl -n bookinfo get gateway 
 GATEWAY_IP=<ip-des-gateways>
+```
+
+## Schritt 0.5 Projekt-Ordner setzen 
+
+```
+cd
+mkdir -p manifests/zero-trust-rbac
+cd manifests/zero-trust-rbac  
 ```
 
 ## Schritt 1: mTLS verifizieren
@@ -167,7 +175,7 @@ kubectl logs -n bookinfo deploy/bookinfo-gateway-istio -c istio-proxy --tail=30 
   * **Resultat**: Da kommt nichts an, das Problem muss also davor sein: AM Gateway 
 
 
-## Schritt 5: Problem rbac (am gateway - pod) 
+## Schritt 5: Problem rbac (am gateway - pod) identifizieren 
 
 ### Situation: 
 
@@ -190,6 +198,18 @@ istioctl proxy-config log deploy/bookinfo-gateway-istio -n bookinfo --level rbac
 curl -s http://$GATEWAY_IP/productpage
 kubectl logs -n bookinfo deploy/bookinfo-gateway-istio -c istio-proxy --tail=30 | grep rbac
 ```
+
+![Ausgabe vom Pod](image-1.png)
+
+
+## Schritt 6: Problem rbac (am gateway - pod) lösen 
+
+   * Anfragen werden nicht durchgelassen, die vom Web-Browser kommen 
+   * Diese müssen erlaubt werden 
+
+
+
+
 
 ## Schritt 5: productpage → details erlauben
 
