@@ -363,7 +363,7 @@ EOF
 ### Verifizieren
 
 ```bash
-curl -s http://<GATEWAY_IP>/productpage | grep -o "Ratings"
+curl -s http://$GATEWAY_IP/productpage | grep -o "Ratings"
 # Erwartung: Ratings werden angezeigt (Sterne bei reviews v2/v3)
 ```
 
@@ -389,16 +389,38 @@ kubectl get authorizationpolicies -n bookinfo
 
 ```bash
 # Test 1: ratings darf NICHT direkt von productpage aufgerufen werden
-kubectl exec deploy/productpage-v1 -n bookinfo -c productpage -- \
-  curl -s -o /dev/null -w "%{http_code}" http://ratings:9080/ratings/0
-# Erwartung: 403
 
+# Debug Container verwenden 
+```bash
+POD=$(kubectl get pods -n bookinfo -l app=productpage -o jsonpath='{.items[0].metadata.name}')
+kubectl debug $POD -n bookinfo --image=curlimages/curl -it -- sh
+```
+
+Dann im Container:
+
+```bash
+curl -s -o /dev/null -w "%{http_code}" http://ratings:9080/ratings/0
+# Erwartung: 403
+```
+
+
+```bash
 # Test 2: details darf NICHT reviews aufrufen
-kubectl exec deploy/details-v1 -n bookinfo -c details -- \
-  curl -s -o /dev/null -w "%{http_code}" http://reviews:9080/reviews/0
-# Erwartung: 403
+POD=$(kubectl get pods -n bookinfo -l app=details -o jsonpath='{.items[0].metadata.name}')
+kubectl debug $POD -n bookinfo --image=curlimages/curl -it -- sh
+```
 
+Dann im Container:
+
+```bash
+curl -s -o /dev/null -w "%{http_code}" http://reviews:9080/reviews/0
+# Erwartung: 403
+```
+
+```
 # Test 3: POST auf productpage ist nicht erlaubt (nur GET)
+kubectl apply -f ~/istio/sam
+ples/sleep/sleep.yaml -n bookinfo
 kubectl exec deploy/sleep -n bookinfo -c sleep -- \
   curl -s -o /dev/null -w "%{http_code}" -X POST http://productpage:9080/productpage
 # Erwartung: 403
