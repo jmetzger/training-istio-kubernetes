@@ -55,11 +55,14 @@ EOF
 ```bash
 # Aus einem Pod ohne Sidecar sollte der Zugriff fehlschlagen
 # weil dieser die Verbindung plaintext und nicht verschlüsselt aufbaut
-kubectl run test-no-mesh --image=curlimages/curl --rm -it --restart=Never \
-  -n default -- curl -s http://productpage.bookinfo:9080/productpage
-# Erwartung: Connection refused / reset (kein mTLS-Zertifikat)
+kubectl run test-no-mesh --image=busybox --rm -it -n default 
 ```
 
+```
+# in der shell
+wget -O - http://productpage.bookinfo:9080/productpage
+# ** Erwartung: ** Connection reset by peer (kein mTLS-Zertifikat)
+```
 ---
 
 ## Schritt 2: Deny All – Alles sperren
