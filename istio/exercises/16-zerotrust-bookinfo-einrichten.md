@@ -27,7 +27,7 @@ Client → Gateway → productpage → reviews → ratings
 
 ---
 
-## Schritt 0: GATEWAY_IP setzten
+## Schritt 1: GATEWAY_IP setzten
 
 ```
 # IP notieren 
@@ -35,7 +35,7 @@ kubectl -n bookinfo get gateway
 GATEWAY_IP=<ip-des-gateways>
 ```
 
-## Schritt 0.5 Projekt-Ordner setzen 
+## Schritt 2 Projekt-Ordner setzen 
 
 ```
 cd
@@ -43,7 +43,7 @@ mkdir -p manifests/zero-trust-rbac
 cd manifests/zero-trust-rbac  
 ```
 
-## Schritt 1: mTLS verifizieren
+## Schritt 3: mTLS verifizieren
 
 Bevor Authorization Policies greifen, muss mTLS aktiv sein. Ohne mTLS funktionieren `source.principals` und `source.namespaces` nicht.
 
@@ -81,7 +81,7 @@ wget -O - http://productpage.bookinfo:9080/productpage
 ```
 ---
 
-## Schritt 2: Deny All – Alles sperren
+## Schritt 4: Deny All – Alles sperren
 
 Die Basis von Zero Trust: **Erstmal alles verbieten.**
 
@@ -111,7 +111,7 @@ curl -s -o /dev/null -w "%{http_code}" http://<GATEWAY_IP>/productpage
 
 ---
 
-## Schritt 3: Gateway → productpage erlauben
+## Schritt 5: Gateway → productpage erlauben
 
 Der erste erlaubte Pfad: Das Gateway darf die Productpage erreichen.
 
@@ -155,7 +155,7 @@ curl -s -o /dev/null -w "%{http_code}" http://$GATEWAY_IP/productpage
 
 ---
 
-## Schritt 4: Problem rbac debuggen (am productpage - sidecar) 
+## Schritt 6: Problem rbac debuggen (am productpage - sidecar) 
 
 ```
 # Kommt die Anfrage am productpage (sidecar- container an) ?
@@ -175,7 +175,7 @@ kubectl logs -n bookinfo deploy/bookinfo-gateway-istio -c istio-proxy --tail=30 
   * **Resultat**: Da kommt nichts an, das Problem muss also davor sein: AM Gateway 
 
 
-## Schritt 5: Problem rbac (am gateway - pod) identifizieren 
+## Schritt 7: Problem rbac (am gateway - pod) identifizieren 
 
 ### Situation: 
 
@@ -183,7 +183,7 @@ kubectl logs -n bookinfo deploy/bookinfo-gateway-istio -c istio-proxy --tail=30 
   * Problem muss also vorher bereits existieren
   * Vermutung: Am Gateway
 
-### Debuggen & Lösen 
+### Debuggen
 
 ```
 # Gateway verifizieren
@@ -202,16 +202,60 @@ kubectl logs -n bookinfo deploy/bookinfo-gateway-istio -c istio-proxy --tail=30 
 ![Ausgabe vom Pod](image-1.png)
 
 
-## Schritt 6: Problem rbac (am gateway - pod) lösen 
+## Schritt 8: Problem rbac (am gateway - pod) lösen 
 
    * Anfragen werden nicht durchgelassen, die vom Web-Browser kommen 
    * Diese müssen erlaubt werden 
 
+```
+# Hier sehen wir die labels 
+kubectl -n bookinfo get pods --show-labels | grep gateway
+```
+nano allow-gateway-inbound.yaml 
+```
+
+```
+apiVersion: security.istio.io/v1
+kind: AuthorizationPolicy
+metadata:
+  name: allow-gateway-inbound
+  namespace: bookinfo
+spec:
+  selector:
+    matchLabels:
+      gateway.networking.k8s.io/gateway-name=bookinfo-gateway
+  rules:
+  - to:
+    - operation:
+        methods: ["GET"]
+        paths: ["/productpage", "/static/*", "/login", "/logout", "/api/v1/products*"]
+```
+
+```
+kubectl apply -f . 
+```
+
+```
+# Nochmal testen 
+# Gibt es für das gateway jetzt eine Policy 
+istioctl x authz check deploy/bookinfo-gateway-istio -n bookinfo 
+```
+
+```
+# Nochmal aufrufen
+curl -s -o /dev/null -w "%{http_code}" http://$GATEWAY_IP/productpage
+```
+
+```
+# For fun: wie seht RBAC - Eintrag aus 
+kubectl logs -n bookinfo deploy/bookinfo-gateway-istio -c istio-proxy --tail=30 | grep rbac
+```
+
+ * Ergebnis: Es klappt. Eintrag: allowed by default or by policy 
+ ```
 
 
-
-
-## Schritt 5: productpage → details erlauben
+## Schritt 9: productpage → details erlauben
 
 ```bash
 kubectl apply -f - <<EOF
@@ -239,13 +283,14 @@ EOF
 ### Verifizieren
 
 ```bash
-curl -s http://<GATEWAY_IP>/productpage | grep -o "Book Details"
+# Achtung es kann einen Moment dauern, bis die Rechte im Mesh bekannt sind 
+curl -s http://$GATEWAY_IP/productpage | grep -o "Book Details"
 # Erwartung: "Book Details" erscheint – Details-Section wird angezeigt
 ```
 
 ---
 
-## Schritt 5: productpage → reviews erlauben
+## Schritt 10: productpage → reviews erlauben
 
 ```bash
 kubectl apply -f - <<EOF
@@ -272,7 +317,7 @@ EOF
 
 ---
 
-## Schritt 6: reviews → ratings erlauben
+## Schritt 11: reviews → ratings erlauben
 
 ```bash
 kubectl apply -f - <<EOF
@@ -306,7 +351,7 @@ curl -s http://<GATEWAY_IP>/productpage | grep -o "Ratings"
 
 ---
 
-## Schritt 7: Gesamtstatus prüfen
+## Schritt 12: Gesamtstatus prüfen
 
 ```bash
 # Alle Authorization Policies auflisten
@@ -314,7 +359,8 @@ kubectl get authorizationpolicies -n bookinfo
 
 # Erwartete Ausgabe:
 # NAME                             AGE
-# deny-all                         ...
+# deny-all                         ... 
+# allow-gateway-inbound            ...
 # allow-productpage-from-gateway   ...
 # allow-details                    ...
 # allow-reviews                    ...
@@ -342,7 +388,7 @@ kubectl exec deploy/sleep -n bookinfo -c sleep -- \
 
 ---
 
-## Schritt 8: DENY-Policy – Explizit blockieren
+## Schritt 13: DENY-Policy – Explizit blockieren
 
 DENY-Policies werden **vor** ALLOW evaluiert und eignen sich für zusätzliche Einschränkungen.
 
@@ -383,7 +429,7 @@ kubectl exec deploy/reviews-v3 -n bookinfo -c reviews -- \
 
 ---
 
-## Schritt 9: Namespace-Isolation (Bonus)
+## Schritt 14: Namespace-Isolation (Bonus)
 
 Services aus anderen Namespaces komplett blockieren:
 
