@@ -114,7 +114,7 @@ spec:
   rules:
   - from:
     - source:
-        principals: ["cluster.local/ns/istio-system/sa/istio-ingressgateway-service-account"]
+        principals: ["cluster.local/ns/bookinfo/sa/bookinfo-gateway-istio"]
     to:
     - operation:
         methods: ["GET"]
