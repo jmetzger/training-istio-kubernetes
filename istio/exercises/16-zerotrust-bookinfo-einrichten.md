@@ -12,7 +12,7 @@ Jeder Service darf nur mit den Services kommunizieren, die er tatsächlich brauc
 - Kubernetes-Cluster mit Istio (Sidecar)
 - Bookinfo-App deployed im Namespace `bookinfo`
 - mTLS im Mesh aktiv (Default: `STRICT` oder `PERMISSIVE` mit PeerAuthentication)
-- Gateway konfiguriert (Gateway API oder Istio Ingress Gateway)
+- Gateway konfiguriert (Gateway API)
 
 ## Architektur – Bookinfo Traffic Flow
 
@@ -26,6 +26,7 @@ Client → Gateway → productpage → reviews → ratings
 - `details` hat keine Downstream-Dependencies
 
 ---
+
 
 ## Schritt 1: GATEWAY_IP setzten
 
@@ -42,6 +43,23 @@ cd
 mkdir -p manifests/zero-trust-rbac
 cd manifests/zero-trust-rbac  
 ```
+
+## Schritt 3: Ausgangszustand herstellen.
+
+  * Wir wollen das mit Gateway API und httproute testen
+
+```
+# just in case 
+kubectl -n bookinfo delete virtualservice details productpage reviews
+ubectl -n bookinfo delete destinationrule details productpage ratings reviews
+```
+
+```
+# alles auf gateway ausrichten
+kubectl -n bookinfo apply -f  ~/istio/samples/bookinfo/platform/kube/bookinfo.yaml
+kubectl -n bookinfo get all 
+```
+
 
 ## Schritt 3: mTLS verifizieren
 
