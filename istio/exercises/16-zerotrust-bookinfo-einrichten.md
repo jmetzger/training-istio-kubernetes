@@ -9,7 +9,7 @@ Jeder Service darf nur mit den Services kommunizieren, die er tatsächlich brauc
 
 ## Voraussetzungen
 
-- Kubernetes-Cluster mit Istio (≥ 1.29)
+- Kubernetes-Cluster mit Istio (Sidecar)
 - Bookinfo-App deployed im Namespace `bookinfo`
 - mTLS im Mesh aktiv (Default: `STRICT` oder `PERMISSIVE` mit PeerAuthentication)
 - Gateway konfiguriert (Gateway API oder Istio Ingress Gateway)
