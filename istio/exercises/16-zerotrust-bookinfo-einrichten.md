@@ -34,7 +34,9 @@ Bevor Authorization Policies greifen, muss mTLS aktiv sein. Ohne mTLS funktionie
 ```bash
 # PeerAuthentication prüfen
 kubectl get peerauthentication -A
+```
 
+```bash
 # Falls nicht vorhanden, mesh-weit STRICT setzen
 kubectl apply -f - <<EOF
 apiVersion: security.istio.io/v1
