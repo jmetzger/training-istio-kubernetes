@@ -456,20 +456,23 @@ EOF
 ### Verifizieren
 
 ```bash
-# Normaler Zugriff funktioniert weiterhin
-kubectl exec deploy/reviews-v3 -n bookinfo -c reviews -- \
-  curl -s -o /dev/null -w "%{http_code}" http://ratings:9080/ratings/0
-# Erwartung: 200
+POD=$(kubectl get pods -n bookinfo -l app=reviews -o jsonpath='{.items[0].metadata.name}')
+kubectl debug $POD -n bookinfo --image=curlimages/curl -it -- sh
+```
 
-# Mit x-debug Header wird blockiert
-kubectl exec deploy/reviews-v3 -n bookinfo -c reviews -- \
-  curl -s -o /dev/null -w "%{http_code}" -H "x-debug: true" http://ratings:9080/ratings/0
-# Erwartung: 403
+Dann im Container:
+
+```bash
+# Normaler Zugriff - Erwartung: 200
+curl -s -o /dev/null -w "%{http_code}" http://ratings:9080/ratings/0
+
+# Mit x-debug Header - Erwartung: 403
+curl -s -o /dev/null -w "%{http_code}" -H "x-debug: true" http://ratings:9080/ratings/0
 ```
 
 ---
 
-## Schritt 14: Namespace-Isolation (Bonus)
+## Schritt 14: Alternative Namespace-Isolation (Bonus) - statt 
 
 Services aus anderen Namespaces komplett blockieren:
 
@@ -516,7 +519,10 @@ EOF
 ## Aufräumen
 
 ```bash
+
 kubectl delete authorizationpolicy -n bookinfo --all
+# When no peerauthentication is set 
+# it will be PERMISSIVE by default 
 kubectl delete peerauthentication default -n istio-system
 ```
 
