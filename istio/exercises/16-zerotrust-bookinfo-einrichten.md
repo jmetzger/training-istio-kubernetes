@@ -36,7 +36,7 @@ kubectl -n bookinfo get gateway
 GATEWAY_IP=<ip-des-gateways>
 ```
 
-## Schritt 2 Projekt-Ordner setzen 
+## Schritt 2: Projekt-Ordner setzen 
 
 ```
 cd
@@ -61,7 +61,7 @@ kubectl -n bookinfo get all
 ```
 
 
-## Schritt 3: mTLS verifizieren
+## Schritt 4: mTLS verifizieren
 
 Bevor Authorization Policies greifen, muss mTLS aktiv sein. Ohne mTLS funktionieren `source.principals` und `source.namespaces` nicht.
 
@@ -99,7 +99,7 @@ wget -O - http://productpage.bookinfo:9080/productpage
 ```
 ---
 
-## Schritt 4: Deny All – Alles sperren
+## Schritt 5: Deny All – Alles sperren
 
 Die Basis von Zero Trust: **Erstmal alles verbieten.**
 
@@ -129,7 +129,7 @@ curl -s -o /dev/null -w "%{http_code}" http://<GATEWAY_IP>/productpage
 
 ---
 
-## Schritt 5: Gateway → productpage erlauben
+## Schritt 6: Gateway → productpage erlauben
 
 Der erste erlaubte Pfad: Das Gateway darf die Productpage erreichen.
 
@@ -173,7 +173,7 @@ curl -s -o /dev/null -w "%{http_code}" http://$GATEWAY_IP/productpage
 
 ---
 
-## Schritt 6: Problem rbac debuggen (am productpage - sidecar) 
+## Schritt 7: Problem rbac debuggen (am productpage - sidecar) 
 
 ```
 # Kommt die Anfrage am productpage (sidecar- container an) ?
@@ -193,7 +193,7 @@ kubectl logs -n bookinfo deploy/bookinfo-gateway-istio -c istio-proxy --tail=30 
   * **Resultat**: Da kommt nichts an, das Problem muss also davor sein: AM Gateway 
 
 
-## Schritt 7: Problem rbac (am gateway - pod) identifizieren 
+## Schritt 8: Problem rbac (am gateway - pod) identifizieren 
 
 ### Situation: 
 
@@ -220,7 +220,7 @@ kubectl logs -n bookinfo deploy/bookinfo-gateway-istio -c istio-proxy --tail=30 
 ![Ausgabe vom Pod](image-1.png)
 
 
-## Schritt 8: Problem rbac (am gateway - pod) lösen 
+## Schritt 9: Problem rbac (am gateway - pod) lösen 
 
    * Anfragen werden nicht durchgelassen, die vom Web-Browser kommen 
    * Diese müssen erlaubt werden 
@@ -273,7 +273,7 @@ kubectl logs -n bookinfo deploy/bookinfo-gateway-istio -c istio-proxy --tail=30 
  ```
 
 
-## Schritt 9: productpage → details erlauben
+## Schritt 10: productpage → details erlauben
 
 ```bash
 kubectl apply -f - <<EOF
@@ -308,7 +308,7 @@ curl -s http://$GATEWAY_IP/productpage | grep -o "Book Details"
 
 ---
 
-## Schritt 10: productpage → reviews erlauben
+## Schritt 11: productpage → reviews erlauben
 
 ```bash
 kubectl apply -f - <<EOF
@@ -335,7 +335,7 @@ EOF
 
 ---
 
-## Schritt 11: reviews → ratings erlauben
+## Schritt 12: reviews → ratings erlauben
 
 ```bash
 kubectl apply -f - <<EOF
@@ -369,7 +369,7 @@ curl -s http://<GATEWAY_IP>/productpage | grep -o "Ratings"
 
 ---
 
-## Schritt 12: Gesamtstatus prüfen
+## Schritt 13: Gesamtstatus prüfen
 
 ```bash
 # Alle Authorization Policies auflisten
