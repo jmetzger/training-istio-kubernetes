@@ -3,7 +3,7 @@
 ## Voraussetzungen
 
 - Kubernetes-Cluster läuft und `kubectl` ist konfiguriert
-- Helm 3 ist installiert (`helm version`)
+- Helm ist installiert (`helm version`)
 
 ## Profile 
 
