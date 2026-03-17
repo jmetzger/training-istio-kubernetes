@@ -48,7 +48,7 @@ kubectl -n bookinfo get httproutes -o yaml
 ```
 
 ```
-# not the external-ip from this output
+# note the external-ip from this output
 # gateway automatically creates a service 
 kubectl -n bookinfo get svc bookinfo-gateway-istio
 ```
