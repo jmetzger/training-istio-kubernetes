@@ -64,6 +64,8 @@ kubectl -n istio-system get ds istio-cni-node
 ### 4. istiod upgraden — CNI Plugin aktivieren
 
 ```bash
+# evtl gibt es sonst Probleme - Fehlermeldung, wenn man den Hook vorher nicht löscht 
+kubectl delete validatingwebhookconfiguration istio-validator-istio-system
 helm upgrade istiod istio/istiod -n istio-system \
   --set profile=demo \
   --set pilot.cni.enabled=true
