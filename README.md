@@ -117,6 +117,7 @@
 1. Misc
    * [Grenze bei der Header-Größe Istio vs. Nginx](istio/misc/header-size-istio-vs-nginx.md)
    * [Istio als API Gateway](istio/misc/istio-als-api-gateway.md)
+   * [Mehrere Namepaces bei allowedRoutes bei Gateway - Objekt / Gateway API](istio/misc/mehrere-allowedRoutes-in-gateway-api-gateway.md)
 
   
 
