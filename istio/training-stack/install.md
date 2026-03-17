@@ -44,13 +44,3 @@ tofu apply -auto-approve
 tofu apply -auto-approve
 ```
 
-## Testing for ingress-nginx 
-
-  * Let us find out, if svc for nginx is available
-
-```
-kubectl -n ingress-nginx get svc
-# use this url to access it through curl you should get 404
-# e.g.
-curl 46.101.239.161
-```
