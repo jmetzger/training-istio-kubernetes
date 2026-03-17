@@ -48,6 +48,6 @@ Bestehendes Projekt:
   Migration schrittweise, beides kann parallel existieren
 ```
 
-**Achtung:** Nicht beide gleichzeitig auf denselben Service anwenden — das führt zu undefiniertem Verhalten. Entweder HTTPRoute **oder** VirtualService pro Service, nicht mischen.
+**Achtung:** Nicht beide gleichzeitig (httpRoute und VirtualService) auf denselben Service anwenden — das führt zu undefiniertem Verhalten. Entweder HTTPRoute **oder** VirtualService pro Service, nicht mischen.
 
 
