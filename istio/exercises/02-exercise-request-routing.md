@@ -158,11 +158,11 @@ echo "$GATEWAY_URL"
 
 ```bash
 for i in {1..3}; do
-  curl -s "$GATEWAY_URL/productpage" | grep -o "rating" || true
+  curl -s "$GATEWAY_URL/productpage" | grep "reviews" || true
 done
 
 for i in {1..3}; do
-  curl -s -H "end-user: jason" "$GATEWAY_URL/productpage" | grep -o "rating" || true
+  curl -s -H "end-user: jason" "$GATEWAY_URL/productpage" | grep  "reviews" || true
 done
 ```
 
