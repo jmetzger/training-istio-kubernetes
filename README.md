@@ -32,8 +32,10 @@
 1. Prinzip: Side-Car Injection
    * [Istio Sidecar-Injection](istio/exercises/01-exercise-injection.md)
 
-1. Demo-App
+1. Demo-App (Gateway API) 
    * [Istio demo-app *bookinfo* installieren (Gateway API - Variante)](istio/installation/04-install-demo-app-bookinfo.md)
+
+
 
 1. CNI-Plugin istio
    * [Vorteile und Installation mit helm](istio/installation/06-istio-cni-plugin-helm.md)
@@ -48,6 +50,10 @@
    * [Übung: Traffic-Shifting / Load-Balancing](istio/exercises/04-traffic-shifting.md)
    * [Pfadbasiertes Routing](istio/exercises/13-pfadbasiertes-routing-gateway-api.md)
    * [Übung: LoadBalancing (LEAST_CONN) - Regeln](istio/exercises/15-loadbalancing-least-conn-gateway-api.md)
+
+1. Übungen Steuerung des Netzwerkverhaltens (Gateway API)
+   1. [Übung: Header-basiertes Routing](istio/exercises/virtualservice/02-exercise-request-routing.md)
+
 
 1. Sicherheit, Fehlertoleranz & Observability    
    * Istio Authorization Policies (ingress/egress Security)
