@@ -51,7 +51,7 @@ $GATEWAY_URL/productpage
 **Voraussetzung:**
 
 - Bookinfo-App läuft bereits im Namespace `bookinfo`
-- Service Revies existiert 
+- Service Reviews existiert 
 - Es gibt 3 verschieden Pods an Reviews (v1, v2 und v3)
 - Ingress/Gateway + `GATEWAY_URL` (IP: http://164.90.237.35/productpage aus der vorherigen Übung vorhanden
 
