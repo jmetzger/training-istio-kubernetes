@@ -4,6 +4,12 @@
 
 <img width="693" height="465" alt="image" src="https://github.com/user-attachments/assets/22cbf386-5a90-458b-8157-51620ef829ea" />
 
+## (Optiona) Alte Installation entfernen 
+
+```
+kubectl delete ns bookinfo
+```
+
 ## Vorbereitung
 
 ```
@@ -14,18 +20,26 @@ kubectl label namespace bookinfo istio.io/dataplane-mode=ambient
 ## Waypoint Proxy ausrollen
 
 ```
+cd
+mkdir -p manifests/waypoint
+cd manifests/waypoint
+nano gaeway.yaml
+```  
+
+
+```
 # YAML generieren (dry-run)
-istioctl waypoint apply --namespace bookinfo --enroll-namespace --mode all --dry-run -o yaml > /tmp/waypoint.yaml
+istioctl waypoint generate --namespace bookinfo --for all  > waypoint.yaml 
 ```
 
 ```
 # Anschauen was passiert
-nano /tmp/waypoint.yaml
+cat waypoint.yaml 
 ```
 
 ```
 # Ausrollen
-kubectl apply -f /tmp/waypoint.yaml
+kubectl apply -f waypoint.yaml
 ```
 
 ```
