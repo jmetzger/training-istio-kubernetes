@@ -168,7 +168,7 @@ EOF
 ### Verifizieren
 
 ```bash
-curl -s -o /dev/null -w "%{http_code}" http://$GATEWAY_IP/productpage
+curl -s -o /dev/null -w "%{http_code}\n" http://$GATEWAY_IP/productpage
 ```
 
 ```
@@ -190,7 +190,7 @@ istioctl proxy-config log deploy/productpage-v1 -n bookinfo --level rbac:debug
 
 ```
 # Anfrage nochmal absetzen und Log überprüfen
-curl -s -o /dev/null -w "%{http_code}" http://$GATEWAY_IP/productpage
+curl -s -o /dev/null -w "%{http_code}\n" http://$GATEWAY_IP/productpage
 # Es kommt nichts an
 kubectl logs -n bookinfo deploy/bookinfo-gateway-istio -c istio-proxy --tail=30 | grep rbac
 ```
@@ -268,7 +268,7 @@ istioctl x authz check deploy/bookinfo-gateway-istio -n bookinfo
 
 ```
 # Nochmal aufrufen
-curl -s -o /dev/null -w "%{http_code}" http://$GATEWAY_IP/productpage
+curl -s -o /dev/null -w "%{http_code}\n" http://$GATEWAY_IP/productpage
 ```
 
 ```
@@ -406,7 +406,7 @@ kubectl debug $POD -n bookinfo --image=curlimages/curl -it -- sh
 Dann im Container:
 
 ```bash
-curl -s -o /dev/null -w "%{http_code}" http://ratings:9080/ratings/0
+curl -s -o /dev/null -w "%{http_code}\n" http://ratings:9080/ratings/0
 # Erwartung: 403
 ```
 
@@ -420,7 +420,7 @@ kubectl debug $POD -n bookinfo --image=curlimages/curl -it -- sh
 Dann im Container:
 
 ```bash
-curl -s -o /dev/null -w "%{http_code}" http://reviews:9080/reviews/0
+curl -s -o /dev/null -w "%{http_code}\n" http://reviews:9080/reviews/0
 # Erwartung: 403
 ```
 
@@ -429,7 +429,7 @@ curl -s -o /dev/null -w "%{http_code}" http://reviews:9080/reviews/0
 kubectl apply -f ~/istio/sam
 ples/sleep/sleep.yaml -n bookinfo
 kubectl exec deploy/sleep -n bookinfo -c sleep -- \
-  curl -s -o /dev/null -w "%{http_code}" -X POST http://productpage:9080/productpage
+  curl -s -o /dev/null -w "%{http_code}\n" -X POST http://productpage:9080/productpage
 # Erwartung: 403
 ```
 
@@ -471,10 +471,10 @@ Dann im Container:
 
 ```bash
 # Normaler Zugriff - Erwartung: 200
-curl -s -o /dev/null -w "%{http_code}" http://ratings:9080/ratings/0
+curl -s -o /dev/null -w "%{http_code}\n" http://ratings:9080/ratings/0
 
 # Mit x-debug Header - Erwartung: 403
-curl -s -o /dev/null -w "%{http_code}" -H "x-debug: true" http://ratings:9080/ratings/0
+curl -s -o /dev/null -w "%{http_code}\n" -H "x-debug: true" http://ratings:9080/ratings/0
 ```
 
 ---
