@@ -132,11 +132,11 @@ kubectl -n bookinfo apply -f https://raw.githubusercontent.com/istio/istio/relea
 
 # productpage kann weiterhin details und reviews erreichen
 kubectl -n bookinfo exec deploy/sleep -- \
-  curl -s -o /dev/null -w "%{http_code}" productpage:9080/productpage
+  curl -s -o /dev/null -w "%{http_code}\n" productpage:9080/productpage
 
 # sleep kann ratings erreichen
 kubectl -n bookinfo exec deploy/sleep -- \
-  curl -s -o /dev/null -w "%{http_code}" ratings:9080/ratings/0
+  curl -s -o /dev/null -w "%{http_code}\n" ratings:9080/ratings/0
 ```
 
 ### 3c) Zugriff ohne Sidecar testen
