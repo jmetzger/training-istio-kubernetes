@@ -26,23 +26,84 @@ kubectl -n bookinfo get all
 kubectl -n bookinfo exec "$(kubectl -n bookinfo get pod -l app=ratings -o jsonpath='{.items[0].metadata.name}')" -c ratings -- curl -sS productpage:9080/productpage | grep -o "<title>.*</title>"
 ```
 
-## App mit istio-api (gateway) nach aussen öffnen 
+## App mit istio-ingress-gateway nach aussen öffnen 
 
 ```
 # That's what we do ....
-kubectl .n bookinfo apply -f ~/istio/samples/bookinfo/networking/bookinfo-gateway.yaml
+kubectl -n bookinfo apply -fca
+
+
+
 ```
 
 ```
---> ändern -> kubectl -n bookinfo apply -f ~/istio/samples/bookinfo/gateway-api/bookinfo-gateway.yaml
+cd
+mkdir -p manifests/istio-gateway
+cd manifests/istio-gateway
+nano gateway.yaml
+```
+
+```
+apiVersion: networking.istio.io/v1
+kind: Gateway
+metadata:
+  name: bookinfo-gateway
+spec:
+  # The selector matches the ingress gateway pod labels.
+  # If you installed Istio using Helm following the standard documentation, this would be "istio=ingress"
+  selector:
+    istio: ingress # use istio default controller
+  servers:
+  - port:
+      number: 80
+      name: http2
+      protocol: HTTP
+    hosts:
+    - "*"
+---
+apiVersion: networking.istio.io/v1
+kind: VirtualService
+metadata:
+  name: bookinfo
+spec:
+  hosts:
+  - "*"
+  gateways:
+  - bookinfo-gateway
+  http:
+  - match:
+    - uri:
+        exact: /productpage
+    - uri:
+        prefix: /static
+    - uri:
+        exact: /login
+    - uri:
+        exact: /logout
+    - uri:
+        prefix: /api/v1/products
+    route:
+    - destination:
+        host: productpage
+        port:
+          number: 9080
+```
+
+```
+kubectl apply -f .
+```
+
+
+
+```
 kubectl -n bookinfo get gw
 kubectl -n bookinfo get virtualservice -o yaml 
 ```
 
 ```
-# not the external-ip from this output
-# gateway automatically creates a service 
-kubectl -n bookinfo get svc bookinfo-gateway-istio
+# get ip from here
+kubectl -n istio-ingress get all
+kubectl -n istio-ingress get svc 
 ```
 
 ```
