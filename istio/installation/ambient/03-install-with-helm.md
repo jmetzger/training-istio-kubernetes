@@ -13,8 +13,8 @@ kubectl apply --server-side -f https://github.com/kubernetes-sigs/gateway-api/re
 
 ### Step 2: istiod und cni auf Ambient-Profil upgraden
 ```bash
-helm upgrade istiod istio/istiod -n istio-system --set profile=ambient --version 1.29.1 --wait
-helm upgrade istio-cni istio/cni -n istio-system --set profile=ambient --version 1.29.1 --wait
+helm upgrade istiod istio/istiod -n istio-system --set profile=ambient --version 1.29.1 
+helm upgrade istio-cni istio/cni -n istio-system --set profile=ambient --version 1.29.1 
 ```
 
 ### Step 3: ztunnel installieren
