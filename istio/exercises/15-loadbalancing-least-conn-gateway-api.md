@@ -331,7 +331,7 @@ Erwartete Ausgabe:
 
 ```
 --- Sende 30 Requests (10 parallel) ---
---- Gesamtdauer: 8s ---
+--- Gesamtdauer: x?s ---
 --- Verteilung pro Pod ---
      10 backend-fast-abc123 delay=0s
      10 backend-fast-def456 delay=0s
