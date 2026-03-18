@@ -639,71 +639,59 @@ spec:
 
 ## 11. Alerting
 
-Die folgenden Alert-Rules funktionieren mit jedem Prometheus-kompatiblen System.
-Die Einbindung unterscheidet sich je nach Setup.
-
-### Alert Rules
-
-```yaml
-groups:
-- name: ratelimit
-  rules:
-  # Alert wenn ein Kunde >50% over_limit hat
-  - alert: CustomerRateLimitExceeded
-    expr: |
-      rate(ratelimit_service_rate_limit_over_limit_count{domain="my-api"}[5m])
-      /
-      rate(ratelimit_service_rate_limit_total_hits_count{domain="my-api"}[5m])
-      > 0.5
-    for: 5m
-    labels:
-      severity: warning
-    annotations:
-      summary: "Kunde {{ $labels.key1 }} überschreitet Rate Limit"
-      description: "Mehr als 50% der Requests von {{ $labels.key1 }} werden abgelehnt."
-
-  # Alert wenn Rate Limit Service down
-  - alert: RateLimitServiceDown
-    expr: up{job="ratelimit"} == 0
-    for: 2m
-    labels:
-      severity: critical
-    annotations:
-      summary: "Rate Limit Service ist nicht erreichbar"
-
-  # Alert wenn Config-Load fehlschlägt
-  - alert: RateLimitConfigError
-    expr: increase(ratelimit_service_config_load_error[5m]) > 0
-    for: 1m
-    labels:
-      severity: warning
-    annotations:
-      summary: "Rate Limit Config konnte nicht geladen werden"
-```
+> **Hinweis**: Das Prometheus aus dem Istio Demo-Stack (`istio/samples/addons`)
+> hat keinen Operator. `PrometheusRule` CRDs werden dort nicht unterstützt.
 
 ### Variante A: Plain Prometheus / Istio Demo
 
-> **Hinweis**: Das Prometheus aus dem Istio Demo-Stack (`istio/samples/addons`)
-> hat keinen Operator. `PrometheusRule` CRDs werden nicht unterstützt.
-
-Die Rules als Datei in die Prometheus-ConfigMap einbinden:
+Die Rules direkt als ConfigMap einbinden:
 
 ```yaml
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: prometheus
+  name: prometheus-ratelimit-rules
   namespace: istio-system    # oder wo dein Prometheus läuft
 data:
-  alerting_rules.yml: |
-    # <Alert Rules von oben hier einfügen>
+  ratelimit_rules.yml: |
+    groups:
+    - name: ratelimit
+      rules:
+      - alert: CustomerRateLimitExceeded
+        expr: |
+          rate(ratelimit_service_rate_limit_over_limit_count{domain="my-api"}[5m])
+          /
+          rate(ratelimit_service_rate_limit_total_hits_count{domain="my-api"}[5m])
+          > 0.5
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "Kunde {{ $labels.key1 }} überschreitet Rate Limit"
+          description: "Mehr als 50% der Requests von {{ $labels.key1 }} werden abgelehnt."
+
+      - alert: RateLimitServiceDown
+        expr: up{job="ratelimit"} == 0
+        for: 2m
+        labels:
+          severity: critical
+        annotations:
+          summary: "Rate Limit Service ist nicht erreichbar"
+
+      - alert: RateLimitConfigError
+        expr: increase(ratelimit_service_config_load_error[5m]) > 0
+        for: 1m
+        labels:
+          severity: warning
+        annotations:
+          summary: "Rate Limit Config konnte nicht geladen werden"
 ```
 
-Oder als separate Datei, referenziert in `prometheus.yml`:
+Die ConfigMap muss als Volume in den Prometheus-Pod gemountet und in `prometheus.yml` referenziert werden:
 
 ```yaml
 rule_files:
-- /etc/prometheus/alerting_rules.yml
+- /etc/prometheus/ratelimit_rules.yml
 ```
 
 ### Variante B: Prometheus Operator
@@ -715,8 +703,39 @@ metadata:
   name: ratelimit-alerts
   namespace: ratelimit
 spec:
-  # <Alert Rules von oben hier einfügen>
+  groups:
+  - name: ratelimit
+    rules:
+    - alert: CustomerRateLimitExceeded
+      expr: |
+        rate(ratelimit_service_rate_limit_over_limit_count{domain="my-api"}[5m])
+        /
+        rate(ratelimit_service_rate_limit_total_hits_count{domain="my-api"}[5m])
+        > 0.5
+      for: 5m
+      labels:
+        severity: warning
+      annotations:
+        summary: "Kunde {{ $labels.key1 }} überschreitet Rate Limit"
+        description: "Mehr als 50% der Requests von {{ $labels.key1 }} werden abgelehnt."
+
+    - alert: RateLimitServiceDown
+      expr: up{job="ratelimit"} == 0
+      for: 2m
+      labels:
+        severity: critical
+      annotations:
+        summary: "Rate Limit Service ist nicht erreichbar"
+
+    - alert: RateLimitConfigError
+      expr: increase(ratelimit_service_config_load_error[5m]) > 0
+      for: 1m
+      labels:
+        severity: warning
+      annotations:
+        summary: "Rate Limit Config konnte nicht geladen werden"
 ```
+
 
 ---
 
