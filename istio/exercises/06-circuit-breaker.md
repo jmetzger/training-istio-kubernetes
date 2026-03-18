@@ -3,7 +3,7 @@
 ## Aufgabe des Circuit Breakers:
 
 ```
-Der Circuit Breaker in Istio schützt deine Services davor, einen überlasteten oder fehlerhaften Backend-Service weiter mit Requests zu bombardieren.
+Der Circuit Breaker in Istio schützt Deinen Services davor, einen überlasteten oder fehlerhaften Backend-Service weiter mit Requests zu bombardieren.
 ```
 
 ## Wie ?
