@@ -170,11 +170,4 @@ Together, these layers form a **mesh-level, enterprise-grade security architectu
 
 ---
 
-If you want, I can also prepare:
 
-🔹 A diagram of Istio’s Defense-in-Depth layers
-🔹 An exercise for trainees to explore each layer
-🔹 A comparison: **Istio Defense in Depth vs Kubernetes NetworkPolicies**
-🔹 How to explain it to a beginner / trainee group
-
-Just tell me, Sunshine!
