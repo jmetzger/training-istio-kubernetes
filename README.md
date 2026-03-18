@@ -73,6 +73,10 @@
    * Istio Authorization Policies (ingress/egress Security)
    * [ZeroTrust für bookinfo Namespace bookinfo einrichten](istio/exercises/16-zerotrust-bookinfo-einrichten.md)
 
+1. Demo-App (Gateway API) 
+   * [Istio demo-app *bookinfo* installieren (istio API - Variante)](istio/installation/istio-api/04-install-demo-app-bookinfo.md)
+
+
 1. Übungen Steuerung des Netzwerkverhaltens (istio api)
    * [Übung: Header-basiertes Routing - istio api](istio/exercises/virtualservice/02-exercise-request-routing.md)
   
