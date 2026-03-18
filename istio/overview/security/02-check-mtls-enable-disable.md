@@ -186,11 +186,11 @@ EOF
 ```bash
 # Aus dem Mesh – funktioniert (mit mTLS)
 kubectl -n bookinfo exec deploy/sleep -- \
-  curl -s -o /dev/null -w "%{http_code}" productpage:9080/productpage
+  curl -s -o /dev/null -w "%{http_code}\n" productpage:9080/productpage
 
 # Von außerhalb des Mesh – funktioniert jetzt auch (ohne mTLS)
 kubectl -n no-mesh exec deploy/sleep -- \
-  curl -s -o /dev/null -w "%{http_code}" productpage.bookinfo:9080/productpage
+  curl -s -o /dev/null -w "%{http_code}\n" productpage.bookinfo:9080/productpage
 ```
 
 **Frage:** Warum ist PERMISSIVE der Istio-Default und wann ist STRICT besser?
@@ -224,15 +224,15 @@ EOF
 ```bash
 # ratings ist jetzt STRICT – von außerhalb nicht erreichbar
 kubectl -n no-mesh exec deploy/sleep -- \
-  curl -s -o /dev/null -w "%{http_code}" ratings.bookinfo:9080/ratings/0
+  curl -s -o /dev/null -w "%{http_code}\n" ratings.bookinfo:9080/ratings/0
 
 # productpage ist weiterhin PERMISSIVE – von außerhalb erreichbar
 kubectl -n no-mesh exec deploy/sleep -- \
-  curl -s -o /dev/null -w "%{http_code}" productpage.bookinfo:9080/productpage
+  curl -s -o /dev/null -w "%{http_code}\n" productpage.bookinfo:9080/productpage
 
 # reviews (im Mesh) kann ratings weiterhin erreichen
 kubectl -n bookinfo exec deploy/sleep -- \
-  curl -s -o /dev/null -w "%{http_code}" ratings:9080/ratings/0
+  curl -s -o /dev/null -w "%{http_code}\n" ratings:9080/ratings/0
 ```
 
 **Frage:** In welcher Reihenfolge wertet Istio PeerAuthentication-Policies aus?
