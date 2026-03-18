@@ -258,7 +258,8 @@ GWPOD=$(kubectl get pods -n lb-demo -l gateway.networking.k8s.io/gateway-name=lb
 
 ```
 istioctl proxy-config cluster $GWPOD -n lb-demo   --fqdn "backend.lb-demo.svc.cluster.local" -o yaml | grep "LEAST"
-  lbPolicy: LEAST_REQUEST
+# expected output:
+#  lbPolicy: LEAST_REQUEST
 ```
 
 ## Schritt 6: Test-Funktion definieren
