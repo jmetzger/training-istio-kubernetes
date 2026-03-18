@@ -192,7 +192,7 @@ istioctl proxy-config log deploy/productpage-v1 -n bookinfo --level rbac:debug
 # Anfrage nochmal absetzen und Log überprüfen
 curl -s -o /dev/null -w "%{http_code}\n" http://$GATEWAY_IP/productpage
 # Es kommt nichts an
-kubectl logs -n bookinfo deploy/bookinfo-gateway-istio -c istio-proxy --tail=30 | grep rbac
+kubectl logs -n bookinfo deploy/productpage-v1 -c istio-proxy --tail=30 | grep rbac
 ```
 
   * **Resultat**: Da kommt nichts an, das Problem muss also davor sein: AM Gateway 
