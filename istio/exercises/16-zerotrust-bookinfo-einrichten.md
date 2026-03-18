@@ -396,9 +396,9 @@ kubectl get authorizationpolicies -n bookinfo
 ```bash
 # Test 1: ratings darf NICHT direkt von productpage aufgerufen werden
 ```
-
-# Debug Container verwenden 
 ```bash
+# Debug Container verwenden 
+
 POD=$(kubectl get pods -n bookinfo -l app=productpage -o jsonpath='{.items[0].metadata.name}')
 kubectl debug $POD -n bookinfo --image=curlimages/curl -it -- sh
 ```
