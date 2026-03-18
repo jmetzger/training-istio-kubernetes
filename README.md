@@ -35,8 +35,6 @@
 1. Demo-App (Gateway API) 
    * [Istio demo-app *bookinfo* installieren (Gateway API - Variante)](istio/installation/04-install-demo-app-bookinfo.md)
 
-
-
 1. CNI-Plugin istio
    * [Vorteile und Installation mit helm](istio/installation/06-istio-cni-plugin-helm.md)
     
@@ -53,7 +51,6 @@
 
 1. Übungen Steuerung des Netzwerkverhaltens (Gateway API)
    1. [Übung: Header-basiertes Routing](istio/exercises/virtualservice/02-exercise-request-routing.md)
-
 
 1. Sicherheit, Fehlertoleranz & Observability    
    * Istio Authorization Policies (ingress/egress Security)
@@ -118,6 +115,7 @@
    * [Grenze bei der Header-Größe Istio vs. Nginx](istio/misc/header-size-istio-vs-nginx.md)
    * [Istio als API Gateway](istio/misc/istio-als-api-gateway.md)
    * [Mehrere Namepaces bei allowedRoutes bei Gateway - Objekt / Gateway API](istio/misc/mehrere-allowedRoutes-in-gateway-api-gateway.md)
+   * [Global Ratelimiting, je nach Kunde](istio/misc/global-rate-limiting-pro-kunde.md)
 
   
 
