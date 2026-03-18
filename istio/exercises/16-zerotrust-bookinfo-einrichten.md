@@ -248,7 +248,7 @@ metadata:
 spec:
   selector:
     matchLabels:
-      gateway.networking.k8s.io/gateway-name:bookinfo-gateway
+      gateway.networking.k8s.io/gateway-name: bookinfo-gateway
   rules:
   - to:
     - operation:
