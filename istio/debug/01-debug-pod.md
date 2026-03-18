@@ -24,7 +24,7 @@ wget -O - http://reviews:9080/reviews/1
 exit
 ```
 
-## V2 - Variante 
+## V2 - Eigener Pod - Podtester  
 
 ```
 kubectl -n bookinfo run --rm -it podtester --image=busybox --overrides='{ "spec": { "serviceAccount": "bookinfo-productpage" }  }'
