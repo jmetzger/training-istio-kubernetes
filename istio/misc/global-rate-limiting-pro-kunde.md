@@ -629,7 +629,7 @@ spec:
     8081:
       mode: STRICT       # gRPC vom Gateway: mTLS (beide im Mesh)
     9102:
-      mode: PERMISSIVE    # Prometheus scrape: mit oder ohne mTLS
+      mode: PERMISSIVE    # Prometheus hat keinen Sidecar, braucht Plain-Text-Zugriff
 ```
 
 > **Ohne Mesh**: Wenn der ratelimit-Namespace nicht im Mesh ist
