@@ -49,8 +49,16 @@
    * [Pfadbasiertes Routing](istio/exercises/13-pfadbasiertes-routing-gateway-api.md)
    * [Übung: LoadBalancing (LEAST_CONN) - Regeln](istio/exercises/15-loadbalancing-least-conn-gateway-api.md)
 
-1. Übungen Steuerung des Netzwerkverhaltens (Gateway API)
-   1. [Übung: Header-basiertes Routing](istio/exercises/virtualservice/02-exercise-request-routing.md)
+1. Sichere Service-Kommunikation mit istio (Sicherheit)
+   * [Sicherheit & Zero Trust mit Istio](/istio/overview/zero-trust.md)
+   * [Was ist in istio deep-defense (defense in depth) ?](/istio/overview/defense-in-depth.md)   
+   * [Überblick 3 Säulen -  Sichere Service-Kommunikation](istio/overview/security/01-secure-service-communication.md)
+   * [Übung Säule 1: mTLS prüfen und aktivieren/deaktivieren](istio/overview/security/02-check-mtls-enable-disable.md)
+   * [Übung Säule 2 + 3: Authentication und Autohrization mit JWT und RBAC](istio/exercises/12-jwt-rbac.md)
+
+1. Übungen Steuerung des Netzwerkverhaltens (istio api)
+   
+   * [Übung: Header-basiertes Routing - istio api](istio/exercises/virtualservice/02-exercise-request-routing.md)
 
 1. Sicherheit, Fehlertoleranz & Observability    
    * Istio Authorization Policies (ingress/egress Security)
@@ -69,13 +77,6 @@
 1. Debugging
    * [Debugging mit debug/run pod](/istio/debug/01-debug-pod.md)
   
-1. Sichere Service-Kommunikation mit istio (Sicherheit)
-   * [Sicherheit & Zero Trust mit Istio](/istio/overview/zero-trust.md)
-   * [Was ist in istio deep-defense (defense in depth) ?](/istio/overview/defense-in-depth.md)   
-   * [Überblick 3 Säulen -  Sichere Service-Kommunikation](istio/overview/security/01-secure-service-communication.md)
-   * [Übung Säule 1: mTLS prüfen und aktivieren/deaktivieren](istio/overview/security/02-check-mtls-enable-disable.md)
-   * [Übung Säule 2 + 3: Authentication und Autohrization mit JWT und RBAC](istio/exercises/12-jwt-rbac.md)
-
 1. Monitoring, Logging & Observability
    * [Distributed Tracing mit Jaeger](istio/exercises/09-tracing-jaeger.md)
    * Metriken & Dashboards mit Prometheus & Grafana
