@@ -151,11 +151,11 @@ kubectl -n no-mesh wait --for=condition=ready pod --all --timeout=60s
 
 # Zugriff auf productpage versuchen
 kubectl -n no-mesh exec deploy/sleep -- \
-  curl -s -o /dev/null -w "%{http_code}" productpage.bookinfo:9080/productpage
+  curl -s -o /dev/null -w "%{http_code}\n" productpage.bookinfo:9080/productpage
 
 # Zugriff auf ratings versuchen
 kubectl -n no-mesh exec deploy/sleep -- \
-  curl -s -o /dev/null -w "%{http_code}" ratings.bookinfo:9080/ratings/0
+  curl -s -o /dev/null -w "%{http_code}\n" ratings.bookinfo:9080/ratings/0
 ```
 
 **Erwartetes Ergebnis:** Die Verbindungen schlagen fehl, da der Client kein mTLS-Zertifikat präsentiert. curl gibt den HTTP-Statuscode 000 aus (keine HTTP-Antwort) und bricht mit Exit Code 56 (CURLE_RECV_ERROR) ab – Envoy resettet die Verbindung bereits auf TLS-Ebene, bevor es zur HTTP-Kommunikation kommt.
