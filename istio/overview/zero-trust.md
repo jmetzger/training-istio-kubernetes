@@ -41,7 +41,7 @@ Das ist Zero-Trust.
 
 ---
 
-## 4️⃣ **Policy enforcement auf Service-Ebene**
+## 4️⃣ **Policy enforcement auf Infrastruktur-Ebene**
 
 Alle Regeln gelten **zentral**, unabhängig vom Code des Services.
 Das heißt:
