@@ -369,7 +369,7 @@ EOF
 ### Verifizieren
 
 ```bash
-curl -s http://$GATEWAY_IP/productpage | grep -o "Ratings"
+curl -s http://$GATEWAY_IP/productpage | grep -o "Reviews"
 # Erwartung: Ratings werden angezeigt (Sterne bei reviews v2/v3)
 ```
 
