@@ -32,6 +32,9 @@ cp -a ~/istio/samples/bookinfo/networking/destination-rule-all.yaml destination-
 kubectl -n bookinfo apply -f destination-rule-all.yaml 
 ```
 
+
+
+
 ---
 
 ### 1. VirtualService: Alle Requests → `reviews-v1`
@@ -61,8 +64,13 @@ kubectl -n bookinfo get virtualservice reviews -n bookinfo
 ```
 
 ```
+# Gateway IP ausfinden machen
+kubectl -n istio-ingress get svc istio-ingress
+GATEWAY_URL=<ip-aus-letzter-ausgabe>
+
+```
 # Anzeige im Browser - es ist immer die v1
-http://164.90.237.35/productpage
+http://$GATEWAY_URL/productpage
 ```
 
 
