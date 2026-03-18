@@ -120,8 +120,11 @@ EOF
 
 ```bash
 # Über den Browser oder curl auf die Productpage zugreifen
-curl -s -o /dev/null -w "%{http_code}" http://$GATEWAY_IP/productpage
-# Erwartung: 403 Forbidden
+curl -s -o /dev/null -w "%{http_code}\n" http://$GATEWAY_IP/productpage
+```
+
+```
+#Erwartung: 403
 ```
 
 > **Erklärung:** Eine Policy mit `spec: {}` (keine `action`, keine `rules`) bedeutet:  
