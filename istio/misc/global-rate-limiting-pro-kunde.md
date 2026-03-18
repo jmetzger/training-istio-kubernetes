@@ -46,12 +46,12 @@ Client --[JWT]--> Gateway (istio-ingressgateway)
 | 3 | ConfigMap ratelimit-config | ratelimit | Rate Limits pro Kunde |
 | 4 | ConfigMap statsd-config | ratelimit | StatsD → Prometheus Mapping |
 | 5 | Deployment + Service ratelimit | ratelimit | RLS + statsd-exporter Sidecar |
-| 6 | PodMonitor | ratelimit | Prometheus Scrape Config |
+| 6 | PodMonitor | ratelimit | Prometheus Scrape Config (nur mit Operator) |
 | 7 | RequestAuthentication | istio-system | JWT Validierung am Gateway |
 | 8 | AuthorizationPolicy | istio-system | JWT erzwingen |
 | 9 | EnvoyFilter | istio-system | Cluster-Patch + Rate Limit Filter + Descriptor |
 | 10 | PeerAuthentication | ratelimit | Metrics-Port PERMISSIVE für Prometheus Scrape |
-| 11 | PrometheusRule | ratelimit | Alerting |
+| 11 | Alerting Rules | ratelimit | PrometheusRule (Operator) oder ConfigMap (plain) |
 
 ---
 
@@ -404,7 +404,29 @@ spec:
 
 ---
 
-## 6. PodMonitor (für Prometheus Operator / VictoriaMetrics)
+## 6. Monitoring Scrape Config
+
+> **Hinweis**: Das Prometheus aus dem Istio Demo-Stack (`istio/samples/addons`)
+> ist ein **Plain Prometheus ohne Operator**. CRDs wie `PodMonitor` und
+> `PrometheusRule` existieren dort nicht.
+
+### Variante A: Plain Prometheus / Istio Demo (Standard)
+
+Kein extra Manifest nötig. Das Deployment in Schritt 5 hat bereits die
+Annotations gesetzt, die Plain Prometheus automatisch scraped:
+
+```yaml
+# Bereits im Deployment (Schritt 5) enthalten:
+annotations:
+  prometheus.io/scrape: "true"
+  prometheus.io/port: "9102"
+  prometheus.io/path: "/metrics"
+```
+
+### Variante B: Prometheus Operator / VictoriaMetrics Operator
+
+Nur wenn du den Prometheus Operator (z.B. kube-prometheus-stack) oder
+VictoriaMetrics Operator nutzt:
 
 ```yaml
 apiVersion: monitoring.coreos.com/v1
@@ -424,8 +446,8 @@ spec:
     interval: 15s
 ```
 
-> Falls du keinen Prometheus Operator nutzt, reichen die
-> `prometheus.io/*` Annotations am Pod (bereits in Schritt 5 gesetzt).
+> **Nicht beides gleichzeitig** — Annotations + PodMonitor führt zu doppeltem Scraping.
+> Bei Nutzung von PodMonitor die Annotations aus dem Deployment entfernen.
 
 ---
 
@@ -615,7 +637,76 @@ spec:
 
 ---
 
-## 11. Alerting (PrometheusRule)
+## 11. Alerting
+
+Die folgenden Alert-Rules funktionieren mit jedem Prometheus-kompatiblen System.
+Die Einbindung unterscheidet sich je nach Setup.
+
+### Alert Rules
+
+```yaml
+groups:
+- name: ratelimit
+  rules:
+  # Alert wenn ein Kunde >50% over_limit hat
+  - alert: CustomerRateLimitExceeded
+    expr: |
+      rate(ratelimit_service_rate_limit_over_limit_count{domain="my-api"}[5m])
+      /
+      rate(ratelimit_service_rate_limit_total_hits_count{domain="my-api"}[5m])
+      > 0.5
+    for: 5m
+    labels:
+      severity: warning
+    annotations:
+      summary: "Kunde {{ $labels.key1 }} überschreitet Rate Limit"
+      description: "Mehr als 50% der Requests von {{ $labels.key1 }} werden abgelehnt."
+
+  # Alert wenn Rate Limit Service down
+  - alert: RateLimitServiceDown
+    expr: up{job="ratelimit"} == 0
+    for: 2m
+    labels:
+      severity: critical
+    annotations:
+      summary: "Rate Limit Service ist nicht erreichbar"
+
+  # Alert wenn Config-Load fehlschlägt
+  - alert: RateLimitConfigError
+    expr: increase(ratelimit_service_config_load_error[5m]) > 0
+    for: 1m
+    labels:
+      severity: warning
+    annotations:
+      summary: "Rate Limit Config konnte nicht geladen werden"
+```
+
+### Variante A: Plain Prometheus / Istio Demo
+
+> **Hinweis**: Das Prometheus aus dem Istio Demo-Stack (`istio/samples/addons`)
+> hat keinen Operator. `PrometheusRule` CRDs werden nicht unterstützt.
+
+Die Rules als Datei in die Prometheus-ConfigMap einbinden:
+
+```yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: prometheus
+  namespace: istio-system    # oder wo dein Prometheus läuft
+data:
+  alerting_rules.yml: |
+    # <Alert Rules von oben hier einfügen>
+```
+
+Oder als separate Datei, referenziert in `prometheus.yml`:
+
+```yaml
+rule_files:
+- /etc/prometheus/alerting_rules.yml
+```
+
+### Variante B: Prometheus Operator
 
 ```yaml
 apiVersion: monitoring.coreos.com/v1
@@ -624,40 +715,7 @@ metadata:
   name: ratelimit-alerts
   namespace: ratelimit
 spec:
-  groups:
-  - name: ratelimit
-    rules:
-    # Alert wenn ein Kunde >50% over_limit hat
-    - alert: CustomerRateLimitExceeded
-      expr: |
-        rate(ratelimit_service_rate_limit_over_limit_count{domain="my-api"}[5m])
-        /
-        rate(ratelimit_service_rate_limit_total_hits_count{domain="my-api"}[5m])
-        > 0.5
-      for: 5m
-      labels:
-        severity: warning
-      annotations:
-        summary: "Kunde {{ $labels.key1 }} überschreitet Rate Limit"
-        description: "Mehr als 50% der Requests von {{ $labels.key1 }} werden abgelehnt."
-
-    # Alert wenn Rate Limit Service down
-    - alert: RateLimitServiceDown
-      expr: up{job="ratelimit"} == 0
-      for: 2m
-      labels:
-        severity: critical
-      annotations:
-        summary: "Rate Limit Service ist nicht erreichbar"
-
-    # Alert wenn Config-Load fehlschlägt
-    - alert: RateLimitConfigError
-      expr: increase(ratelimit_service_config_load_error[5m]) > 0
-      for: 1m
-      labels:
-        severity: warning
-      annotations:
-        summary: "Rate Limit Config konnte nicht geladen werden"
+  # <Alert Rules von oben hier einfügen>
 ```
 
 ---
@@ -680,8 +738,8 @@ kubectl apply -f 04-statsd-config.yaml
 kubectl apply -f 05-ratelimit-deployment.yaml
 kubectl -n ratelimit wait --for=condition=ready pod -l app=ratelimit --timeout=60s
 
-# 5. Monitoring
-kubectl apply -f 06-podmonitor.yaml
+# 5. Monitoring (nur bei Prometheus Operator, sonst überspringen - Annotations reichen)
+# kubectl apply -f 06-podmonitor.yaml
 
 # 6. PeerAuthentication (nötig weil ratelimit im Mesh)
 kubectl apply -f 07-peer-authentication.yaml
@@ -693,8 +751,8 @@ kubectl apply -f 09-authorization-policy.yaml
 # 8. EnvoyFilter (zuletzt!)
 kubectl apply -f 10-envoyfilter-ratelimit.yaml
 
-# 9. Alerting
-kubectl apply -f 11-prometheus-rules.yaml
+# 9. Alerting (PrometheusRule bei Operator, sonst ConfigMap - siehe Schritt 11)
+# kubectl apply -f 11-prometheus-rules.yaml
 ```
 
 ---
