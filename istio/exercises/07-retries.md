@@ -163,7 +163,7 @@ kubectl exec -n "$NAMESPACE" -c reviews "$REVIEWS_POD" -- sh -c '
   i=0
   while true; do
     i=$((i+1))
-    code=$(curl -s -o /dev/null -w "%{http_code} in %{time_total}s" http://flaky-server:8080/ || echo "000 in 0")
+    code=$(curl -s -o /dev/null -w "%{http_code}\n in %{time_total}s" http://flaky-server:8080/ || echo "000 in 0")
     echo "[Request $i] -> $code"
     sleep 1
   done
