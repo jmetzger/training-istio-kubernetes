@@ -169,10 +169,12 @@ EOF
 
 ```bash
 curl -s -o /dev/null -w "%{http_code}" http://$GATEWAY_IP/productpage
-# Erwartung: 200 OK – aber die Seite zeigt Fehler für Reviews und Details (noch blockiert)
 ```
 
-  * Aber: Es ist 403. 
+```
+# Erwartung: 200 OK – aber die Seite zeigt Fehler für Reviews und Details (noch blockiert)
+# --> Aber: Es ist 403.
+``` 
 
 ---
 
