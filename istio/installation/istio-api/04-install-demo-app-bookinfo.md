@@ -29,14 +29,6 @@ kubectl -n bookinfo exec "$(kubectl -n bookinfo get pod -l app=ratings -o jsonpa
 ## App mit istio-ingress-gateway nach aussen öffnen 
 
 ```
-# That's what we do ....
-kubectl -n bookinfo apply -fca
-
-
-
-```
-
-```
 cd
 mkdir -p manifests/istio-gateway
 cd manifests/istio-gateway
@@ -90,7 +82,7 @@ spec:
 ```
 
 ```
-kubectl apply -f .
+kubectl -n bookinfo apply -f .
 ```
 
 
