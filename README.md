@@ -95,8 +95,8 @@
    * Multi-Cluster- & Hybrid-Umgebungen mit Istio
    * Istio Federation & Cross-Cluster Traffic
 
-1. Erweiterte Routing-Techniken & Traffic-Optimierung (Gateway API) 
-   * Canary Releases & Progressive Deployments
+1. Erweiterte Routing-Techniken & Traffic-Optimierung (Istio API) 
+   * [Canary Releases & Progressive Deployments / Traffic - Shifting](istio/exercises/virtualservice/04-traffic-shift.md)
    * A/B-Tests & Traffic Mirroring
    * Blue-Green- und Canary-Deployments mit Istio
 
