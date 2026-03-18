@@ -395,6 +395,7 @@ kubectl get authorizationpolicies -n bookinfo
 
 ```bash
 # Test 1: ratings darf NICHT direkt von productpage aufgerufen werden
+```
 
 # Debug Container verwenden 
 ```bash
