@@ -426,8 +426,7 @@ curl -s -o /dev/null -w "%{http_code}\n" http://reviews:9080/reviews/0
 
 ```
 # Test 3: POST auf productpage ist nicht erlaubt (nur GET)
-kubectl apply -f ~/istio/sam
-ples/sleep/sleep.yaml -n bookinfo
+kubectl apply -f ~/istio/samples/sleep/sleep.yaml -n bookinfo
 kubectl exec deploy/sleep -n bookinfo -c sleep -- \
   curl -s -o /dev/null -w "%{http_code}\n" -X POST http://productpage:9080/productpage
 # Erwartung: 403
@@ -435,7 +434,7 @@ kubectl exec deploy/sleep -n bookinfo -c sleep -- \
 
 ---
 
-## Schritt 13: DENY-Policy – Explizit blockieren
+## Schritt 14: DENY-Policy – Explizit blockieren
 
 DENY-Policies werden **vor** ALLOW evaluiert und eignen sich für zusätzliche Einschränkungen.
 
@@ -479,7 +478,7 @@ curl -s -o /dev/null -w "%{http_code}\n" -H "x-debug: true" http://ratings:9080/
 
 ---
 
-## Schritt 14: Alternative Namespace-Isolation (Bonus) - statt 
+## Schritt 15: Alternative Namespace-Isolation (Bonus) - statt 
 
 Services aus anderen Namespaces komplett blockieren:
 
