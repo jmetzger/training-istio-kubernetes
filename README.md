@@ -116,6 +116,7 @@
    * [Istio als API Gateway](istio/misc/istio-als-api-gateway.md)
    * [Mehrere Namepaces bei allowedRoutes bei Gateway - Objekt / Gateway API](istio/misc/mehrere-allowedRoutes-in-gateway-api-gateway.md)
    * [Global Ratelimiting, je nach Kunde](istio/misc/global-rate-limiting-pro-kunde.md)
+   * [zu istio beitragen](istio/misc/zu-istio-beitragen.md)
 
   
 
