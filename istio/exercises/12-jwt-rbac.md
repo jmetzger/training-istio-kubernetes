@@ -107,7 +107,7 @@ kubectl apply -f .
 
 ## Step 4: Check with an invalid jwt 
 
-  * Invalid is restricted, so we do not get acces (no 200) 
+  * Invalid is restricted, so we do not get access (no 200) 
 
 ```
 kubectl exec "$(kubectl get pod -l app=curl -n foo -o jsonpath={.items..metadata.name})" -c curl -n foo -- curl "http://httpbin.foo:8000/headers" -sS -o /dev/null -H "Authorization: Bearer invalidToken" -w "%{http_code}\n"
