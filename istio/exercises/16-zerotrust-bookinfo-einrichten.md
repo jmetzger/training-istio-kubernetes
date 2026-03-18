@@ -51,7 +51,7 @@ cd manifests/zero-trust-rbac
 ```
 # just in case 
 kubectl -n bookinfo delete virtualservice details productpage reviews
-ubectl -n bookinfo delete destinationrule details productpage ratings reviews
+kubectl -n bookinfo delete destinationrule details productpage ratings reviews
 ```
 
 ```
