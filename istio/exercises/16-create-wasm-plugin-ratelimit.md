@@ -349,7 +349,7 @@ kubectl -n demo run test --rm -it --image=curlimages/curl -- \
 kubectl -n demo run loadtest --rm -it --image=curlimages/curl -- sh -c '
   ALLOWED=0; DENIED=0
   for i in $(seq 1 200); do
-    STATUS=$(curl -s -o /dev/null -w "%{http_code}" http://my-service:8080/get)
+    STATUS=$(curl -s -o /dev/null -w "%{http_code}\n" http://my-service:8080/get)
     [ "$STATUS" = "429" ] && DENIED=$((DENIED + 1)) || ALLOWED=$((ALLOWED + 1))
   done
   echo "Erlaubt: $ALLOWED | Gedrosselt: $DENIED | Gesamt: 200"
