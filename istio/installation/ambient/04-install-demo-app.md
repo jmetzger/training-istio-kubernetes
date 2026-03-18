@@ -39,6 +39,7 @@ cat waypoint.yaml
 ```
 # Ausrollen
 kubectl apply -f waypoint.yaml
+kubectl label namespace bookinfo istio.io/use-waypoint=waypoint
 ```
 
 ```
