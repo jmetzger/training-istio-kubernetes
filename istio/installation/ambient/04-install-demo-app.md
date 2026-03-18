@@ -23,7 +23,6 @@ kubectl label namespace bookinfo istio.io/dataplane-mode=ambient
 cd
 mkdir -p manifests/waypoint
 cd manifests/waypoint
-nano gateway.yaml
 ```  
 
 
