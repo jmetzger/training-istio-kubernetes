@@ -48,7 +48,7 @@ metadata:
   name: my-api
 spec:
   ports:
-    - name: http           # Istio erkennt "http" im Port-Namen
+    - name: http       
       port: 80
       targetPort: 8080
       appProtocol: http    # explizit – spart Sniffing-Phase
