@@ -272,7 +272,7 @@ curl -s -o /dev/null -w "%{http_code}\n" http://$GATEWAY_IP/productpage
 ```
 
 ```
-# For fun: wie seht RBAC - Eintrag aus 
+# For fun: wie sieht der RBAC - Eintrag aus 
 kubectl logs -n bookinfo deploy/bookinfo-gateway-istio -c istio-proxy --tail=30 | grep rbac
 ```
 
