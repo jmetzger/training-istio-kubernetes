@@ -1,4 +1,4 @@
-# Istio Authorization Policies – Zero Trust mit Bookinfo
+# Istio Authorization Policies – Zero Trust mit Bookinfo (sidecar/gateway api)
 
 ## Ziel
 
