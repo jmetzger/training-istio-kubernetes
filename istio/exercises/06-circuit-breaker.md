@@ -142,7 +142,7 @@ Erwartung: **HTTP 200 OK** mit JSON-Antwort.
 ## 6️⃣ Circuit Breaker „anrucken“ (2 Verbindungen)
 
 ```bash
-ubectl exec -n bookinfo "$FORTIO_POD" -c fortio --   /usr/bin/fortio load -c 2 -qps 0 -n 20 -loglevel Warning   http://httpbin:8000/get 2>&1 | grep "Code "
+kubectl exec -n bookinfo "$FORTIO_POD" -c fortio --   /usr/bin/fortio load -c 2 -qps 0 -n 20 -loglevel Warning   http://httpbin:8000/get 2>&1 | grep "Code "
 ```
 
 * `-c 2` → 2 gleichzeitige Verbindungen
