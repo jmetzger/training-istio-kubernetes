@@ -4,7 +4,7 @@
 
 <img width="693" height="465" alt="image" src="https://github.com/user-attachments/assets/22cbf386-5a90-458b-8157-51620ef829ea" />
 
-## (Optiona) Alte Installation entfernen 
+## (Optional) Alte Installation entfernen 
 
 ```
 kubectl delete ns bookinfo
