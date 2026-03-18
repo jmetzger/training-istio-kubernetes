@@ -18,23 +18,6 @@ kubectl -n bookinfo debug productpage-v1-54bb874995-rr7cv -it --image=busybox
 ```
 # in der bash 
 wget -O - http://reviews:9080/reviews/1
-exit
-```
-
->[NOTE:]
-> Achtung ! Danach 1-2 Minuten warten !!! 
-```
-# AuthorizationPolicy rausnehmen
-kubectl delete -f 03-reviews-from-productpage.yaml
-```
-
-```
-kubectl -n bookinfo debug productpage-v1-54bb874995-rr7cv -it --image=busybox
-```
-
-```
-# in der bash 
-wget -O - http://reviews:9080/reviews/1
 ```
 
 ```
