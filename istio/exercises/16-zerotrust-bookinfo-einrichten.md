@@ -248,7 +248,7 @@ metadata:
 spec:
   selector:
     matchLabels:
-      gateway.networking.k8s.io/gateway-name=bookinfo-gateway
+      gateway.networking.k8s.io/gateway-name:bookinfo-gateway
   rules:
   - to:
     - operation:
@@ -277,7 +277,6 @@ kubectl logs -n bookinfo deploy/bookinfo-gateway-istio -c istio-proxy --tail=30 
 ```
 
  * Ergebnis: Es klappt. Eintrag: allowed by default or by policy 
- ```
 
 
 ## Schritt 10: productpage → details erlauben
