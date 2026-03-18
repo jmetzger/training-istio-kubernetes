@@ -5,7 +5,7 @@
  * We need a way that a service is mounted into the pod (service-account is used) 
  * Same serviceAccount that would be used by productpage - pod itself 
 
-## Step 1: Debug-Container zum Debuggen 
+## Variante 1: Debug-Container zum Debuggen 
 
   * Debug Container in productpage - pod starten, um Verbindung zu pod -> Review zu debuggen 
 
@@ -24,8 +24,8 @@ wget -O - http://reviews:9080/reviews/1
 exit
 ```
 
-## Step 2(V2 - Variante) 
+## V2 - Variante 
 
 ```
-kubectl -n bookinfo run -it podtester --image=busybox --overrides='{ "spec": { "serviceAccount": "bookinfo-productpage" }  }'
+kubectl -n bookinfo run --rm -it podtester --image=busybox --overrides='{ "spec": { "serviceAccount": "bookinfo-productpage" }  }'
 ```
