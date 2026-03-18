@@ -162,9 +162,6 @@ kubectl -n no-mesh exec deploy/sleep -- \
 
 ---
 
-```
-kubectl delete ns no-mesh
-```
 
 ## Schritt 4: mTLS auf PERMISSIVE setzen
 
