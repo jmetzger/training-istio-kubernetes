@@ -6,16 +6,7 @@
 
 ## Vorbereitung
 
-### Gateway API - CRD's installieren (Stand 2026-03-12)
-
-   * falls nicht bereits vorher geschehen
-
-```
-kubectl apply -f https://github.com/kubernetes-sigs/gateway-api/releases/download/v1.4.0/
-standard-install.yaml
-```
-
-
+### Namespace erstellen und labeln. 
 ```
 kubectl create ns bookinfo
 kubectl label namespace bookinfo istio-injection=enabled
