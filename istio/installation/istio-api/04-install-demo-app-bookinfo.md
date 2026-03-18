@@ -40,7 +40,7 @@ kubectl -n bookinfo apply -fca
 cd
 mkdir -p manifests/istio-gateway
 cd manifests/istio-gateway
-nano gateway.yaml
+nano gateway-virtualservice.yaml
 ```
 
 ```
