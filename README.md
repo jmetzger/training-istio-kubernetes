@@ -101,7 +101,8 @@
    * Blue-Green- und Canary-Deployments mit Istio
 
 1. Installation von istio (ambient mode)
-   * [istio-installation mit istioctl - ambient](istio/installation/ambient/03-install-with-istioctl.md)
+   * [istio-installation mit istioctl - ambient](istio/installation/ambient/03-install-with-istioctl-ambient.md)
+   * [istio-installation with helm - ambient](istio/installation/ambient/03-install-with-helm.md)
    * [Bookinfo demo in ambient ausrollen](istio/installation/ambient/04-install-demo-app.md) 
 
 1. Erweiterbarkeit von Istio
