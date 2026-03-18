@@ -229,6 +229,8 @@ kubectl logs -n bookinfo deploy/bookinfo-gateway-istio -c istio-proxy --tail=30 
 # Hier sehen wir die labels 
 kubectl -n bookinfo get pods --show-labels | grep gateway
 ```
+
+```
 nano allow-gateway-inbound.yaml 
 ```
 
