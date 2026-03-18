@@ -45,6 +45,7 @@ spec:
             type_url: type.googleapis.com/envoy.extensions.filters.http.local_ratelimit.v3.LocalRateLimit
             value:
               stat_prefix: http_local_rate_limiter
+              enable_x_ratelimit_headers: DRAFT_VERSION_03 # mehr infos im outpunt header - wieviele token sind verbraucht 
               token_bucket:
                 max_tokens: 240
                 tokens_per_fill: 240
