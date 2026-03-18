@@ -3,7 +3,7 @@
 ## Why like this ?
 
  * We need a way that a service is mounted into the pod (service-account is used) 
- * Same serviceAccount that would be used productpage - pod itself 
+ * Same serviceAccount that would be used by productpage - pod itself 
 
 ## Step 1: Debug-Container zum Debuggen 
 
