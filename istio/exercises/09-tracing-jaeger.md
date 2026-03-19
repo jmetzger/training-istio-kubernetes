@@ -44,6 +44,7 @@ pilot:
 ```
 
 ```
+kubectl delete validatingwebhookconfigurations istio-validator-istio-system
 helm upgrade istiod istio/istiod -n istio-system --set profile=ambient --version 1.29.1 -f values.yaml
 
 ```
