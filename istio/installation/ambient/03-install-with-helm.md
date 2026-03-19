@@ -13,6 +13,9 @@ kubectl apply --server-side -f https://github.com/kubernetes-sigs/gateway-api/re
 
 ### Step 2: istiod und cni auf Ambient-Profil upgraden
 ```bash
+# Zur Sicherheit, manchmal gibt es Probleme mit dem Mutating Webhook
+kubectl delete validatingwebhookconfigurations istio-validator-istio-system
+
 helm upgrade istiod istio/istiod -n istio-system --set profile=ambient --version 1.29.1 
 helm upgrade istio-cni istio/cni -n istio-system --set profile=ambient --version 1.29.1 
 ```
