@@ -8,6 +8,8 @@
 
 ## Special when using ambient 
 
+  * because installing with helm does not use demo-profile 
+
 ```
 cd 
 mkdir -p manifests/jaeger
