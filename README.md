@@ -95,7 +95,8 @@
    * [Skalierung von Istio - Möglichkeiten/Tipps&Tricks](istio/skalierung-performance/skalierung.md)
    * [Performance-Optimierung](istio/skalierung-performance/performance.md)
    * Sidecar-Overhead & Ressourcenoptimierung
-   * Ambient Mesh (sidecar-less Istio für Performance-Gewinn)
+   * [Ambient Mesh Graphical Overview (sidecar-less Istio für Performance-Gewinn)](/istio/overview/ambient-mode.md)
+   * [Vergleich ohne istio, istio sidecar, istio ambient](/istio/overview/performance-comparison-baseline-sidecar-ambient.md)
    * Multi-Cluster- & Hybrid-Umgebungen mit Istio
    * Istio Federation & Cross-Cluster Traffic
 
