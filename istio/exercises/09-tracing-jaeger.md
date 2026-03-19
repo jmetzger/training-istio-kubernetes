@@ -6,6 +6,50 @@
   * demo profile is set up
   * bookinfo is rolled out
 
+## Special when using ambient 
+
+```
+cd 
+mkdir -p manifests/jaeger
+cd manifests/jaeger
+nano values.yaml 
+```
+
+```
+meshConfig:
+  accessLogFile: /dev/stdout
+  extensionProviders:
+    - name: otel
+      envoyOtelAls:
+        service: opentelemetry-collector.observability.svc.cluster.local
+        port: 4317
+    - name: skywalking
+      skywalking:
+        service: tracing.istio-system.svc.cluster.local
+        port: 11800
+    - name: otel-tracing
+      opentelemetry:
+        port: 4317
+        service: opentelemetry-collector.observability.svc.cluster.local
+    - name: jaeger
+      opentelemetry:
+        port: 4317
+        service: jaeger-collector.istio-system.svc.cluster.local        
+
+
+pilot:
+  traceSampling: 100
+```
+
+```
+helm upgrade istiod istio/istiod -n istio-system --set profile=ambient --version 1.29.1 -f values.yaml
+
+```
+
+
+
+
+
 ## Note: 
 
   * You do NOT need to enable tracing, because it is already active in demo profile
