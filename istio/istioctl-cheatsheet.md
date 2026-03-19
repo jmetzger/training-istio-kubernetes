@@ -271,7 +271,7 @@ istioctl ztunnel-config workload <ztunnel-pod>.<ns> --node <node-name>
 istioctl ztunnel-config service
 
 # Zertifikate
-istioctl ztunnel-config certificates
+istioctl ztunnel-config certificates --node <node-name>
 
 # Policies
 istioctl ztunnel-config policies
