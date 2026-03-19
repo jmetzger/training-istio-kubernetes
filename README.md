@@ -31,6 +31,7 @@
    * [Systemanforderungen & Kubernetes-Cluster-Vorbereitung](istio/requirements/overview.md)
    * [Istio-Installation mit helm charts](istio/installation/03a-install-with-helm-with-demo-profile.md)
    * [istioctl als debugging - tool installieren](istio/installation/03b-install-istioctl.md)
+   * [Canary Update von istiod mit tags und revisions](/istio/installation/ambient/05-istio-canary-upgrade-revisions.md)
 
 1. Prinzip: Side-Car Injection
    * [Istio Sidecar-Injection](istio/exercises/01-exercise-injection.md)
