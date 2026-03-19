@@ -65,15 +65,9 @@ kubectl -n bookinfo exec "$(kubectl -n bookinfo get pod -l app=ratings -o jsonpa
 kubectl -n bookinfo exec deployments/ratings-v1 -c ratings -- curl -sS productpage:9080/productpage | grep -o "<title>.*</title>"
 ```
 
-## App mit Gateway API nach aussen öffnen
+## Von aussen Anfragen über gateway (gateway api)
 
 ```
-# That's what we do ....
-cat ~/istio/samples/bookinfo/gateway-api/bookinfo-gateway.yaml
-```
-
-```
-kubectl -n bookinfo apply -f ~/istio/samples/bookinfo/gateway-api/bookinfo-gateway.yaml
 kubectl -n bookinfo get gateways
 kubectl -n bookinfo get httproutes -o yaml
 ```
