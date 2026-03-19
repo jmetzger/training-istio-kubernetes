@@ -91,7 +91,7 @@
    * [Sinnvolle istio Metriken und Dashboards - Teil 1](istio/observeability/istio-observability-in-grafana.md)
    * [Sinnvolle istio Metriken und Dashboards - Teil 2](https://github.com/jmetzger/training-istio-kubernetes/blob/main/istio/observeability/istio-observeablity-in-prometheus-2.md
 )
-   * [Installaton Kiali // Installation](istio/installation/addons/kiali.md)
+   * [Installation Kiali // Installation](istio/installation/addons/kiali.md)
    * [Visualisierung mit Kiali](istio/exercises/05-kiali-traffic.md)
    * [Analyse & Debugging von Service-Mesh-Daten](istio/strategie/mesh-daten-analysieren-und-debuggen.md)
 
