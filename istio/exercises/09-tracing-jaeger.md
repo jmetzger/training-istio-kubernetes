@@ -96,7 +96,7 @@ kubectl -n bookinfo get gateway bookinfo-gateway
 ```
 # Adjust to your own IP 
 GATEWAY_URL=164.90.237.35
-for i in $(seq 1 100); do curl -s -o /dev/null "http://$GATEWAY_URL/productpage";
+for i in $(seq 1 100); do curl -s -o /dev/null "http://$GATEWAY_URL/productpage"; done
 ```
 
 ## Open jaeger.tlnxx.do.t3isp.de 
