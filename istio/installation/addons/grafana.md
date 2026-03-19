@@ -66,7 +66,7 @@ metadata:
 spec:
   ingressClassName: "nginx"
   rules:
-    - host: grafana.tlnXX.do.t3isp.de
+    - host: grafana.tlnXX.app.do.t3isp.de
       # ⬆️ Each trainee replaces "XX" with their number, e.g. grafana.tln10.do.t3isp.de
       http:
         paths:
@@ -85,5 +85,5 @@ kubectl apply -f .
 
 ```
 # Im browser aufrufen und credentials eingeben (s.o.)
-http://grafana.tlnXX.do.t3isp.de
+http://grafana.tlnXX.app.do.t3isp.de
 ```
