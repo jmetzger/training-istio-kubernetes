@@ -5,7 +5,7 @@
 ```
 # Set your ip here, you will get it from
 # Look for the line with external ip 
-kubectl -n bookinfo get svc 
+kubectl -n bookinfo get gateway bookinfo-gateway  
 GATEWAY_URL=164.90.237.35 
 
 # This consistantly shows 200, without much a-do 
