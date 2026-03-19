@@ -50,7 +50,8 @@ istioctl waypoint list --namespace bookinfo
 ## Bookinfo App ausrollen
 
 ```
-kubectl -n bookinfo rollout restart deployment 
+kubectl -n bookinfo rollout restart deployment
+kubectl -n bookinfo get pods 
 ```
 
 ## Testen ob die App funktioniert
