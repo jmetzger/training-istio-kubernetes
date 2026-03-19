@@ -50,9 +50,7 @@ istioctl waypoint list --namespace bookinfo
 ## Bookinfo App ausrollen
 
 ```
-kubectl -n bookinfo apply -f ~/istio/samples/bookinfo/platform/kube/bookinfo.yaml
-kubectl -n bookinfo apply -f ~/istio/samples/bookinfo/platform/kube/bookinfo-versions.yaml
-kubectl -n bookinfo get all
+kubectl -n bookinfo rollout restart deployment 
 ```
 
 ## Testen ob die App funktioniert
