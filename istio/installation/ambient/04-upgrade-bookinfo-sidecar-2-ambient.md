@@ -83,6 +83,19 @@ http://<external-ip>/productpage
 # oder im Browser öffnen
 ```
 
+## Testen aus einem namespace der nicht teil des istio mesh ist 
+
+```
+kubectl create ns no-mesh
+kubectl -n no-mesh apply -f https://raw.githubusercontent.com/istio/istio/release-1.25/samples/sleep/sleep.yaml
+kubectl -n no-mesh wait --for=condition=ready pod --all --timeout=60s
+
+# Zugriff auf productpage versuchen
+kubectl -n no-mesh exec deploy/sleep -- \
+  curl -s -o /dev/null -w "%{http_code}\n" productpage.bookinfo:9080/productpage
+```
+
+
 ## Ref
 
   * https://istio.io/latest/docs/ambient/getting-started/deploy-sample-app/
