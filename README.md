@@ -81,6 +81,7 @@
    * [Übung: Header-basiertes Routing - istio api](istio/exercises/virtualservice/02-exercise-request-routing.md)
   
 1. Monitoring, Logging & Observability
+   * [Installation Jaeger](istio/installation/addons/jaeger.md)
    * [Distributed Tracing mit Jaeger](istio/exercises/09-tracing-jaeger.md)
    * Metriken & Dashboards mit Prometheus & Grafana
    * [Installation Prometheus Addon with Ingress](istio/installation/addons/prometheus.md)
