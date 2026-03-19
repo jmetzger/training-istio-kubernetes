@@ -63,7 +63,7 @@ spec:
   ingressClassName: "nginx"
   rules:
     - host: kiali.tlnXX.do.t3isp.de
-      # ⬆️ Each trainee replaces "XX" with their number, e.g. kiali.tln10.do.t3isp.de
+      # ⬆️ Each trainee replaces "XX" with their number, e.g. kiali.tlnXX.app.do.t3isp.de
       http:
         paths:
           - path: /
@@ -81,5 +81,5 @@ kubectl apply -f .
 
 ```
 # Im browser aufrufen und credentials eingeben (s.o.)
-http://kiali.tlnXX.do.t3isp.de
+http://kiali.tlnXX.app.do.t3isp.de
 ```
