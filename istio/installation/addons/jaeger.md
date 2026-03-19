@@ -62,8 +62,8 @@ metadata:
 spec:
   ingressClassName: "nginx"
   rules:
-    - host: jaeger.tlnXX.do.t3isp.de
-      # ⬆️ Each trainee replaces "XX" with their number, e.g. kiali.tln10.do.t3isp.de
+    - host: jaeger.tlnXX.app.do.t3isp.de
+      # ⬆️ Each trainee replaces "XX" with their number, e.g. jaeger.tln10.do.t3isp.de
       http:
         paths:
           - path: /
