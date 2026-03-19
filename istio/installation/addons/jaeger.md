@@ -81,5 +81,5 @@ kubectl apply -f .
 
 ```
 # Im browser aufrufen und credentials eingeben (s.o.)
-http://jaeger.tlnXX.do.t3isp.de
+http://jaeger.tlnXX.app.do.t3isp.de
 ```
