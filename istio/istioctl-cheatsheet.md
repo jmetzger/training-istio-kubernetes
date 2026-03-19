@@ -9,12 +9,6 @@
 ```bash
 # Client- und Control-Plane-Version anzeigen
 istioctl version
-
-# Cluster auf Istio-Kompatibilität prüfen (vor Install/Upgrade)
-istioctl x precheck
-
-# Installation verifizieren
-istioctl verify-install
 ```
 
 ---
