@@ -4,17 +4,16 @@
 
 <img width="693" height="465" alt="image" src="https://github.com/user-attachments/assets/22cbf386-5a90-458b-8157-51620ef829ea" />
 
-## (Optional) Alte Installation entfernen 
+## Prerequisites 
 
-```
-kubectl delete ns bookinfo
-```
+  * bookinfo ist installiert im modus sidecar 
 
 ## Vorbereitung
 
 ```
-kubectl create ns bookinfo
 kubectl label namespace bookinfo istio.io/dataplane-mode=ambient
+kubectl label namespace bookinfo istio-injection-
+kubectl describe ns bookinfo 
 ```
 
 ## Waypoint Proxy ausrollen
