@@ -8,7 +8,7 @@ Kernprinzip: **Git ist die Single Source of Truth** – kein `kubectl apply` ode
 
 ## Architektur-Übersicht
 
-![ArgoCD + Istio GitOps Architektur](argocd-istio-overview.svg)
+![ArgoCD + Istio GitOps Architektur](/images/argocd-istio-overview.svg)
 
 ## Warum ArgoCD für Istio?
 
