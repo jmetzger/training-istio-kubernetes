@@ -121,9 +121,10 @@
    * WebAssembly (Wasm) für Istio-Erweiterungen
    * [Wo läuft WASM (WebAssembly) im Rahmen von istio ?](istio/wasm/plugins/where-is-the-wasm-runtime.md)
    * [Eigene Istio-Erweiterungen mit WebAssembly schreiben (RateLimit-Plugin)](istio/exercises/16-create-wasm-plugin-ratelimit.md)
-
-1. Erweiterbarkeit & Automatisierung mit Istio
-   * Automatisierung mit GitOps & ArgoCD
+  
+1. Automatisierung mit GitOps & ArgoCD
+   * [Was ist ArgoCD](/istio/argocd/argocd-istio-bookinfo.md)
+   * [istio ambient und bookinfo mit argocd ausrollen](/istio/argocd/argocd-istio-bookinfo.md)
   
 1. Misc
    * [Grenze bei der Header-Größe Istio vs. Nginx](istio/misc/header-size-istio-vs-nginx.md)
