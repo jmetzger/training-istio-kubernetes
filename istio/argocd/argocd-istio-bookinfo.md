@@ -152,23 +152,6 @@ eingebunden wird, muss Port 15008 in **allen** ArgoCD-NetworkPolicies erlaubt we
 **Empfehlung:** ArgoCD-Namespace **NICHT** ins Ambient Mesh einbinden – ArgoCD ist die Management-Ebene für Istio und muss unabhängig davon funktionieren.
 ArgoCD verwaltet Istio – es muss nicht selbst im Mesh sein.
 
-### Sidecar-Modus vs. Ambient: GitOps-Vorteil
-
-```
-  Sidecar-Modus (imperativ!)          Ambient Mode (deklarativ!)
-┌──────────────────────────┐        ┌──────────────────────────┐
-│ Sidecar-Version wird bei │        │ ztunnel-Version wird     │
-│ Pod-Erstellung bestimmt  │        │ per Helm Chart definiert │
-│                          │        │                          │
-│ Upgrade = alle Pods      │        │ Upgrade = DaemonSet      │
-│ neu starten (imperativ!) │        │ rolling update (deklarativ)│
-│                          │        │                          │
-│  ✗ Verletzt GitOps-      │        │  ✓ Git = Source of Truth  │
-│    Prinzipien            │        │    für Data Plane Version │
-└──────────────────────────┘        └──────────────────────────┘
-```
-
----
 
 ## 4. Initiales Ausrollen – Schritt für Schritt
 
