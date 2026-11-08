@@ -85,7 +85,7 @@ Die klassische Sidecar-Architektur steht in [overview-classic-sidecar.md](overvi
 kubectl get deploy,ds -n istio-system
 kubectl get pods -n istio-system -o wide
 
-# Die Anwendungs-Pods haben keinen Sidecar (1/1)
+# Die Anwendungs-Pods zeigen nur ihren eigenen Container (1/1)
 kubectl get pods -n bookinfo
 
 # Ist der Namespace im Mesh, und nutzt er einen Waypoint?

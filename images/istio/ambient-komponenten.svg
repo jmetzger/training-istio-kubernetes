@@ -26,13 +26,11 @@
   <text x="110" y="274" text-anchor="middle" font-size="11" fill="#37474f">DaemonSet, leitet</text>
   <text x="110" y="289" text-anchor="middle" font-size="11" fill="#37474f">Pod-Traffic um</text>
   <rect x="40" y="345" width="140" height="70" rx="6" fill="#fff8e1" stroke="#f9a825" stroke-width="2.5"/>
-  <text x="110" y="370" text-anchor="middle" font-size="14" font-weight="bold" fill="#5d4037">Pod A</text>
-  <text x="110" y="388" text-anchor="middle" font-size="11" font-weight="bold" fill="#e65100">Namespace bookinfo</text>
-  <text x="110" y="403" text-anchor="middle" font-size="11" fill="#5d4037">kein Sidecar</text>
+  <text x="110" y="375" text-anchor="middle" font-size="14" font-weight="bold" fill="#5d4037">Pod A</text>
+  <text x="110" y="396" text-anchor="middle" font-size="11" font-weight="bold" fill="#e65100">Namespace bookinfo</text>
   <rect x="200" y="345" width="160" height="70" rx="6" fill="#e0f2f1" stroke="#00897b" stroke-width="2.5"/>
-  <text x="280" y="370" text-anchor="middle" font-size="14" font-weight="bold" fill="#004d40">Pod B</text>
-  <text x="280" y="388" text-anchor="middle" font-size="11" font-weight="bold" fill="#00695c">Namespace shop</text>
-  <text x="280" y="403" text-anchor="middle" font-size="11" fill="#004d40">kein Sidecar</text>
+  <text x="280" y="375" text-anchor="middle" font-size="14" font-weight="bold" fill="#004d40">Pod B</text>
+  <text x="280" y="396" text-anchor="middle" font-size="11" font-weight="bold" fill="#00695c">Namespace shop</text>
   <line x1="110" y1="345" x2="215" y2="302" stroke="#37474f" stroke-width="1.5" marker-end="url(#a)"/>
   <line x1="280" y1="345" x2="280" y2="302" stroke="#37474f" stroke-width="1.5" marker-end="url(#a)"/>
 
@@ -48,13 +46,11 @@
   <text x="850" y="274" text-anchor="middle" font-size="11" fill="#37474f">DaemonSet, leitet</text>
   <text x="850" y="289" text-anchor="middle" font-size="11" fill="#37474f">Pod-Traffic um</text>
   <rect x="600" y="345" width="160" height="70" rx="6" fill="#fff8e1" stroke="#f9a825" stroke-width="2.5"/>
-  <text x="680" y="370" text-anchor="middle" font-size="14" font-weight="bold" fill="#5d4037">Pod C</text>
-  <text x="680" y="388" text-anchor="middle" font-size="11" font-weight="bold" fill="#e65100">Namespace bookinfo</text>
-  <text x="680" y="403" text-anchor="middle" font-size="11" fill="#5d4037">kein Sidecar</text>
+  <text x="680" y="375" text-anchor="middle" font-size="14" font-weight="bold" fill="#5d4037">Pod C</text>
+  <text x="680" y="396" text-anchor="middle" font-size="11" font-weight="bold" fill="#e65100">Namespace bookinfo</text>
   <rect x="780" y="345" width="140" height="70" rx="6" fill="#eceff1" stroke="#607d8b" stroke-width="2.5"/>
-  <text x="850" y="370" text-anchor="middle" font-size="14" font-weight="bold" fill="#37474f">Pod D</text>
-  <text x="850" y="388" text-anchor="middle" font-size="11" font-weight="bold" fill="#455a64">Namespace test</text>
-  <text x="850" y="403" text-anchor="middle" font-size="11" fill="#37474f">kein Sidecar</text>
+  <text x="850" y="375" text-anchor="middle" font-size="14" font-weight="bold" fill="#37474f">Pod D</text>
+  <text x="850" y="396" text-anchor="middle" font-size="11" font-weight="bold" fill="#455a64">Namespace test</text>
   <line x1="680" y1="345" x2="680" y2="302" stroke="#37474f" stroke-width="1.5" marker-end="url(#a)"/>
   <line x1="850" y1="345" x2="745" y2="302" stroke="#37474f" stroke-width="1.5" marker-end="url(#a)"/>
 
