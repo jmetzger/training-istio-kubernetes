@@ -2,6 +2,8 @@
 
 ## Agenda
 
+Schwerpunkt: **Istio Ambient Mode**. Sidecar wird im Vergleich behandelt. Alles, was nicht zum Schwerpunkt gehört, steht unverändert im [Backlog](#backlog) am Ende.
+
   1. Grundlagen ServiceMesh & Istio
      * [Einführung in Istio & Service Mesh-Architekturen](/istio/overview/01-introduction.md)
      * [Warum ein Service Mesh?](istio/overview/02-warum-servicemesh.md)
@@ -13,34 +15,18 @@
   1. istioctl
      * [istioctl cheatsheet zum Debuggen](/istio/istioctl-cheatsheet.md)
 
-  1. Setup Cluster
-     * [Self-Service Cluster ausrollen](/istio/training-stack/install.md)
-     * [Self-Service Cluster destroy](/istio/training-stack/uninstall.md)
+  1. Ambient Mode: Grundlagen und Architektur
+     * [Ambient Mesh Graphical Overview (sidecar-less Istio für Performance-Gewinn)](/istio/overview/ambient-mode.md)
+     * ztunnel, HBONE und Layer 4 (Secure Overlay)
+     * Waypoint-Proxy und Layer 7, wann braucht man ihn?
+     * Datenpfad im Ambient Mode: Pod zu Pod, mit und ohne Waypoint
+     * Istio als Mieter: was liegt auf Cluster-Ebene (ztunnel, istio-cni, istiod, CRDs bei der Plattform), was auf Namespace-Ebene (Ambient-Label, Waypoint, Policies, Routen)
 
-  1. istio sidecar (Grundlagen)
-     * [Systemanforderungen & Kubernetes-Cluster-Vorbereitung](istio/requirements/overview.md)
-     * [Istio Proxy-Konzepte](istio/overview/07-istio-proxy-concepts-sidecar.md)
-
-  1. Installation/Konfiguration/Deinstallation von istio (sidecar - Installation mit istioctl)   
-     * [Istio-Installation mit istioctl und der IstioOperator - Resource](istio/installation/03-install-with-istioctl-with-demo-profile.md)
-     * [Installations-Config-Profile](istio/installation/02-installation-config-profiles.md)
-     * [Wie ändere ich die Config/Installation von istio - Beispiel egressGateway](istio/installation/04-change-installation-with-istioctl-and-istioOperator.md)
-     * [Deinstallation von Istio mit istioctl](istio/installation/05-uninstall.md)
-
-  1. Installation von istio (sidecar) mit helm-charts
-     * [Systemanforderungen & Kubernetes-Cluster-Vorbereitung](istio/requirements/overview.md)
-     * [Istio-Installation mit helm charts](istio/installation/03a-install-with-helm-with-demo-profile.md)
-     * [istioctl als debugging - tool installieren](istio/installation/03b-install-istioctl.md)
-     * [Canary Update von istiod mit tags und revisions](/istio/installation/ambient/05-istio-canary-upgrade-revisions.md)
-
-  1. Prinzip: Side-Car Injection
-     * [Istio Sidecar-Injection](istio/exercises/01-exercise-injection.md)
-
-  1. Demo-App (Gateway API) 
-     * [Istio demo-app *bookinfo* installieren (Gateway API - Variante)](istio/installation/04-install-demo-app-bookinfo.md)
-
-  1. CNI-Plugin istio
-     * [Vorteile und Installation mit helm](istio/installation/06-istio-cni-plugin-helm.md)
+  1. Installation von istio (ambient mode)
+     * [istio-installation mit istioctl - ambient (Installation per istioctl, um ein Gefühl dafür zu bekommen)](istio/installation/ambient/03-install-with-istioctl-ambient.md)
+     * [Bookinfo demo in ambient ausrollen](istio/installation/ambient/04-install-demo-app.md) 
+     * Gateway API CRDs und Calico-Hinweis (felixconfigurations) vor der Installation
+     * Waypoint-Proxy ausrollen (Voraussetzung für L7-Routing, Retries und L7-Authorization)
 
   1. Steuerung des Netzwerkverhaltens in Istio
      * [Istio Ingress Gateway vs. Gateway API](istio/overview/06-ingress-istio-gateway-vs-kubernetes-gateway-api.md)
@@ -58,14 +44,6 @@
      * [Rate Limiting](istio/exercises/08-local-rate-limit.md)
      * [Chaos Engineering mit Istio](https://istio.io/latest/docs/examples/microservices-istio/production-testing/)
 
-  1. Service Resilience & Fehlertoleranz (nur VirtualService)
-     * [Bemerkungen zu nur VirtualService und nicht Gateway API - httproute](istio/overview/virtualservice-only-features-why.md)
-     * [Retries VirtualService only !](istio/exercises/07-retries.md)
-     * [Fehlerinjektion (z.B. 500er) VirtualService only !](istio/exercises/03-fault-injection.md)
-
-  1. Debugging
-     * [Debugging mit debug/run pod](/istio/debug/01-debug-pod.md)
-
   1. Sichere Service-Kommunikation mit istio (Sicherheit)
      * [Sicherheit & Zero Trust mit Istio](/istio/overview/zero-trust.md)
      * [Was ist in istio deep-defense (defense in depth) ?](/istio/overview/defense-in-depth.md)   
@@ -77,11 +55,8 @@
      * Istio Authorization Policies (ingress/egress Security)
      * [ZeroTrust für bookinfo Namespace bookinfo einrichten](istio/exercises/16-zerotrust-bookinfo-einrichten.md)
 
-  1. Demo-App (istio api) 
-     * [Istio demo-app *bookinfo* installieren (istio API - Variante)](istio/installation/istio-api/04-install-demo-app-bookinfo.md)
-
-  1. Übungen Steuerung des Netzwerkverhaltens (istio api)
-     * [Übung: Header-basiertes Routing - istio api](istio/exercises/virtualservice/02-exercise-request-routing.md)
+  1. Debugging
+     * [Debugging mit debug/run pod](/istio/debug/01-debug-pod.md)
 
   1. Monitoring, Logging & Observability
      * [Installation Jaeger](istio/installation/addons/jaeger.md)
@@ -97,40 +72,84 @@
      * [Visualisierung mit Kiali](istio/exercises/05-kiali-traffic.md)
      * [Analyse & Debugging von Service-Mesh-Daten](istio/strategie/mesh-daten-analysieren-und-debuggen.md)
 
-  1. Skalierung, Erweiterbarkeit & Performance-Optimierung
-     * [Skalierung von Istio - Möglichkeiten/Tipps&Tricks](istio/skalierung-performance/skalierung.md)
-     * [Performance-Optimierung](istio/skalierung-performance/performance.md)
+  1. Vergleich Sidecar und Ambient
+     * [Istio Proxy-Konzepte](istio/overview/07-istio-proxy-concepts-sidecar.md)
+     * [Istio Sidecar-Injection](istio/exercises/01-exercise-injection.md)
      * Sidecar-Overhead & Ressourcenoptimierung
-     * [Ambient Mesh Graphical Overview (sidecar-less Istio für Performance-Gewinn)](/istio/overview/ambient-mode.md)
      * [Vergleich ohne istio, istio sidecar, istio ambient](/istio/overview/performance-comparison-baseline-sidecar-ambient.md)
+     * Ressourcenverbrauch messen: Sidecar-Modus gegen Ambient-Modus mit denselben Pods
+     * [Bookinfo von Sidecar auf Ambient umstellen](istio/installation/ambient/04-upgrade-bookinfo-sidecar-2-ambient.md)
+     * [Canary Update von istiod mit tags und revisions](/istio/installation/ambient/05-istio-canary-upgrade-revisions.md)
+
+  1. Multi-Cluster (nur Theorie)
      * Multi-Cluster- & Hybrid-Umgebungen mit Istio
      * Istio Federation & Cross-Cluster Traffic
 
-  1. Erweiterte Routing-Techniken & Traffic-Optimierung (Istio API) 
-     * [Canary Releases & Progressive Deployments / Traffic - Shifting](istio/exercises/virtualservice/04-traffic-shift.md)
-     * A/B-Tests & Traffic Mirroring
-     * Blue-Green- und Canary-Deployments mit Istio
-
-  1. Installation von istio (ambient mode)
-     * [istio-installation mit istioctl - ambient](istio/installation/ambient/03-install-with-istioctl-ambient.md)
-     * [istio-installation with helm - ambient](istio/installation/ambient/03-install-with-helm.md)
-     * [Bookinfo demo in ambient ausrollen](istio/installation/ambient/04-install-demo-app.md) 
-
-  1. Erweiterbarkeit von Istio
+  1. Erweiterbarkeit von Istio (nur Theorie)
      * WebAssembly (Wasm) für Istio-Erweiterungen
      * [Wo läuft WASM (WebAssembly) im Rahmen von istio ?](istio/wasm/plugins/where-is-the-wasm-runtime.md)
-     * [Eigene Istio-Erweiterungen mit WebAssembly schreiben (RateLimit-Plugin)](istio/exercises/16-create-wasm-plugin-ratelimit.md)
 
   1. Automatisierung mit GitOps & ArgoCD
      * [Was ist ArgoCD](/istio/argocd/argocd-istio-bookinfo.md)
      * [istio ambient und bookinfo mit argocd ausrollen](/istio/argocd/argocd-istio-bookinfo.md)
 
-  1. Misc
+## Backlog
+
+Nicht Teil des Ambient-Schwerpunkts. Nichts davon ist gestrichen, bei Bedarf wieder in die Agenda holen.
+
+### Installation von istio (ambient mode) mit helm
+     * [istio-installation with helm - ambient](istio/installation/ambient/03-install-with-helm.md)
+
+### Setup Cluster (Self-Service)
+     * [Self-Service Cluster ausrollen](/istio/training-stack/install.md)
+     * [Self-Service Cluster destroy](/istio/training-stack/uninstall.md)
+
+### istio sidecar (Grundlagen)
+     * [Systemanforderungen & Kubernetes-Cluster-Vorbereitung](istio/requirements/overview.md)
+
+### Installation/Konfiguration/Deinstallation von istio (sidecar - Installation mit istioctl)
+     * [Istio-Installation mit istioctl und der IstioOperator - Resource](istio/installation/03-install-with-istioctl-with-demo-profile.md)
+     * [Installations-Config-Profile](istio/installation/02-installation-config-profiles.md)
+     * [Wie ändere ich die Config/Installation von istio - Beispiel egressGateway](istio/installation/04-change-installation-with-istioctl-and-istioOperator.md)
+     * [Deinstallation von Istio mit istioctl](istio/installation/05-uninstall.md)
+
+### Installation von istio (sidecar) mit helm-charts
+     * [Systemanforderungen & Kubernetes-Cluster-Vorbereitung](istio/requirements/overview.md)
+     * [Istio-Installation mit helm charts](istio/installation/03a-install-with-helm-with-demo-profile.md)
+     * [istioctl als debugging - tool installieren](istio/installation/03b-install-istioctl.md)
+
+### Demo-App (Gateway API, sidecar)
+     * [Istio demo-app *bookinfo* installieren (Gateway API - Variante)](istio/installation/04-install-demo-app-bookinfo.md)
+
+### CNI-Plugin istio
+     * [Vorteile und Installation mit helm](istio/installation/06-istio-cni-plugin-helm.md)
+
+### Service Resilience & Fehlertoleranz (nur VirtualService)
+     * [Bemerkungen zu nur VirtualService und nicht Gateway API - httproute](istio/overview/virtualservice-only-features-why.md)
+     * [Retries VirtualService only !](istio/exercises/07-retries.md)
+     * [Fehlerinjektion (z.B. 500er) VirtualService only !](istio/exercises/03-fault-injection.md)
+
+### Demo-App (istio api)
+     * [Istio demo-app *bookinfo* installieren (istio API - Variante)](istio/installation/istio-api/04-install-demo-app-bookinfo.md)
+
+### Übungen Steuerung des Netzwerkverhaltens (istio api)
+     * [Übung: Header-basiertes Routing - istio api](istio/exercises/virtualservice/02-exercise-request-routing.md)
+
+### Skalierung, Erweiterbarkeit & Performance-Optimierung
+     * [Skalierung von Istio - Möglichkeiten/Tipps&Tricks](istio/skalierung-performance/skalierung.md)
+     * [Performance-Optimierung](istio/skalierung-performance/performance.md)
+
+### Erweiterte Routing-Techniken & Traffic-Optimierung (Istio API)
+     * [Canary Releases & Progressive Deployments / Traffic - Shifting](istio/exercises/virtualservice/04-traffic-shift.md)
+     * A/B-Tests & Traffic Mirroring
+     * Blue-Green- und Canary-Deployments mit Istio
+
+### Erweiterbarkeit von Istio (WebAssembly, Übung)
+     * [Eigene Istio-Erweiterungen mit WebAssembly schreiben (RateLimit-Plugin)](istio/exercises/16-create-wasm-plugin-ratelimit.md)
+
+### Misc
      * [Grenze bei der Header-Größe Istio vs. Nginx](istio/misc/header-size-istio-vs-nginx.md)
      * [Istio als API Gateway](istio/misc/istio-als-api-gateway.md)
      * [Mehrere Namepaces bei allowedRoutes bei Gateway - Objekt / Gateway API](istio/misc/mehrere-allowedRoutes-in-gateway-api-gateway.md)
      * [Global Ratelimiting, je nach Kunde](istio/misc/global-rate-limiting-pro-kunde.md)
      * [zu istio beitragen](istio/misc/zu-istio-beitragen.md)
-
-  
-

@@ -81,15 +81,34 @@ kubectl -n bookinfo get httproutes -o yaml
 ```
 
 ```
-# Die external-ip aus diesem Output notieren
 # Das Gateway erstellt automatisch einen Service
 kubectl -n bookinfo get svc bookinfo-gateway-istio
 ```
 
+### Zugriff auf die App
+
+Die Trainings-Cluster haben keinen LoadBalancer (kein MetalLB, keine Cloud-Anbindung).
+Die `EXTERNAL-IP` des Service bleibt deshalb auf `<pending>` und das Gateway zeigt `PROGRAMMED False`.
+Die App ist trotzdem erreichbar:
+
 ```
-http://<external-ip>/productpage
-# oder im Browser öffnen
+# Variante 1: port-forward (läuft im Vordergrund, in einem zweiten Terminal testen)
+kubectl -n bookinfo port-forward svc/bookinfo-gateway-istio 8080:80
 ```
+
+```
+curl -s http://localhost:8080/productpage | grep -o "<title>.*</title>"
+```
+
+```
+# Variante 2: NodePort auf der Node-IP (vom Client aus erreichbar)
+NODEPORT=$(kubectl -n bookinfo get svc bookinfo-gateway-istio -o jsonpath='{.spec.ports[?(@.port==80)].nodePort}')
+NODEIP=$(kubectl get nodes -o jsonpath='{.items[1].status.addresses[?(@.type=="InternalIP")].address}')
+curl -s http://$NODEIP:$NODEPORT/productpage | grep -o "<title>.*</title>"
+```
+
+Mit einem LoadBalancer (z.B. in einem Cloud-Cluster) gilt: die `EXTERNAL-IP` notieren und
+`http://<external-ip>/productpage` aufrufen.
 
 ## Ref
 
