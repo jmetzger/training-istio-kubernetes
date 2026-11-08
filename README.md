@@ -2,13 +2,11 @@
 
 ## Agenda
 
-Schwerpunkt: **Istio Ambient Mode**. Sidecar wird im Vergleich behandelt. Alles, was nicht zum Schwerpunkt gehört, steht unverändert im [Backlog](#backlog) am Ende.
-
   1. Grundlagen ServiceMesh & Istio
      * [Einführung in Istio & Service Mesh-Architekturen](/istio/overview/01-introduction.md)
      * [Warum ein Service Mesh?](istio/overview/02-warum-servicemesh.md)
      * [Herausforderung & Vorteile](istio/overview/03-herausforderungen-vorteile.md)
-     * [Architektur & Komponenten von Istio](istio/overview/04-architektur-komponenten.md)
+     * [Architektur & Komponenten von Istio (Ambient: istiod, ztunnel, Waypoint, istio-cni)](istio/overview/04-architektur-komponenten.md)
      * [Istio Ingress Gateway vs. Kubernetes Gateway API](istio/overview/06-ingress-istio-gateway-vs-kubernetes-gateway-api.md)
      * [Vergleich mit Linkerd, Cilium, Consul](istio/overview/05-vergleich-linkerd-cilium-consul.md)
 

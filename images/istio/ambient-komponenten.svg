@@ -1,0 +1,84 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 580" width="960" height="580" font-family="Arial, Helvetica, sans-serif">
+  <defs>
+    <marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#37474f"/></marker>
+    <marker id="g" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#2e7d32"/></marker>
+  </defs>
+  <rect width="960" height="580" fill="#ffffff"/>
+  <text x="480" y="24" text-anchor="middle" font-size="18" font-weight="bold" fill="#263238">Istio Ambient Mode: Komponenten</text>
+
+  <!-- Control Plane -->
+  <rect x="350" y="44" width="260" height="70" rx="8" fill="#e3f2fd" stroke="#1565c0" stroke-width="2"/>
+  <text x="480" y="70" text-anchor="middle" font-size="16" font-weight="bold" fill="#0d47a1">istiod (Control Plane)</text>
+  <text x="480" y="90" text-anchor="middle" font-size="12" fill="#0d47a1">Konfiguration (xDS) · Zertifikate (CA)</text>
+  <text x="480" y="105" text-anchor="middle" font-size="12" fill="#0d47a1">Service Discovery</text>
+
+  <!-- Node 1 -->
+  <rect x="20" y="190" width="360" height="270" rx="10" fill="#fafafa" stroke="#90a4ae" stroke-width="2"/>
+  <text x="34" y="212" font-size="13" font-weight="bold" fill="#546e7a">Node 1</text>
+  <rect x="200" y="230" width="160" height="70" rx="6" fill="#e8f5e9" stroke="#2e7d32" stroke-width="2"/>
+  <text x="280" y="256" text-anchor="middle" font-size="15" font-weight="bold" fill="#1b5e20">ztunnel</text>
+  <text x="280" y="274" text-anchor="middle" font-size="11" fill="#1b5e20">DaemonSet, Layer 4</text>
+  <text x="280" y="289" text-anchor="middle" font-size="11" fill="#1b5e20">mTLS, L4-Policies</text>
+  <rect x="40" y="230" width="140" height="70" rx="6" fill="#f5f5f5" stroke="#78909c" stroke-width="2"/>
+  <text x="110" y="256" text-anchor="middle" font-size="15" font-weight="bold" fill="#37474f">istio-cni</text>
+  <text x="110" y="274" text-anchor="middle" font-size="11" fill="#37474f">DaemonSet, leitet</text>
+  <text x="110" y="289" text-anchor="middle" font-size="11" fill="#37474f">Pod-Traffic um</text>
+  <rect x="40" y="355" width="140" height="70" rx="6" fill="#fff8e1" stroke="#f9a825" stroke-width="2"/>
+  <text x="110" y="383" text-anchor="middle" font-size="14" font-weight="bold" fill="#5d4037">Pod A</text>
+  <text x="110" y="402" text-anchor="middle" font-size="11" fill="#5d4037">nur die Anwendung,</text>
+  <text x="110" y="416" text-anchor="middle" font-size="11" fill="#5d4037">kein Sidecar</text>
+  <rect x="200" y="355" width="160" height="70" rx="6" fill="#fff8e1" stroke="#f9a825" stroke-width="2"/>
+  <text x="280" y="383" text-anchor="middle" font-size="14" font-weight="bold" fill="#5d4037">Pod B</text>
+  <text x="280" y="402" text-anchor="middle" font-size="11" fill="#5d4037">nur die Anwendung,</text>
+  <text x="280" y="416" text-anchor="middle" font-size="11" fill="#5d4037">kein Sidecar</text>
+  <line x1="110" y1="355" x2="215" y2="302" stroke="#37474f" stroke-width="1.5" marker-end="url(#a)"/>
+  <line x1="280" y1="355" x2="280" y2="302" stroke="#37474f" stroke-width="1.5" marker-end="url(#a)"/>
+
+  <!-- Node 2 -->
+  <rect x="580" y="190" width="360" height="270" rx="10" fill="#fafafa" stroke="#90a4ae" stroke-width="2"/>
+  <text x="594" y="212" font-size="13" font-weight="bold" fill="#546e7a">Node 2</text>
+  <rect x="600" y="230" width="160" height="70" rx="6" fill="#e8f5e9" stroke="#2e7d32" stroke-width="2"/>
+  <text x="680" y="256" text-anchor="middle" font-size="15" font-weight="bold" fill="#1b5e20">ztunnel</text>
+  <text x="680" y="274" text-anchor="middle" font-size="11" fill="#1b5e20">DaemonSet, Layer 4</text>
+  <text x="680" y="289" text-anchor="middle" font-size="11" fill="#1b5e20">mTLS, L4-Policies</text>
+  <rect x="780" y="230" width="140" height="70" rx="6" fill="#f5f5f5" stroke="#78909c" stroke-width="2"/>
+  <text x="850" y="256" text-anchor="middle" font-size="15" font-weight="bold" fill="#37474f">istio-cni</text>
+  <text x="850" y="274" text-anchor="middle" font-size="11" fill="#37474f">DaemonSet, leitet</text>
+  <text x="850" y="289" text-anchor="middle" font-size="11" fill="#37474f">Pod-Traffic um</text>
+  <rect x="600" y="355" width="160" height="70" rx="6" fill="#fff8e1" stroke="#f9a825" stroke-width="2"/>
+  <text x="680" y="383" text-anchor="middle" font-size="14" font-weight="bold" fill="#5d4037">Pod C</text>
+  <text x="680" y="402" text-anchor="middle" font-size="11" fill="#5d4037">nur die Anwendung,</text>
+  <text x="680" y="416" text-anchor="middle" font-size="11" fill="#5d4037">kein Sidecar</text>
+  <rect x="780" y="355" width="140" height="70" rx="6" fill="#fff8e1" stroke="#f9a825" stroke-width="2"/>
+  <text x="850" y="383" text-anchor="middle" font-size="14" font-weight="bold" fill="#5d4037">Pod D</text>
+  <text x="850" y="402" text-anchor="middle" font-size="11" fill="#5d4037">nur die Anwendung,</text>
+  <text x="850" y="416" text-anchor="middle" font-size="11" fill="#5d4037">kein Sidecar</text>
+  <line x1="680" y1="355" x2="680" y2="302" stroke="#37474f" stroke-width="1.5" marker-end="url(#a)"/>
+  <line x1="850" y1="355" x2="745" y2="302" stroke="#37474f" stroke-width="1.5" marker-end="url(#a)"/>
+
+  <!-- HBONE zwischen ztunnels -->
+  <line x1="362" y1="265" x2="598" y2="265" stroke="#2e7d32" stroke-width="3" marker-start="url(#g)" marker-end="url(#g)"/>
+  <text x="480" y="250" text-anchor="middle" font-size="12" font-weight="bold" fill="#1b5e20">HBONE</text>
+  <text x="480" y="284" text-anchor="middle" font-size="11" fill="#1b5e20">mTLS, Port 15008</text>
+
+  <!-- Waypoint -->
+  <rect x="405" y="340" width="150" height="86" rx="6" fill="#ede7f6" stroke="#5e35b1" stroke-width="2" stroke-dasharray="7 4"/>
+  <text x="480" y="366" text-anchor="middle" font-size="15" font-weight="bold" fill="#311b92">Waypoint</text>
+  <text x="480" y="384" text-anchor="middle" font-size="11" fill="#311b92">Envoy, Layer 7</text>
+  <text x="480" y="399" text-anchor="middle" font-size="11" fill="#311b92">pro Namespace</text>
+  <text x="480" y="414" text-anchor="middle" font-size="11" fill="#311b92">optional</text>
+  <line x1="362" y1="295" x2="420" y2="340" stroke="#5e35b1" stroke-width="1.5" stroke-dasharray="5 3" marker-end="url(#a)"/>
+  <line x1="598" y1="295" x2="540" y2="340" stroke="#5e35b1" stroke-width="1.5" stroke-dasharray="5 3" marker-end="url(#a)"/>
+
+  <!-- istiod Config-Pfeile -->
+  <line x1="400" y1="114" x2="285" y2="228" stroke="#1565c0" stroke-width="2" marker-end="url(#a)"/>
+  <line x1="560" y1="114" x2="675" y2="228" stroke="#1565c0" stroke-width="2" marker-end="url(#a)"/>
+  <text x="300" y="150" text-anchor="middle" font-size="11" fill="#0d47a1">Config + Zertifikate</text>
+  <text x="660" y="150" text-anchor="middle" font-size="11" fill="#0d47a1">Config + Zertifikate</text>
+
+  <!-- Legende -->
+  <rect x="20" y="480" width="920" height="82" rx="6" fill="#f5f7f8" stroke="#cfd8dc"/>
+  <text x="36" y="503" font-size="13" fill="#263238"><tspan font-weight="bold">Pro Node:</tspan> ein ztunnel und ein istio-cni. Die Pods bleiben unverändert (1/1 ready, kein Envoy im Pod).</text>
+  <text x="36" y="524" font-size="13" fill="#263238"><tspan font-weight="bold">Pro Namespace (nur bei Bedarf):</tspan> ein Waypoint-Proxy für Layer 7 (Routing, Retries, L7-Policies). Der istiod versorgt auch den Waypoint mit Konfiguration.</text>
+  <text x="36" y="545" font-size="13" fill="#263238"><tspan font-weight="bold">Zwischen den Nodes:</tspan> verschlüsselter HBONE-Tunnel von ztunnel zu ztunnel. Der Pod-Traffic selbst bleibt auf dem Node unverschlüsselt.</text>
+</svg>
