@@ -11,6 +11,9 @@ Dazu kommen der `istiod` als Control Plane und `istio-cni`, der den Traffic der 
 
 ## Überblick
 
+Die Grafik hat zwei Achsen: Die **Spalten** sind die Nodes, die **Zeilen** die Namespaces. `istio-system` gehört der Plattform (istiod, ztunnel, istio-cni).
+Die Anwendungs-Namespaces erstrecken sich über mehrere Nodes, und ein Waypoint liegt in dem Namespace, für den er Layer 7 bereitstellt.
+
 ![Istio Ambient: Komponenten](../../images/istio/ambient-komponenten.svg)
 
 ## Die Komponenten im Einzelnen
@@ -18,9 +21,9 @@ Dazu kommen der `istiod` als Control Plane und `istio-cni`, der den Traffic der 
 | Komponente | Läuft als | Aufgabe | Zuständig (bei Plattform-Betrieb) |
 |---|---|---|---|
 | **istiod** | Deployment, `istio-system` | Verteilt Konfiguration per xDS, stellt Zertifikate aus (CA), Service Discovery | Plattform |
-| **istio-cni** | DaemonSet, ein Pod pro Node | Richtet die Umleitung des Pod-Traffics zum ztunnel ein. Dafür sind keine `NET_ADMIN`-Rechte in den Anwendungs-Pods nötig | Plattform |
-| **ztunnel** | DaemonSet, ein Pod pro Node | Layer 4: baut mTLS-Tunnel (HBONE) auf, prüft L4-Policies, liefert TCP-Metriken. Hat pro Pod auf dem Node eine eigene Identität (SPIFFE) | Plattform |
-| **Waypoint** | Deployment, per Gateway API (`gatewayClassName: istio-waypoint`) im Namespace | Layer 7: HTTPRoute, Retries, Timeouts, Fault Injection, L7-`AuthorizationPolicy`, HTTP-Metriken | **Namespace-Team** |
+| **istio-cni** | DaemonSet, ein Pod pro Node, `istio-system` | Richtet die Umleitung des Pod-Traffics zum ztunnel ein. Dafür sind keine `NET_ADMIN`-Rechte in den Anwendungs-Pods nötig | Plattform |
+| **ztunnel** | DaemonSet, ein Pod pro Node, `istio-system` | Layer 4: baut mTLS-Tunnel (HBONE) auf, prüft L4-Policies, liefert TCP-Metriken. Hat pro Pod auf dem Node eine eigene Identität (SPIFFE) | Plattform |
+| **Waypoint** | Deployment im Namespace der Anwendung, per Gateway API (`gatewayClassName: istio-waypoint`) | Layer 7: HTTPRoute, Retries, Timeouts, Fault Injection, L7-`AuthorizationPolicy`, HTTP-Metriken | **Namespace-Team** |
 | **Ingress Gateway** | Deployment, per Gateway API (`gatewayClassName: istio`) | Eingang von außen in das Mesh | Namespace-Team oder Plattform |
 
 Die Spalte ganz rechts ist für das Training wichtig ("Istio als Mieter"): ztunnel, istio-cni, istiod und die CRDs gehören zur Plattform.
