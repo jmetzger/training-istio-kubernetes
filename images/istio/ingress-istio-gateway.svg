@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 470" width="960" height="470" font-family="Arial, Helvetica, sans-serif">
+<defs>
+<marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#37474f"/></marker>
+</defs>
+<rect width="960" height="470" fill="#ffffff"/>
+<text x="480" y="24" text-anchor="middle" font-size="18" font-weight="bold" fill="#263238">Istio Ingress-Gateway: Datenpfad und Konfiguration</text>
+<text x="20" y="52" text-anchor="start" font-size="13" fill="#263238" font-weight="bold">Datenpfad (Laufzeit)</text>
+<rect x="30" y="80" width="160" height="70" rx="8" fill="#eceff1" stroke="#607d8b" stroke-width="2"/>
+<text x="110.0" y="104.0" text-anchor="middle" font-size="14" font-weight="bold" fill="#263238">Client</text>
+<text x="110.0" y="122.0" text-anchor="middle" font-size="11" fill="#455a64">Browser / curl</text>
+<rect x="320" y="70" width="200" height="90" rx="8" fill="#e1f5ff" stroke="#0288d1" stroke-width="2"/>
+<text x="420.0" y="95.0" text-anchor="middle" font-size="14" font-weight="bold" fill="#263238">Istio IngressGateway</text>
+<text x="420.0" y="113.0" text-anchor="middle" font-size="11" fill="#455a64">Pod istio-ingressgateway</text>
+<text x="420.0" y="131.0" text-anchor="middle" font-size="11" fill="#455a64">(Envoy)</text>
+<rect x="730" y="60" width="200" height="55" rx="8" fill="#e8f5e9" stroke="#2e7d32" stroke-width="2"/>
+<text x="830.0" y="91.5" text-anchor="middle" font-size="14" font-weight="bold" fill="#263238">Service A</text>
+<rect x="730" y="130" width="200" height="55" rx="8" fill="#e8f5e9" stroke="#2e7d32" stroke-width="2"/>
+<text x="830.0" y="161.5" text-anchor="middle" font-size="14" font-weight="bold" fill="#263238">Service B</text>
+<line x1="192" y1="115" x2="318" y2="115" stroke="#37474f" stroke-width="2" marker-end="url(#a)"/>
+<text x="255" y="106" text-anchor="middle" font-size="11" fill="#37474f">HTTP/HTTPS</text>
+<line x1="522" y1="100" x2="728" y2="88" stroke="#37474f" stroke-width="2" marker-end="url(#a)"/>
+<line x1="522" y1="130" x2="728" y2="158" stroke="#37474f" stroke-width="2" marker-end="url(#a)"/>
+<text x="625" y="92" text-anchor="middle" font-size="10" fill="#37474f">route to</text>
+<text x="20" y="244" text-anchor="start" font-size="13" fill="#263238" font-weight="bold">Konfiguration (Kubernetes-Objekte)</text>
+<rect x="320" y="270" width="200" height="80" rx="8" fill="#fff3cd" stroke="#f9a825" stroke-width="2"/>
+<text x="420.0" y="290.0" text-anchor="middle" font-size="14" font-weight="bold" fill="#263238">Gateway</text>
+<text x="420.0" y="308.0" text-anchor="middle" font-size="11" fill="#455a64">networking.istio.io</text>
+<text x="420.0" y="326.0" text-anchor="middle" font-size="11" fill="#455a64">Ports, Hosts, TLS</text>
+<rect x="620" y="270" width="200" height="80" rx="8" fill="#fff3cd" stroke="#f9a825" stroke-width="2"/>
+<text x="720.0" y="290.0" text-anchor="middle" font-size="14" font-weight="bold" fill="#263238">VirtualService</text>
+<text x="720.0" y="308.0" text-anchor="middle" font-size="11" fill="#455a64">networking.istio.io</text>
+<text x="720.0" y="326.0" text-anchor="middle" font-size="11" fill="#455a64">Routing-Regeln</text>
+<line x1="420" y1="268" x2="420" y2="162" stroke="#37474f" stroke-width="2" stroke-dasharray="6 4" marker-end="url(#a)"/>
+<text x="428" y="222" text-anchor="start" font-size="10" fill="#37474f">selector:</text>
+<text x="428" y="235" text-anchor="start" font-size="10" fill="#37474f">istio=ingressgateway</text>
+<line x1="618" y1="310" x2="522" y2="310" stroke="#37474f" stroke-width="2" stroke-dasharray="6 4" marker-end="url(#a)"/>
+<text x="570" y="300" text-anchor="middle" font-size="10" fill="#37474f">gateways:</text>
+<text x="570" y="329" text-anchor="middle" font-size="10" fill="#37474f">(referenziert)</text>
+<line x1="800" y1="268" x2="830" y2="187" stroke="#37474f" stroke-width="2" stroke-dasharray="6 4" marker-end="url(#a)"/>
+<text x="868" y="232" text-anchor="start" font-size="10" fill="#37474f">routet zu</text>
+<rect x="20" y="372" width="920" height="86" rx="6" fill="#f5f7f8" stroke="#cfd8dc"/>
+<text x="36" y="394" font-size="12" fill="#263238"><tspan font-weight="bold">Gateway</tspan>  beschreibt Listener (Port, Host, TLS) und wählt per Selector den bestehenden IngressGateway-Pod aus.</text>
+<text x="36" y="414" font-size="12" fill="#263238"><tspan font-weight="bold">VirtualService</tspan>  referenziert das Gateway und enthält die Routing-Regeln zu den Services.</text>
+<text x="36" y="434" font-size="12" fill="#263238"><tspan font-weight="bold">Der Pod</tspan>  wird getrennt installiert (Helm oder istioctl) und existiert unabhängig von den Objekten.</text>
+</svg>
