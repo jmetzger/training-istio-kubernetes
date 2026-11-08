@@ -39,15 +39,29 @@ Mehrere Verbindungen zwischen zwei Nodes laufen gemultiplext durch denselben Tun
 * **Mit Waypoint:** ein zusätzlicher Hop für alles, was HTTP-Wissen braucht. Man aktiviert ihn gezielt pro Namespace oder Service (`istio.io/use-waypoint`).
 * Beides kann im selben Cluster nebeneinander laufen, Namespace für Namespace.
 
-## Ablauf: Konfiguration und Request
+## Ablauf: Konfiguration
 
-![Istio Ambient: Ablauf](../../images/istio/ambient-ablauf.svg)
+![Istio Ambient: Ablauf Konfiguration](../../images/istio/ambient-ablauf-konfiguration.svg)
 
 1. Der Admin legt eine Route oder Policy an (`kubectl apply`).
-2. istiod validiert und übersetzt sie in Proxy-Konfiguration.
-3. istiod schickt die Konfiguration per xDS an ztunnel und Waypoint. Die ztunnels holen dort auch die Zertifikate für die Pods auf ihrem Node.
-4. Ein Pod ruft einen Service auf, `istio-cni` hat den Traffic zum lokalen ztunnel umgeleitet.
-5. Weiter geht es per HBONE (mTLS). Mit Waypoint läuft der Traffic dort durch die L7-Regeln, danach zum ztunnel auf dem Ziel-Node, der die L4-Policy prüft und an den Pod übergibt.
+2. istiod validiert sie und übersetzt sie in Proxy-Konfiguration.
+3. istiod schickt die Konfiguration per xDS an ztunnel und Waypoint.
+
+Die ztunnels holen dabei auch die Zertifikate für die Pods auf ihrem Node, der Waypoint holt seines bei istiod (CA).
+Änderungen wirken ohne Pod-Neustart.
+
+## Ablauf: Request
+
+![Istio Ambient: Ablauf Request](../../images/istio/ambient-ablauf-request.svg)
+
+1. Ein Pod ruft einen Service auf. `istio-cni` hat den Traffic zum lokalen ztunnel umgeleitet.
+2. Der ztunnel schickt ihn per HBONE (mTLS) weiter, mit Waypoint zuerst dorthin.
+3. Der Waypoint wendet die Layer-7-Regeln an (Routing, Retries, L7-Policies).
+4. Weiter geht es per HBONE zum ztunnel auf dem Ziel-Node.
+5. Der ztunnel prüft die L4-Policy.
+6. Er übergibt den Request an den Ziel-Pod.
+
+Ohne Waypoint entfallen die Schritte 3 und 4: Der ztunnel auf Node 1 spricht direkt mit dem ztunnel auf Node 2.
 
 ## Ambient im Vergleich zu Sidecar
 

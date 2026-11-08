@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 440" width="960" height="440" font-family="Arial, Helvetica, sans-serif">
+  <defs>
+    <marker id="b" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#1565c0"/></marker>
+  </defs>
+  <rect width="960" height="440" fill="#ffffff"/>
+  <text x="480" y="24" text-anchor="middle" font-size="18" font-weight="bold" fill="#263238">Ablauf Konfiguration: von kubectl bis zum Proxy</text>
+
+  <g font-size="13" font-weight="bold" text-anchor="middle">
+    <rect x="40" y="44" width="120" height="40" rx="6" fill="#eceff1" stroke="#607d8b" stroke-width="2"/><text x="100" y="69" fill="#263238">Admin</text>
+    <rect x="230" y="44" width="120" height="40" rx="6" fill="#e3f2fd" stroke="#1565c0" stroke-width="2"/><text x="290" y="69" fill="#0d47a1">istiod</text>
+    <rect x="420" y="44" width="120" height="40" rx="6" fill="#e8f5e9" stroke="#2e7d32" stroke-width="2"/><text x="480" y="69" fill="#1b5e20">ztunnel Node 1</text>
+    <rect x="610" y="44" width="120" height="40" rx="6" fill="#ede7f6" stroke="#5e35b1" stroke-width="2"/><text x="670" y="69" fill="#311b92">Waypoint</text>
+    <rect x="800" y="44" width="120" height="40" rx="6" fill="#e8f5e9" stroke="#2e7d32" stroke-width="2"/><text x="860" y="69" fill="#1b5e20">ztunnel Node 2</text>
+  </g>
+  <g stroke="#b0bec5" stroke-width="1.5" stroke-dasharray="4 4">
+    <line x1="100" y1="84" x2="100" y2="340"/><line x1="290" y1="84" x2="290" y2="340"/><line x1="480" y1="84" x2="480" y2="340"/>
+    <line x1="670" y1="84" x2="670" y2="340"/><line x1="860" y1="84" x2="860" y2="340"/>
+  </g>
+
+  <line x1="102" y1="130" x2="288" y2="130" stroke="#1565c0" stroke-width="2" marker-end="url(#b)"/>
+  <text x="195" y="120" text-anchor="middle" font-size="12" fill="#0d47a1">1. kubectl apply</text>
+  <text x="195" y="148" text-anchor="middle" font-size="10" fill="#0d47a1">HTTPRoute, Policy</text>
+
+  <rect x="300" y="168" width="230" height="30" rx="4" fill="#e3f2fd" stroke="#1565c0"/>
+  <text x="415" y="187" text-anchor="middle" font-size="11" fill="#0d47a1">2. validiert, übersetzt in Proxy-Konfiguration</text>
+
+  <line x1="292" y1="236" x2="478" y2="236" stroke="#1565c0" stroke-width="2" marker-end="url(#b)"/>
+  <line x1="292" y1="266" x2="668" y2="266" stroke="#1565c0" stroke-width="2" marker-end="url(#b)"/>
+  <line x1="292" y1="296" x2="858" y2="296" stroke="#1565c0" stroke-width="2" marker-end="url(#b)"/>
+  <text x="385" y="228" text-anchor="middle" font-size="12" fill="#0d47a1">3. xDS-Push</text>
+
+  <rect x="20" y="360" width="920" height="64" rx="6" fill="#f5f7f8" stroke="#cfd8dc"/>
+  <text x="36" y="382" font-size="12" fill="#263238"><tspan font-weight="bold">Zertifikate:</tspan> ztunnel und Waypoint holen ihre Zertifikate bei istiod (CA). Der ztunnel bekommt je eine Identität für die Pods auf seinem Node.</text>
+  <text x="36" y="402" font-size="12" fill="#263238"><tspan font-weight="bold">Richtung:</tspan> istiod pusht die Konfiguration, die Proxies holen sie nicht selbst ab. Der Traffic der Anwendungen fließt nie durch istiod.</text>
+  <text x="36" y="418" font-size="12" fill="#263238">Jede Änderung an Routen oder Policies wirkt ohne Pod-Neustart.</text>
+</svg>
