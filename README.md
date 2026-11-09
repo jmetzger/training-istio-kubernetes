@@ -22,6 +22,13 @@
      * Gateway API CRDs und Calico-Hinweis (felixconfigurations) vor der Installation
      * Waypoint-Proxy ausrollen (Voraussetzung für L7-Routing, Retries und L7-Authorization)
 
+  1. Installation auf OCP/Azure (ambient mode)
+     * [Istio Ambient auf OpenShift (OCP): OSSM 3 per Operator, Unterschiede und Einschränkungen](istio/installation/openshift/01-ossm-ambient-ocp.md)
+     * Operator Lifecycle Manager und OperatorHub: Installation per Web-Konsole und per Subscription (YAML)
+     * Mesh per Custom Resources anlegen (Istio, IstioCNI, ZTunnel)
+     * OSSM (Operator) gegen Upstream-Istio mit Helm: Unterschiede und Support
+     * [Istio Ambient auf Azure (AKS): Istio-Add-on gegen eigene Installation, Voraussetzungen](istio/installation/openshift/02-ambient-aks-azure.md)
+
   1. Steuerung des Netzwerkverhaltens in Istio
      * [Istio Ingress Gateway vs. Gateway API](istio/overview/06-ingress-istio-gateway-vs-kubernetes-gateway-api.md)
      * [Gateway API als Nachfolger von IngressGateway (Istio), VirtualService und DestinationRule](istio/overview/08-virtualservice-destinationrule-gateway-api.md)
