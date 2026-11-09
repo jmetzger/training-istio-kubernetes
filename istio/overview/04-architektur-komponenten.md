@@ -42,6 +42,44 @@ Mehrere Verbindungen zwischen zwei Nodes laufen gemultiplext durch denselben Tun
 * **Mit Waypoint:** ein zusätzlicher Hop für alles, was HTTP-Wissen braucht. Man aktiviert ihn gezielt pro Namespace oder Service (`istio.io/use-waypoint`).
 * Beides kann im selben Cluster nebeneinander laufen, Namespace für Namespace.
 
+### Sonderfall: Pod und Ziel auf demselben Node
+
+Auch wenn beide Pods auf demselben Node laufen, geht der Traffic **über ztunnel und HBONE**. Es gibt keine Abkürzung am ztunnel vorbei.
+Der Grund: mTLS, Identität und L4-Policies sollen unabhängig davon gelten, wo der Scheduler die Pods hingelegt hat.
+
+![Istio Ambient: Pod zu Pod auf demselben Node](../../images/istio/ambient-gleicher-node.svg)
+
+* Quell- und Ziel-Pod teilen sich **denselben ztunnel** (ein Pod pro Node). Er ist in dem Fall Absender und Empfänger zugleich.
+* Das Paket verlässt den Node nicht, wird aber trotzdem verschlüsselt (HBONE auf Port 15008 der Ziel-Pod-IP) und gegen die L4-Policy geprüft.
+* Ist ein Waypoint konfiguriert, ändert sich nur der Weg: Pod A → ztunnel → Waypoint → ztunnel → Pod B. Jeder Hop ist ein HBONE-Tunnel, auch wenn alle Teilnehmer auf einem Node liegen.
+* Der Vorteil für Betrieb und Fehlersuche: Das Verhalten ist auf einem Node und über Nodes hinweg identisch.
+
+Im ztunnel-Log sieht man das Beispiel direkt. Hier ruft `reviews-v2` den Service `ratings` auf, und reviews, ratings und der Waypoint liegen alle auf demselben Node (gekürzt):
+
+```
+# ausgehend: reviews-v2 spricht per HBONE mit dem Waypoint (Port 15008)
+src.workload="reviews-v2-..." src.identity="spiffe://cluster.local/ns/bookinfo/sa/bookinfo-reviews"
+dst.addr=192.168.11.96:15008 dst.hbone_addr=10.108.46.136:9080 dst.workload="waypoint-..." direction="outbound"
+
+# eingehend: der Waypoint spricht per HBONE mit ratings (Port 15008)
+src.workload="waypoint-..." src.identity="spiffe://cluster.local/ns/bookinfo/sa/waypoint"
+dst.addr=192.168.11.98:15008 dst.hbone_addr=192.168.11.98:9080 dst.workload="ratings-v1-..." direction="inbound"
+```
+
+Selbst nachsehen:
+
+```bash
+# Auf welchem Node liegt welcher Pod? (gleiche Spalte NODE = gleicher Node)
+kubectl get pods -n bookinfo -o wide
+
+# ztunnel-Pod des Nodes finden und dessen Access-Log lesen
+kubectl get pods -n istio-system -o wide | grep ztunnel
+kubectl logs -n istio-system <ztunnel-pod-auf-dem-node> | grep "connection complete"
+
+# Spricht der Ziel-Pod HBONE? (Spalte PROTOCOL)
+istioctl ztunnel-config workload
+```
+
 ## Ablauf: Konfiguration
 
 ![Istio Ambient: Ablauf Konfiguration](../../images/istio/ambient-ablauf-konfiguration.svg)

@@ -1,0 +1,58 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 460" width="960" height="460" font-family="Arial, Helvetica, sans-serif">
+  <defs>
+    <marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#37474f"/></marker>
+    <marker id="g" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#2e7d32"/></marker>
+  </defs>
+  <rect width="960" height="460" fill="#ffffff"/>
+  <text x="480" y="24" text-anchor="middle" font-size="18" font-weight="bold" fill="#263238">Pod A nach Pod B auf demselben Node (ohne Waypoint)</text>
+
+  <!-- Node -->
+  <rect x="20" y="40" width="920" height="312" rx="8" fill="#fafafa" stroke="#78909c" stroke-width="2"/>
+  <text x="34" y="60" font-size="14" font-weight="bold" fill="#37474f">Node 1</text>
+
+  <!-- Namespace istio-system -->
+  <rect x="35" y="72" width="890" height="130" rx="6" fill="#f1f8f4" stroke="#90a4ae" stroke-dasharray="6 4"/>
+  <text x="47" y="90" font-size="12" font-weight="bold" fill="#546e7a">Namespace istio-system</text>
+
+  <!-- ztunnel -->
+  <rect x="60" y="98" width="840" height="92" rx="6" fill="#e8f5e9" stroke="#2e7d32" stroke-width="2"/>
+  <text x="480" y="115" text-anchor="middle" font-size="13" font-weight="bold" fill="#1b5e20">ztunnel (ein Pod pro Node, dieselbe Instanz für Pod A und Pod B)</text>
+  <rect x="100" y="126" width="260" height="52" rx="5" fill="#ffffff" stroke="#2e7d32" stroke-width="1.5"/>
+  <text x="230" y="147" text-anchor="middle" font-size="13" font-weight="bold" fill="#1b5e20">ausgehend (outbound)</text>
+  <text x="230" y="165" text-anchor="middle" font-size="11" fill="#1b5e20">Identität von Pod A, baut HBONE auf</text>
+  <rect x="600" y="126" width="260" height="52" rx="5" fill="#ffffff" stroke="#2e7d32" stroke-width="1.5"/>
+  <text x="730" y="147" text-anchor="middle" font-size="13" font-weight="bold" fill="#1b5e20">eingehend (inbound)</text>
+  <text x="730" y="165" text-anchor="middle" font-size="11" fill="#1b5e20">Port 15008, prüft L4-Policy</text>
+
+  <!-- Namespace Anwendung -->
+  <rect x="35" y="214" width="890" height="124" rx="6" fill="#fffdf3" stroke="#90a4ae" stroke-dasharray="6 4"/>
+  <text x="480" y="232" text-anchor="middle" font-size="12" font-weight="bold" fill="#546e7a">Namespace der Anwendung, z. B. bookinfo</text>
+  <rect x="130" y="248" width="200" height="74" rx="6" fill="#fff8e1" stroke="#f9a825" stroke-width="2"/>
+  <text x="230" y="280" text-anchor="middle" font-size="15" font-weight="bold" fill="#5d4037">Pod A</text>
+  <text x="230" y="300" text-anchor="middle" font-size="11" fill="#5d4037">Client (1/1 Container)</text>
+  <rect x="630" y="248" width="200" height="74" rx="6" fill="#fff8e1" stroke="#f9a825" stroke-width="2"/>
+  <text x="730" y="280" text-anchor="middle" font-size="15" font-weight="bold" fill="#5d4037">Pod B</text>
+  <text x="730" y="300" text-anchor="middle" font-size="11" fill="#5d4037">Ziel (1/1 Container)</text>
+
+  <!-- Pfeile -->
+  <line x1="230" y1="246" x2="230" y2="180" stroke="#37474f" stroke-width="2" marker-end="url(#a)"/>
+  <line x1="362" y1="152" x2="598" y2="152" stroke="#2e7d32" stroke-width="3.5" marker-end="url(#g)"/>
+  <line x1="730" y1="180" x2="730" y2="246" stroke="#37474f" stroke-width="2" marker-end="url(#a)"/>
+
+  <!-- Beschriftung -->
+  <text x="242" y="222" font-size="12" font-weight="bold" fill="#263238">1</text>
+  <text x="480" y="143" text-anchor="middle" font-size="12" font-weight="bold" fill="#1b5e20">2  HBONE (mTLS)</text>
+  <text x="480" y="169" text-anchor="middle" font-size="11" fill="#1b5e20">an Pod-B-IP:15008</text>
+  <text x="742" y="222" font-size="12" font-weight="bold" fill="#263238">3</text>
+
+  <text x="20" y="372" font-size="12" fill="#37474f">1  Die Umleitung (istio-cni) schickt den Traffic von Pod A zum ztunnel auf dem Node.</text>
+  <text x="20" y="390" font-size="12" fill="#37474f">2  Der ztunnel baut den HBONE-Tunnel zu Pod B auf, auch wenn Pod B auf demselben Node läuft.</text>
+  <text x="20" y="408" font-size="12" fill="#37474f">3  Der eingehende Teil beendet mTLS, prüft die L4-Policy und liefert Klartext an Pod B.</text>
+
+  <!-- Legende -->
+  <rect x="20" y="418" width="920" height="30" rx="6" fill="#f5f7f8" stroke="#cfd8dc"/>
+  <line x1="40" y1="433" x2="90" y2="433" stroke="#2e7d32" stroke-width="3.5" marker-end="url(#g)"/>
+  <text x="100" y="437" font-size="12" fill="#263238">verschlüsselt (HBONE, mTLS)</text>
+  <line x1="340" y1="433" x2="390" y2="433" stroke="#37474f" stroke-width="2" marker-end="url(#a)"/>
+  <text x="400" y="437" font-size="12" fill="#263238">unverschlüsselt, lokal auf dem Node (Pod und ztunnel)</text>
+</svg>
