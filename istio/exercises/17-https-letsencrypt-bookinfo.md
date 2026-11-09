@@ -1,39 +1,21 @@
-# Uebung: Bookinfo mit HTTPS und Let's Encrypt (cert-manager, Gateway API, Ambient)
+# Uebung: Bookinfo mit HTTPS und Let's Encrypt
 
 ## Ziel
 
-Die Bookinfo-App aus der Ambient-Uebung ist bisher nur per HTTP erreichbar. Danach erreichst du sie unter
-`https://bookinfo-<dein-user>.do.t3isp.de` mit einem **echten, vom Browser anerkannten Zertifikat**, und `http://` leitet automatisch auf `https://` um.
+Bookinfo ist danach unter `https://bookinfo.<dein-user>.do.t3isp.de/productpage` mit einem echten Zertifikat erreichbar,
+`http://` leitet auf `https://` um. cert-manager holt das Zertifikat bei Let's Encrypt (HTTP-01) und erneuert es automatisch.
 
 ## Voraussetzung
 
-  * Die Uebung [Bookinfo demo in ambient ausrollen](../installation/ambient/04-install-demo-app.md) ist komplett durchgefuehrt:
-    Namespace `bookinfo` mit Waypoint, Bookinfo-App, `bookinfo-gateway` und HTTPRoute `bookinfo`.
-  * Die Trainer haben fuer jeden Cluster einen DNS-Eintrag angelegt: `bookinfo-<dein-user>.do.t3isp.de` zeigt auf die erste
-    IP aus dem MetalLB-Pool deines Clusters (z. B. `bookinfo-tln5.do.t3isp.de`). Du musst nichts eintragen.
+  * Uebung [Bookinfo demo in ambient ausrollen](../installation/ambient/04-install-demo-app.md) ist durchgefuehrt
+    (Namespace `bookinfo`, Gateway `bookinfo-gateway`, HTTPRoute `bookinfo`).
+  * Der DNS-Eintrag `bookinfo.<dein-user>.do.t3isp.de` existiert schon (siehe Merkkasten).
 
-## Hintergrund
-
-| Baustein | Aufgabe |
-|----------|---------|
-| Let's Encrypt | Kostenlose Zertifizierungsstelle (CA), Zertifikate 90 Tage gueltig |
-| cert-manager | Holt und erneuert die Zertifikate automatisch im Cluster |
-| `Issuer` | Sagt cert-manager, bei welcher CA und mit welcher Challenge er Zertifikate holt (gilt nur im Namespace) |
-| HTTP-01-Challenge | Let's Encrypt ruft `http://<hostname>/.well-known/acme-challenge/<token>` auf. Klappt das, gehoert dir der Hostname |
-| Gateway-Annotation | `cert-manager.io/issuer` am Gateway: cert-manager legt das `Certificate` und das TLS-Secret selbst an |
-
-Ablauf:
-
-  1. Du traegst am Gateway einen HTTPS-Listener mit Hostname ein und setzt die Annotation.
-  2. cert-manager erzeugt ein `Certificate`, daraus eine `Order` und eine `Challenge`.
-  3. Fuer die Challenge legt cert-manager **kurzzeitig eine eigene HTTPRoute** am Gateway an, damit Let's Encrypt das Token ueber Port 80 findet.
-  4. Let's Encrypt prueft, cert-manager speichert das Zertifikat im Secret `bookinfo-tls`, das Gateway nutzt es.
-
-Ambient: Das TLS endet **am Gateway** (Verkehr von aussen). Ab dort uebernimmt Ambient die Absicherung im Mesh
-(ztunnel, mTLS ueber HBONE). Am Mesh und am Waypoint aendert diese Uebung nichts.
-
-**Staging zuerst:** Let's Encrypt hat Limits (u. a. 5 gleiche Zertifikate pro Woche und 5 fehlgeschlagene Pruefungen pro Stunde je Hostname).
-Deshalb testen wir erst gegen die Staging-CA (gleiche Technik, aber unbegrenzt und mit unbekanntem Aussteller) und wechseln dann auf die echte CA.
+> **Merkkasten: DNS ist schon eingerichtet**
+>
+> Der Trainer hat fuer jeden Cluster vorab einen DNS-Eintrag angelegt, z. B. `bookinfo.tln5.do.t3isp.de`.
+> Er zeigt auf die oeffentliche IP deines ersten Workers. Du musst **nichts** im DNS eintragen.
+> Die IP holst du dir in Schritt 1 per `dig` und gibst sie dem Gateway mit.
 
 ## Schritt 1: Vorbereitung
 
@@ -46,18 +28,12 @@ cd letsencrypt
 ```
 
 ```
-# Hostname und IP fuer deinen Cluster (Variablen gelten nur in diesem Terminal)
-export HOST=bookinfo-$(whoami).do.t3isp.de
-export IP=$(kubectl -n metallb-system get ipaddresspool first-pool -o jsonpath='{.spec.addresses[0]}' | sed 's#/32##')
+export HOST=bookinfo.$(whoami).do.t3isp.de
+export IP=$(dig +short $HOST)
 echo $HOST $IP
 ```
 
-```
-# Der DNS-Eintrag muss auf genau diese IP zeigen
-dig +short $HOST
-```
-
-Beide Ausgaben muessen dieselbe IP zeigen. Wenn `dig` nichts liefert: Trainer fragen (DNS-Eintrag fehlt).
+Beide Werte muessen gefuellt sein. Ist `IP` leer: Trainer fragen.
 
 ## Schritt 2: cert-manager installieren
 
@@ -77,33 +53,25 @@ helm install cert-manager jetstack/cert-manager \
   --wait
 ```
 
-`config.enableGatewayAPI=true` schaltet die Unterstuetzung fuer Gateway-Ressourcen ein (ohne diese Option ignoriert cert-manager die Annotation am Gateway).
-
 ```
 kubectl -n cert-manager get pods
 ```
 
-Erwartet: 3 Pods `Running` (`cert-manager`, `cainjector`, `webhook`).
+Erwartet: 3 Pods `Running`.
+
+## Schritt 3: Issuer anlegen
 
 ```
-kubectl -n cert-manager logs deploy/cert-manager | grep -i "gateway api"
-```
-
-Erwartet: eine Zeile `enabling the sig-network Gateway API certificate-shim and HTTP-01 solver`.
-
-## Schritt 3: Issuer fuer die Staging-CA
-
-```
-# vi 01-issuer-staging.yml
+# vi 01-issuer.yml
 apiVersion: cert-manager.io/v1
 kind: Issuer
 metadata:
-  name: letsencrypt-staging
+  name: letsencrypt
 spec:
   acme:
-    server: https://acme-staging-v02.api.letsencrypt.org/directory
+    server: https://acme-v02.api.letsencrypt.org/directory
     privateKeySecretRef:
-      name: letsencrypt-staging-account-key
+      name: letsencrypt-account-key
     solvers:
     - http01:
         gatewayHTTPRoute:
@@ -113,16 +81,13 @@ spec:
 ```
 
 ```
-kubectl -n bookinfo apply -f 01-issuer-staging.yml
+kubectl -n bookinfo apply -f 01-issuer.yml
 kubectl -n bookinfo get issuer
 ```
 
-Erwartet: `letsencrypt-staging` mit `READY True` (nach wenigen Sekunden, cert-manager hat sich dann bei der CA registriert).
+Erwartet: `READY True`.
 
-Der Issuer liegt im Namespace `bookinfo`. Er ist damit Sache des Namespace-Teams und braucht keine Rechte auf Cluster-Ebene
-(das waere ein `ClusterIssuer`).
-
-## Schritt 4: Gateway um HTTPS erweitern
+## Schritt 4: Gateway mit HTTPS
 
 ```
 # vi 02-gateway.yml
@@ -131,7 +96,7 @@ kind: Gateway
 metadata:
   name: bookinfo-gateway
   annotations:
-    cert-manager.io/issuer: letsencrypt-staging
+    cert-manager.io/issuer: letsencrypt
 spec:
   gatewayClassName: istio
   addresses:
@@ -158,129 +123,28 @@ spec:
         from: Same
 ```
 
-Was ist neu gegenueber der Gateway-Datei aus der Bookinfo-Uebung:
-
-  * `addresses`: Das Gateway bekommt genau die IP, auf die der DNS-Eintrag zeigt (sonst koennte MetalLB die andere Worker-IP vergeben).
-  * `hostname` an beiden Listenern: Let's Encrypt stellt nur fuer diesen Namen aus.
-  * Listener `https` auf Port 443, `tls.mode: Terminate`: Das Gateway beendet TLS, das Zertifikat liegt im Secret `bookinfo-tls`
-    (das Secret gibt es noch nicht, cert-manager legt es an).
-  * Annotation `cert-manager.io/issuer`: Hier steckt der ganze Trick, cert-manager erzeugt daraus das `Certificate`.
-
-`${IP}` und `${HOST}` setzt `envsubst` ein, deshalb nicht direkt mit `kubectl apply -f .`:
-
 ```
 envsubst < 02-gateway.yml | kubectl -n bookinfo apply -f -
 ```
 
 ```
 kubectl -n bookinfo get gateway bookinfo-gateway
-kubectl -n bookinfo get svc bookinfo-gateway-istio
 ```
 
-Erwartet: `PROGRAMMED True`, `EXTERNAL-IP` = deine IP, Ports `80` und `443` am selben Service (kein zweiter LoadBalancer noetig).
+Erwartet: `PROGRAMMED True`, `ADDRESS` = deine IP.
 
-## Schritt 5: Zertifikat entsteht
-
-```
-kubectl -n bookinfo get certificate,order,challenge
-```
-
-Wiederholen, bis das `Certificate` `READY True` hat (rund 30 bis 60 Sekunden). Zwischendurch sieht man `Order` und `Challenge` im Zustand `pending`.
-
-```
-# Die Challenge-Route von cert-manager (nur waehrend der Pruefung vorhanden)
-kubectl -n bookinfo get httproute
-```
-
-```
-kubectl -n bookinfo describe certificate bookinfo-tls | tail -10
-```
-
-Am Ende der Events: `The certificate has been successfully issued`.
-
-## Schritt 6: Testen (Staging)
-
-```
-# Ohne Option: Fehler, weil die Staging-CA kein Browser kennt
-curl https://$HOST/productpage
-```
-
-**Erwarteter Fehler:**
-```
-curl: (60) SSL certificate problem: unable to get local issuer certificate
-```
-
-```
-# -k: Pruefung des Zertifikats ueberspringen
-curl -k -s https://$HOST/productpage | grep -o "<title>.*</title>"
-```
-
-Erwartet: `<title>Simple Bookstore App</title>`
-
-```
-# Wer hat das Zertifikat ausgestellt?
-echo | openssl s_client -connect $HOST:443 -servername $HOST 2>/dev/null | openssl x509 -noout -issuer -subject -dates
-```
-
-Erwartet: `issuer=... CN = (STAGING) Ersatz Emmer ...` (Der Name der Staging-Zwischenzertifikate wechselt, wichtig ist `(STAGING)`), `subject=CN = bookinfo-<dein-user>.do.t3isp.de`.
-
-## Schritt 7: Auf die echte Let's-Encrypt-CA wechseln
-
-```
-# vi 03-issuer-prod.yml
-apiVersion: cert-manager.io/v1
-kind: Issuer
-metadata:
-  name: letsencrypt-prod
-spec:
-  acme:
-    server: https://acme-v02.api.letsencrypt.org/directory
-    privateKeySecretRef:
-      name: letsencrypt-prod-account-key
-    solvers:
-    - http01:
-        gatewayHTTPRoute:
-          parentRefs:
-          - kind: Gateway
-            name: bookinfo-gateway
-```
-
-```
-# In der Gateway-Datei die Annotation auf prod aendern
-sed 's#cert-manager.io/issuer: letsencrypt-staging#cert-manager.io/issuer: letsencrypt-prod#' 02-gateway.yml > 04-gateway-prod.yml
-diff 02-gateway.yml 04-gateway-prod.yml
-```
-
-```
-kubectl -n bookinfo apply -f 03-issuer-prod.yml
-envsubst < 04-gateway-prod.yml | kubectl -n bookinfo apply -f -
-```
-
-cert-manager bemerkt den neuen Aussteller und holt das Zertifikat neu (Events: `Issuing certificate as Secret was previously issued by "Issuer.cert-manager.io/letsencrypt-staging"`).
+## Schritt 5: Zertifikat abwarten
 
 ```
 kubectl -n bookinfo get certificate
 ```
 
-Wiederholen, bis `READY True` (rund eine Minute; zwischendurch `False` ist normal).
+Wiederholen, bis `READY True` (ca. 1 Minute).
+
+## Schritt 6: HTTP auf HTTPS umleiten
 
 ```
-# Jetzt ohne -k
-curl -s https://$HOST/productpage | grep -o "<title>.*</title>"
-```
-
-```
-echo | openssl s_client -connect $HOST:443 -servername $HOST 2>/dev/null | openssl x509 -noout -issuer -subject -dates
-```
-
-Erwartet: `issuer=C = US, O = Let's Encrypt, CN = ...` (ohne `STAGING`), Gueltigkeit rund 90 Tage.
-
-## Schritt 8: HTTP auf HTTPS umleiten
-
-Die HTTPRoute `bookinfo` haengt noch an beiden Listenern. Wir binden sie an `https` und legen eine Umleitung fuer `http` an:
-
-```
-# vi 05-httproute-redirect.yml
+# vi 03-httproute-redirect.yml
 apiVersion: gateway.networking.k8s.io/v1
 kind: HTTPRoute
 metadata:
@@ -298,7 +162,7 @@ spec:
 ```
 
 ```
-# vi 06-httproute-bookinfo.yml
+# vi 04-httproute-bookinfo.yml
 apiVersion: gateway.networking.k8s.io/v1
 kind: HTTPRoute
 metadata:
@@ -330,54 +194,37 @@ spec:
 ```
 
 ```
-kubectl -n bookinfo apply -f 05-httproute-redirect.yml -f 06-httproute-bookinfo.yml
-kubectl -n bookinfo get httproute
+kubectl -n bookinfo apply -f 03-httproute-redirect.yml -f 04-httproute-bookinfo.yml
 ```
 
+## Schritt 7: Testen
+
 ```
-# Weiterleitung ansehen
+curl -s https://$HOST/productpage | grep -o "<title>.*</title>"
+```
+
+Erwartet: `<title>Simple Bookstore App</title>`
+
+```
 curl -sI http://$HOST/productpage
 ```
 
-Erwartet: `HTTP/1.1 301 Moved Permanently` und `location: https://bookinfo-<dein-user>.do.t3isp.de/productpage`.
-
-```
-# Weiterleitung folgen (-L)
-curl -sL http://$HOST/productpage | grep -o "<title>.*</title>"
-```
-
-Die HTTP-01-Challenge von cert-manager (Pfad `/.well-known/acme-challenge/...`) ist spezifischer als die Weiterleitung auf `/`
-und gewinnt deshalb. Auch die automatische Erneuerung funktioniert damit weiter.
-
-## Schritt 9: Im Browser ansehen
-
-`http://<dein-hostname>/productpage` im Browser oeffnen: Du landest auf `https://`, in der Adressleiste ist das Schloss, und ein Klick darauf zeigt
-`Let's Encrypt` als Aussteller.
-
-Hostname ausgeben lassen:
+Erwartet: `HTTP/1.1 301 Moved Permanently` und `location: https://...`
 
 ```
 echo https://$HOST/productpage
 ```
 
-## Schritt 10: Erneuerung anschauen
-
-```
-kubectl -n bookinfo get certificate bookinfo-tls -o jsonpath='{.status.notBefore}{"\n"}{.status.notAfter}{"\n"}{.status.renewalTime}{"\n"}'
-```
-
-`renewalTime` liegt rund 30 Tage vor Ablauf: Ab dann erneuert cert-manager das Zertifikat ohne dein Zutun.
+Die URL im Browser oeffnen: Schloss in der Adressleiste, Aussteller `Let's Encrypt`.
 
 ## Fehlersuche
 
-| Beobachtung | Ursache / Pruefen |
-|-------------|-------------------|
-| `Certificate` bleibt `READY False` | `kubectl -n bookinfo describe challenge` lesen, dort steht die Fehlermeldung der CA |
-| Challenge `pending`, Meldung `connection refused` oder `timeout` | Gateway nicht `PROGRAMMED True` oder IP stimmt nicht mit DNS ueberein (`dig +short $HOST` gegen `EXTERNAL-IP`) |
-| Nichts passiert nach dem Anwenden des Gateways | cert-manager ohne `config.enableGatewayAPI=true` installiert, oder Annotation falsch geschrieben |
-| `EXTERNAL-IP` bleibt `<pending>` | Pro Cluster hoechstens zwei LoadBalancer-Services (zwei Worker-IPs), oder die IP aus `addresses` gehoert nicht zum Pool |
-| `NXDOMAIN` bei `dig` | DNS-Eintrag fehlt, Trainer fragen |
-| Let's Encrypt meldet `too many certificates` | Rate-Limit der echten CA erreicht: bis zum Ablauf der Sperre mit Staging weiterarbeiten |
+| Beobachtung | Pruefen |
+|-------------|---------|
+| `Certificate` bleibt `READY False` | `kubectl -n bookinfo describe challenge` |
+| Gateway nicht `PROGRAMMED True` | `IP` gesetzt? `echo $IP` |
+| Nichts passiert nach dem Gateway | cert-manager mit `config.enableGatewayAPI=true` installiert? |
+| Let's Encrypt meldet `too many ...` | Limit der CA erreicht (5 Fehlversuche pro Stunde je Hostname), spaeter erneut |
 
 ## Aufraeumen
 
@@ -385,9 +232,8 @@ kubectl -n bookinfo get certificate bookinfo-tls -o jsonpath='{.status.notBefore
 kubectl -n bookinfo delete httproute http-to-https
 kubectl -n bookinfo delete gateway bookinfo-gateway
 kubectl -n bookinfo delete httproute bookinfo
-kubectl -n bookinfo delete issuer letsencrypt-staging letsencrypt-prod
-kubectl -n bookinfo delete certificate bookinfo-tls
-kubectl -n bookinfo delete secret bookinfo-tls letsencrypt-staging-account-key letsencrypt-prod-account-key
+kubectl -n bookinfo delete issuer letsencrypt
+kubectl -n bookinfo delete secret bookinfo-tls letsencrypt-account-key
 ```
 
 ```
@@ -396,24 +242,12 @@ kubectl delete namespace cert-manager
 kubectl get crd -o name | grep cert-manager.io | xargs kubectl delete
 ```
 
-Wer weiter mit Bookinfo arbeiten will, legt Gateway und Route aus der Bookinfo-Uebung wieder an:
+Bookinfo wieder ohne HTTPS:
 
 ```
 kubectl -n bookinfo apply -f ~/istio/samples/bookinfo/gateway-api/bookinfo-gateway.yaml
 ```
 
-## Zusammenfassung
-
-| Schritt | Ergebnis |
-|---------|----------|
-| Staging-Issuer, Gateway mit Annotation | Zertifikat von `(STAGING)`, Browser warnt, `curl -k` geht |
-| Wechsel auf `letsencrypt-prod` | Echtes Zertifikat, `curl` ohne `-k` geht |
-| HTTPRoute mit `RequestRedirect` | `http://` leitet mit 301 auf `https://` um |
-| Erneuerung | Automatisch durch cert-manager, rund 30 Tage vor Ablauf |
-
 ## Ref
 
   * https://cert-manager.io/docs/usage/gateway/
-  * https://cert-manager.io/docs/configuration/acme/http01/#configuring-the-http-01-gateway-api-solver
-  * https://letsencrypt.org/docs/staging-environment/
-  * https://letsencrypt.org/docs/rate-limits/
