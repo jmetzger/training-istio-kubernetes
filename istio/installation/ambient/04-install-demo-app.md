@@ -17,6 +17,10 @@ kubectl create ns bookinfo
 kubectl label namespace bookinfo istio.io/dataplane-mode=ambient
 ```
 
+```
+kubectl describe namespace bookinfo
+```
+
 ## Waypoint Proxy ausrollen
 
 ```
