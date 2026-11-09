@@ -50,6 +50,7 @@ Der Grund: mTLS, Identität und L4-Policies sollen unabhängig davon gelten, wo 
 ![Istio Ambient: Pod zu Pod auf demselben Node](../../images/istio/ambient-gleicher-node.svg)
 
 * Quell- und Ziel-Pod teilen sich **denselben ztunnel** (ein Pod pro Node). Er ist in dem Fall Absender und Empfänger zugleich.
+* Im ztunnel gibt es zwei Seiten: **ausgehend** nimmt den umgeleiteten Traffic des Pods auf Port **15001** an, **eingehend** nimmt HBONE auf Port **15008** an. (Klartext von Pods außerhalb des Meshes landet auf Port 15006.)
 * Das Paket verlässt den Node nicht, wird aber trotzdem verschlüsselt (HBONE auf Port 15008 der Ziel-Pod-IP) und gegen die L4-Policy geprüft.
 * Ist ein Waypoint konfiguriert, ändert sich nur der Weg: Pod A → ztunnel → Waypoint → ztunnel → Pod B. Jeder Hop ist ein HBONE-Tunnel, auch wenn alle Teilnehmer auf einem Node liegen.
 * Der Vorteil für Betrieb und Fehlersuche: Das Verhalten ist auf einem Node und über Nodes hinweg identisch.
