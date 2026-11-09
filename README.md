@@ -19,8 +19,6 @@
      * [istio-installation mit istioctl - ambient (Installation per istioctl, um ein Gefühl dafür zu bekommen)](istio/installation/ambient/03-install-with-istioctl-ambient.md)
      * [Bookinfo demo in ambient ausrollen](istio/installation/ambient/04-install-demo-app.md) 
      * [istio (ambient) deinstallieren - nur als Referenz](istio/installation/ambient/99-deinstallation-ambient.md)
-     * Gateway API CRDs und Calico-Hinweis (felixconfigurations) vor der Installation
-     * Waypoint-Proxy ausrollen (Voraussetzung für L7-Routing, Retries und L7-Authorization)
 
   1. Installation auf OCP/Azure (ambient mode)
      * [Istio Ambient auf OpenShift (OCP): OSSM 3 per Operator, Unterschiede und Einschränkungen](istio/installation/openshift/01-ossm-ambient-ocp.md)
