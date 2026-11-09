@@ -16,6 +16,7 @@
   1. Installation von istio (ambient mode)
      * [istio-installation mit istioctl - ambient (Installation per istioctl, um ein Gefühl dafür zu bekommen)](istio/installation/ambient/03-install-with-istioctl-ambient.md)
      * [Bookinfo demo in ambient ausrollen](istio/installation/ambient/04-install-demo-app.md) 
+     * [istio (ambient) deinstallieren - nur als Referenz](istio/installation/ambient/99-deinstallation-ambient.md)
      * Gateway API CRDs und Calico-Hinweis (felixconfigurations) vor der Installation
      * Waypoint-Proxy ausrollen (Voraussetzung für L7-Routing, Retries und L7-Authorization)
 
@@ -85,8 +86,6 @@
      * [istio ambient und bookinfo mit argocd ausrollen](/istio/argocd/argocd-istio-bookinfo.md)
 
 ## Backlog
-
-Nicht Teil des Ambient-Schwerpunkts. Nichts davon ist gestrichen, bei Bedarf wieder in die Agenda holen.
 
   1. Installation von istio (ambient mode) mit helm
      * [istio-installation with helm - ambient](istio/installation/ambient/03-install-with-helm.md)
