@@ -37,6 +37,7 @@ EOF
 
 ```
 kubectl apply -n bookinfo -f route-reviews-v1.yaml
+kubectl get httproute -n bookinfo reviews
 kubectl get httproute -n bookinfo reviews -o yaml | less
 ```
 
