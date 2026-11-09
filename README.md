@@ -28,7 +28,6 @@
      * [Istio Ambient auf Azure (AKS): Istio-Add-on gegen eigene Installation, Voraussetzungen](istio/installation/openshift/02-ambient-aks-azure.md)
 
   1. Steuerung des Netzwerkverhaltens in Istio
-     * [Istio Ingress Gateway vs. Gateway API](istio/overview/06-ingress-istio-gateway-vs-kubernetes-gateway-api.md)
      * [Gateway API als Nachfolger von IngressGateway (Istio), VirtualService und DestinationRule](istio/overview/08-virtualservice-destinationrule-gateway-api.md)
      * [Virtual Services, Destination Rules](istio/overview/09-funktionsweise-virtualservice-destinationrule.md)
 
