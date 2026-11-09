@@ -2,8 +2,7 @@
 
 Stand: 2026-11-09. Quelle: Red-Hat-Doku und Blog zu OSSM 3.0 bis 3.3 (Links unten).
 Punkte mit **(ungeprueft)** stammen aus Erfahrungswissen und sind noch nicht gegen die
-englische Doku verifiziert. Für Azure siehe
-[Istio Ambient auf Azure (AKS)](02-ambient-aks-azure.md).
+englische Doku verifiziert.
 
 ## Kurzfassung
 

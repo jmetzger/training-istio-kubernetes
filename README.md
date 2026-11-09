@@ -22,7 +22,7 @@
 
   1. Installation auf OCP/Azure (ambient mode)
      * [Istio Ambient auf OpenShift (OCP): OSSM 3 per Operator, Unterschiede und Einschränkungen](istio/installation/openshift/01-ossm-ambient-ocp.md)
-     * [Istio Ambient auf Azure (AKS): Istio-Add-on gegen eigene Installation, Voraussetzungen](istio/installation/openshift/02-ambient-aks-azure.md)
+     * [Rancher auf Azure im Hub-and-Spoke-Netz: Verbindungen, Firewall, Istio Ambient auf den Downstream-Clustern](istio/installation/openshift/03-hub-spoke-rancher-azure.md)
 
   1. Steuerung des Netzwerkverhaltens in Istio
      * [Gateway API als Nachfolger von IngressGateway (Istio), VirtualService und DestinationRule](istio/overview/08-virtualservice-destinationrule-gateway-api.md)
@@ -33,6 +33,7 @@
      * [Übung: Traffic-Shifting / Load-Balancing](istio/exercises/04-traffic-shifting.md)
      * [Pfadbasiertes Routing](istio/exercises/13-pfadbasiertes-routing-gateway-api.md)
      * [Übung: LoadBalancing (LEAST_CONN) - Regeln](istio/exercises/15-loadbalancing-least-conn-gateway-api.md)
+     * [Übung: Bookinfo mit HTTPS und Let's Encrypt (cert-manager, Gateway API)](istio/exercises/17-https-letsencrypt-bookinfo.md)
 
   1. Service Resilience & Fehlertoleranz (Gateway API)
      * [Circuit Breaker](istio/exercises/06-circuit-breaker.md) 
