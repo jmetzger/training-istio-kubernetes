@@ -87,28 +87,34 @@ kubectl -n bookinfo get svc bookinfo-gateway-istio
 
 ### Zugriff auf die App
 
-Die Trainings-Cluster haben keinen LoadBalancer (kein MetalLB, keine Cloud-Anbindung).
-Die `EXTERNAL-IP` des Service bleibt deshalb auf `<pending>` und das Gateway zeigt `PROGRAMMED False`.
-Die App ist trotzdem erreichbar:
+Auf den Trainings-Clustern läuft MetalLB. Der Service des Gateways bekommt deshalb automatisch eine
+`EXTERNAL-IP` (die öffentliche IP eines Workers), und das Gateway zeigt `PROGRAMMED True`:
 
 ```
-# Variante 1: port-forward (läuft im Vordergrund, in einem zweiten Terminal testen)
-kubectl -n bookinfo port-forward svc/bookinfo-gateway-istio 8080:80
+kubectl -n bookinfo get gateways
+kubectl -n bookinfo get svc bookinfo-gateway-istio
+```
+
+Direkt nach dem Anlegen steht das Gateway noch kurz auf `PROGRAMMED False` und die `EXTERNAL-IP` auf `<pending>`.
+Nach wenigen Sekunden (Befehle wiederholen) steht dort `True` und die IP.
+
+```
+# IP des Gateways merken
+GATEWAY_IP=$(kubectl -n bookinfo get svc bookinfo-gateway-istio -o jsonpath='{.status.loadBalancer.ingress[0].ip}')
+echo $GATEWAY_IP
 ```
 
 ```
-curl -s http://localhost:8080/productpage | grep -o "<title>.*</title>"
+curl -s http://$GATEWAY_IP/productpage | grep -o "<title>.*</title>"
 ```
 
-```
-# Variante 2: NodePort auf der Node-IP (vom Client aus erreichbar)
-NODEPORT=$(kubectl -n bookinfo get svc bookinfo-gateway-istio -o jsonpath='{.spec.ports[?(@.port==80)].nodePort}')
-NODEIP=$(kubectl get nodes -o jsonpath='{.items[1].status.addresses[?(@.type=="InternalIP")].address}')
-curl -s http://$NODEIP:$NODEPORT/productpage | grep -o "<title>.*</title>"
-```
+Im Browser: `http://<GATEWAY_IP>/productpage`
 
-Mit einem LoadBalancer (z.B. in einem Cloud-Cluster) gilt: die `EXTERNAL-IP` notieren und
-`http://<external-ip>/productpage` aufrufen.
+Hinweise:
+
+  * Die IP ist öffentlich erreichbar, auch von eurem eigenen Rechner aus.
+  * Pro Cluster gibt es zwei IPs (die beiden Worker), also höchstens **zwei** Services vom Typ `LoadBalancer`
+    gleichzeitig. Ein weiterer bleibt auf `<pending>`. Nicht mehr benötigte Gateways oder Services vorher löschen.
 
 ## Ref
 

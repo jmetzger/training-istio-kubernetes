@@ -73,14 +73,14 @@ kubectl -n bookinfo get httproutes -o yaml
 ```
 
 ```
-# Die external-ip aus diesem Output notieren
-# Das Gateway erstellt automatisch einen Service
+# Das Gateway erstellt automatisch einen Service (die EXTERNAL-IP vergibt MetalLB)
 kubectl -n bookinfo get svc bookinfo-gateway-istio
 ```
 
 ```
-http://<external-ip>/productpage
-# oder im Browser öffnen
+GATEWAY_IP=$(kubectl -n bookinfo get svc bookinfo-gateway-istio -o jsonpath='{.status.loadBalancer.ingress[0].ip}')
+curl -s http://$GATEWAY_IP/productpage | grep -o "<title>.*</title>"
+# oder im Browser öffnen: http://<GATEWAY_IP>/productpage
 ```
 
 ## Testen aus einem namespace der nicht teil des istio mesh ist 
