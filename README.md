@@ -8,7 +8,6 @@
      * [Herausforderung & Vorteile](istio/overview/03-herausforderungen-vorteile.md)
      * [Architektur & Komponenten von Istio (Ambient: istiod, ztunnel, Waypoint, istio-cni)](istio/overview/04-architektur-komponenten.md)
      * [Istio Ingress Gateway vs. Kubernetes Gateway API](istio/overview/06-ingress-istio-gateway-vs-kubernetes-gateway-api.md)
-     * [Vergleich mit Linkerd, Cilium, Consul](istio/overview/05-vergleich-linkerd-cilium-consul.md)
 
   1. istioctl
      * [istioctl cheatsheet zum Debuggen](/istio/istioctl-cheatsheet.md)
