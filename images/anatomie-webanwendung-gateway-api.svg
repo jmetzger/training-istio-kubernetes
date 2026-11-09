@@ -1,0 +1,97 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 740" width="1600" height="740" font-family="Arial, Helvetica, sans-serif">
+<defs>
+<marker id="g" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="userSpaceOnUse" markerWidth="18" markerHeight="18" orient="auto"><path d="M0 0L10 5L0 10z" fill="#5e9a3c"/></marker>
+<marker id="b" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="userSpaceOnUse" markerWidth="18" markerHeight="18" orient="auto"><path d="M0 0L10 5L0 10z" fill="#4a78b5"/></marker>
+<marker id="s" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="userSpaceOnUse" markerWidth="10" markerHeight="10" orient="auto"><path d="M0 0L10 5L0 10z" fill="#37474f"/></marker>
+<marker id="k" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="userSpaceOnUse" markerWidth="18" markerHeight="18" orient="auto"><path d="M0 0L10 5L0 10z" fill="#37474f"/></marker>
+</defs>
+<rect width="1600" height="740" fill="#ffffff"/>
+<text x="800.0" y="34" text-anchor="middle" font-size="22" fill="#1f2a30" font-weight="bold">Anatomie einer Webanwendung mit der Gateway API (ohne Istio)</text>
+<text x="800.0" y="58" text-anchor="middle" font-size="13" fill="#455a64">Der Weg einer Anfrage von außen bis zum Pod: nur Kubernetes, kein Service Mesh</text>
+<line x1="300" y1="95" x2="300" y2="690" stroke="#607d8b" stroke-width="2"/>
+<text x="290" y="112" text-anchor="end" font-size="12" fill="#607d8b">außerhalb</text>
+<text x="310" y="112" text-anchor="start" font-size="12" fill="#607d8b">Kubernetes-Cluster</text>
+<rect x="30" y="140" width="200" height="78" rx="3" fill="#d5e8d4" stroke="#82b366" stroke-width="1.5"/>
+<text x="130" y="170" text-anchor="middle" font-size="14" fill="#1f2a30" font-weight="bold" font-style="italic">Browser:</text>
+<text x="130" y="192" text-anchor="middle" font-size="13" fill="#1f2a30" font-weight="bold">http://app1.dein-</text>
+<text x="130" y="208" text-anchor="middle" font-size="13" fill="#1f2a30" font-weight="bold">training.de</text>
+<rect x="30" y="520" width="200" height="78" rx="3" fill="#dae8fc" stroke="#6c8ebf" stroke-width="1.5"/>
+<text x="130" y="550" text-anchor="middle" font-size="14" fill="#1f2a30" font-weight="bold" font-style="italic">Browser:</text>
+<text x="130" y="572" text-anchor="middle" font-size="13" fill="#1f2a30" font-weight="bold">http://app2.dein-</text>
+<text x="130" y="588" text-anchor="middle" font-size="13" fill="#1f2a30" font-weight="bold">training.de</text>
+<rect x="325" y="175" width="575" height="290" rx="0" fill="none" stroke="#8a8a8a" stroke-width="1.5" stroke-dasharray="5 4"/>
+<text x="335" y="194" text-anchor="start" font-size="12" fill="#555" font-weight="bold">Gateway-Controller (Data Plane)</text>
+<text x="335" y="210" text-anchor="start" font-size="11" fill="#555">setzt Gateway + HTTPRoute in Proxy-Konfiguration um</text>
+<rect x="345" y="285" width="200" height="150" rx="3" fill="#f8cecc" stroke="#b85450" stroke-width="1.5"/>
+<text x="445" y="315" text-anchor="middle" font-size="14" fill="#1f2a30" font-weight="bold">Service:</text>
+<text x="445" y="333" text-anchor="middle" font-size="14" fill="#1f2a30" font-weight="bold">LoadBalancer</text>
+<text x="445" y="351" text-anchor="middle" font-size="13" fill="#1f2a30" font-weight="bold">(Gateway-Controller)</text>
+<text x="445" y="386" text-anchor="middle" font-size="13" fill="#1f2a30" font-weight="bold">EXTERNAL-IP:</text>
+<text x="445" y="404" text-anchor="middle" font-size="13" fill="#1f2a30" font-weight="bold">157.245.25.131</text>
+<rect x="610" y="95" width="270" height="56" rx="3" fill="#e1d5e7" stroke="#9673a6" stroke-width="1.5"/>
+<text x="745" y="119" text-anchor="middle" font-size="14" fill="#1f2a30" font-weight="bold">GatewayClass: nginx</text>
+<text x="745" y="138" text-anchor="middle" font-size="11" fill="#455a64">controllerName = der installierte Controller</text>
+<rect x="610" y="225" width="270" height="52" rx="3" fill="#f9f7ed" stroke="#36393d" stroke-width="1.5"/>
+<text x="745" y="247" text-anchor="middle" font-size="14" fill="#1f2a30" font-weight="bold">Gateway: web-gateway</text>
+<text x="745" y="266" text-anchor="middle" font-size="11" fill="#455a64">Listener: HTTP :80, *.dein-training.de</text>
+<polyline points="745,153 745,223" fill="none" stroke="#8a8a8a" stroke-width="2" stroke-linejoin="round" stroke-opacity="1" marker-end="url(#k)" stroke-dasharray="6 4"/>
+<text x="752" y="192" text-anchor="start" font-size="11" fill="#555">gatewayClassName</text>
+<rect x="610" y="277" width="270" height="84" rx="3" fill="#fff2cc" stroke="#d6b656" stroke-width="1.5"/>
+<text x="745" y="301" text-anchor="middle" font-size="14" fill="#1f2a30" font-weight="bold" font-style="italic">HTTPRoute: app1</text>
+<text x="745" y="320" text-anchor="middle" font-size="12" fill="#1f2a30">hostnames: app1.dein-training.de</text>
+<text x="745" y="338" text-anchor="middle" font-size="11" fill="#455a64">parentRefs: web-gateway</text>
+<text x="745" y="352" text-anchor="middle" font-size="11" fill="#455a64">backendRefs: Service app1</text>
+<rect x="610" y="361" width="270" height="84" rx="3" fill="#e6d0de" stroke="#996185" stroke-width="1.5"/>
+<text x="745" y="385" text-anchor="middle" font-size="14" fill="#1f2a30" font-weight="bold" font-style="italic">HTTPRoute: app2</text>
+<text x="745" y="404" text-anchor="middle" font-size="12" fill="#1f2a30">hostnames: app2.dein-training.de</text>
+<text x="745" y="422" text-anchor="middle" font-size="11" fill="#455a64">parentRefs: web-gateway</text>
+<text x="745" y="436" text-anchor="middle" font-size="11" fill="#455a64">backendRefs: Service app2</text>
+<polyline points="232,185 300,215 343,305" fill="none" stroke="#82b366" stroke-width="7" stroke-linejoin="round" stroke-opacity="0.85" marker-end="url(#g)"/>
+<polyline points="232,545 300,505 343,420" fill="none" stroke="#6c8ebf" stroke-width="7" stroke-linejoin="round" stroke-opacity="0.85" marker-end="url(#b)"/>
+<polyline points="547,360 606,360" fill="none" stroke="#37474f" stroke-width="5" stroke-linejoin="round" stroke-opacity="1" marker-end="url(#k)"/>
+<rect x="985" y="200" width="160" height="70" rx="3" fill="#e1d5e7" stroke="#9673a6" stroke-width="1.5"/>
+<text x="1065" y="228" text-anchor="middle" font-size="14" fill="#1f2a30">Service: app1</text>
+<text x="1065" y="248" text-anchor="middle" font-size="14" fill="#1f2a30">ClusterIP</text>
+<rect x="985" y="555" width="160" height="70" rx="3" fill="#d5e8d4" stroke="#82b366" stroke-width="1.5"/>
+<text x="1065" y="583" text-anchor="middle" font-size="14" fill="#1f2a30">Service: app2</text>
+<text x="1065" y="603" text-anchor="middle" font-size="14" fill="#1f2a30">ClusterIP</text>
+<polyline points="882,310 930,310 930,240 983,240" fill="none" stroke="#82b366" stroke-width="7" stroke-linejoin="round" stroke-opacity="0.85" marker-end="url(#g)"/>
+<polyline points="882,405 930,405 930,590 983,590" fill="none" stroke="#6c8ebf" stroke-width="7" stroke-linejoin="round" stroke-opacity="0.85" marker-end="url(#b)"/>
+<rect x="1190" y="95" width="300" height="200" rx="0" fill="none" stroke="#222" stroke-width="1.3" stroke-dasharray="2 3"/>
+<text x="1205" y="118" text-anchor="start" font-size="13" fill="#1f2a30" font-weight="bold">deployment: nginx-deployment</text>
+<rect x="1210" y="140" width="220" height="52" rx="0" fill="#1ba1e2" stroke="#006eaf" stroke-width="1.3"/>
+<rect x="1220" y="150" width="220" height="52" rx="0" fill="#1ba1e2" stroke="#006eaf" stroke-width="1.3"/>
+<rect x="1230" y="160" width="220" height="52" rx="0" fill="#1ba1e2" stroke="#006eaf" stroke-width="1.3"/>
+<rect x="1240" y="170" width="220" height="52" rx="0" fill="#1ba1e2" stroke="#006eaf" stroke-width="1.3"/>
+<rect x="1250" y="180" width="220" height="52" rx="0" fill="#1ba1e2" stroke="#006eaf" stroke-width="1.3"/>
+<text x="1262" y="203" text-anchor="start" font-size="12" fill="#fff">pod:</text>
+<text x="1262" y="221" text-anchor="start" font-size="11" fill="#fff">nginx-deployment-6b6889fbc5-bccp2</text>
+<line x1="1147" y1="235" x2="1209" y2="155" stroke="#1d70b0" stroke-width="1.6" marker-end="url(#s)"/>
+<line x1="1147" y1="235" x2="1209" y2="185" stroke="#1d70b0" stroke-width="1.6" marker-end="url(#s)"/>
+<line x1="1147" y1="235" x2="1209" y2="215" stroke="#1d70b0" stroke-width="1.6" marker-end="url(#s)"/>
+<rect x="1190" y="445" width="300" height="200" rx="0" fill="none" stroke="#222" stroke-width="1.3" stroke-dasharray="2 3"/>
+<text x="1205" y="468" text-anchor="start" font-size="13" fill="#1f2a30" font-weight="bold">deployment: nginx-custom-index</text>
+<rect x="1210" y="490" width="220" height="52" rx="0" fill="#bac8d3" stroke="#23445d" stroke-width="1.3"/>
+<rect x="1220" y="500" width="220" height="52" rx="0" fill="#bac8d3" stroke="#23445d" stroke-width="1.3"/>
+<rect x="1230" y="510" width="220" height="52" rx="0" fill="#bac8d3" stroke="#23445d" stroke-width="1.3"/>
+<rect x="1240" y="520" width="220" height="52" rx="0" fill="#bac8d3" stroke="#23445d" stroke-width="1.3"/>
+<rect x="1250" y="530" width="220" height="52" rx="0" fill="#bac8d3" stroke="#23445d" stroke-width="1.3"/>
+<text x="1262" y="553" text-anchor="start" font-size="12" fill="#1f2a30">pod:</text>
+<text x="1262" y="571" text-anchor="start" font-size="11" fill="#1f2a30">nginx-custom-index-59c898fdf4-g5vpv</text>
+<line x1="1147" y1="590" x2="1209" y2="505" stroke="#23445d" stroke-width="1.6" marker-end="url(#s)"/>
+<line x1="1147" y1="590" x2="1209" y2="535" stroke="#23445d" stroke-width="1.6" marker-end="url(#s)"/>
+<line x1="1147" y1="590" x2="1209" y2="565" stroke="#23445d" stroke-width="1.6" marker-end="url(#s)"/>
+<path d="M1503,170 v70 a45,16 0 0 0 90,0 v-70" fill="#cdeb8b" stroke="#36393d" stroke-width="1.5"/>
+<ellipse cx="1548" cy="170" rx="45" ry="16" fill="#cdeb8b" stroke="#36393d" stroke-width="1.5"/>
+<text x="1548" y="213" text-anchor="middle" font-size="14" fill="#1f2a30" font-weight="bold">Shared</text>
+<text x="1548" y="231" text-anchor="middle" font-size="14" fill="#1f2a30" font-weight="bold">Volume</text>
+<line x1="1491" y1="205" x2="1502" y2="205" stroke="#37474f" stroke-width="2"/>
+<text x="1548" y="267" text-anchor="middle" font-size="11" fill="#37474f">n Pods : 1 Volume</text>
+<path d="M1510,500 h48 l24,24 v100 h-72z" fill="#cce5ff" stroke="#36393d" stroke-width="1.5"/><path d="M1558,500 v24 h24" fill="#a8c9ee" stroke="#36393d" stroke-width="1.5"/>
+<text x="1546" y="574" text-anchor="middle" font-size="13" fill="#1f2a30">ConfigMap</text>
+<polyline points="1508,570 1493,570" fill="none" stroke="#37474f" stroke-width="2" stroke-linejoin="round" stroke-opacity="1" marker-end="url(#s)"/>
+<rect x="30" y="650" width="1130" height="60" rx="6" fill="#f5f7f8" stroke="#cfd8dc" stroke-width="1"/>
+<text x="45" y="672" text-anchor="start" font-size="13" fill="#1f2a30" font-weight="bold">Ohne Istio:</text>
+<text x="130" y="672" text-anchor="start" font-size="12" fill="#1f2a30">kein Sidecar, kein ztunnel, kein Waypoint, kein mTLS im Mesh. Die Pods sprechen unverschlüsselt über den Service miteinander.</text>
+<text x="45" y="694" text-anchor="start" font-size="12" fill="#1f2a30">Gateway, GatewayClass und HTTPRoute sind Kubernetes-Objekte (gateway.networking.k8s.io). Welcher Controller sie umsetzt, hängt von der GatewayClass ab.</text>
+</svg>

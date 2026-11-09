@@ -2,6 +2,9 @@
 
 ## Agenda
 
+  1. Kubernetes - Grundlagen
+     * [Anatomie einer Webanwendung mit der Gateway API (ohne Istio)](kubernetes-grundlagen/01-anatomie-webanwendung-gateway-api.md)
+
   1. Grundlagen ServiceMesh & Istio
      * [Einführung in Istio & Service Mesh-Architekturen](/istio/overview/01-introduction.md)
      * [Warum ein Service Mesh?](istio/overview/02-warum-servicemesh.md)
