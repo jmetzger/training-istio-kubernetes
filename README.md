@@ -88,7 +88,7 @@
 
   1. Multi-Cluster (nur Theorie)
      * [Multi-Cluster- & Hybrid-Umgebungen mit Istio (Überblick mit Grafiken)](istio/overview/13-multi-cluster-hybrid-ueberblick.md)
-     * Istio Federation & Cross-Cluster Traffic
+     * [Istio Federation & Cross-Cluster Traffic](istio/overview/14-federation-cross-cluster-traffic.md)
 
   1. Erweiterbarkeit von Istio (nur Theorie)
      * WebAssembly (Wasm) für Istio-Erweiterungen

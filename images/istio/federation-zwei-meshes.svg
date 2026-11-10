@@ -1,0 +1,80 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 560" width="960" height="560" font-family="Arial, Helvetica, sans-serif">
+<defs>
+<marker id="g" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#2e7d32"/></marker>
+<marker id="p" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#311b92"/></marker>
+<marker id="o" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#e65100"/></marker>
+</defs>
+<rect width="960" height="560" fill="#ffffff"/>
+<text x="480" y="26" text-anchor="middle" font-size="18" font-weight="bold" fill="#263238">Federation: zwei getrennte Meshes, ein bewusst geöffneter Weg</text>
+
+<!-- Mesh A -->
+<rect x="20" y="44" width="340" height="366" rx="12" fill="#f1f8fe" stroke="#0d47a1" stroke-width="2.5"/>
+<text x="190" y="68" text-anchor="middle" font-size="14" font-weight="bold" fill="#0d47a1">Mesh A · Cluster A</text>
+<text x="190" y="84" text-anchor="middle" font-size="11" fill="#455a64">Trust Domain a.example, eigene Root-CA</text>
+
+<rect x="32" y="96" width="316" height="82" rx="6" fill="#ffffff" stroke="#b0bec5" stroke-width="1"/>
+<text x="42" y="112" font-size="11" font-weight="bold" fill="#546e7a">Namespace istio-system</text>
+<rect x="42" y="124" width="130" height="40" rx="6" fill="#ede7f6" stroke="#311b92" stroke-width="2"/>
+<text x="107" y="148" text-anchor="middle" font-size="13" font-weight="bold" fill="#311b92">istiod A</text>
+<rect x="208" y="124" width="130" height="40" rx="6" fill="#eceff1" stroke="#455a64" stroke-width="2"/>
+<text x="273" y="148" text-anchor="middle" font-size="13" font-weight="bold" fill="#37474f">Root-CA A</text>
+
+<rect x="32" y="190" width="316" height="86" rx="6" fill="#ffffff" stroke="#b0bec5" stroke-width="1"/>
+<text x="42" y="206" font-size="11" font-weight="bold" fill="#546e7a">Namespace shop</text>
+<rect x="42" y="214" width="150" height="52" rx="6" fill="#fffde7" stroke="#f9a825" stroke-width="2"/>
+<text x="117" y="236" text-anchor="middle" font-size="12" font-weight="bold" fill="#8d6e00">ServiceEntry</text>
+<text x="117" y="254" text-anchor="middle" font-size="10" fill="#6d5600">backend.b.example</text>
+<rect x="208" y="214" width="130" height="52" rx="6" fill="#ffffff" stroke="#0d47a1" stroke-width="2"/>
+<text x="273" y="236" text-anchor="middle" font-size="12" font-weight="bold" fill="#0d47a1">frontend</text>
+<text x="273" y="254" text-anchor="middle" font-size="10" fill="#455a64">Pod in Mesh A</text>
+
+<text x="190" y="312" text-anchor="middle" font-size="11" fill="#455a64">istiod A kennt den Service backend nur über die</text>
+<text x="190" y="328" text-anchor="middle" font-size="11" fill="#455a64">ServiceEntry, nicht aus dem Cluster von Mesh B.</text>
+
+<!-- Mesh B -->
+<rect x="600" y="44" width="340" height="366" rx="12" fill="#f1f8fe" stroke="#0d47a1" stroke-width="2.5"/>
+<text x="770" y="68" text-anchor="middle" font-size="14" font-weight="bold" fill="#0d47a1">Mesh B · Cluster B</text>
+<text x="770" y="84" text-anchor="middle" font-size="11" fill="#455a64">Trust Domain b.example, eigene Root-CA</text>
+
+<rect x="612" y="96" width="316" height="82" rx="6" fill="#ffffff" stroke="#b0bec5" stroke-width="1"/>
+<text x="622" y="112" font-size="11" font-weight="bold" fill="#546e7a">Namespace istio-system</text>
+<rect x="622" y="124" width="130" height="40" rx="6" fill="#eceff1" stroke="#455a64" stroke-width="2"/>
+<text x="687" y="148" text-anchor="middle" font-size="13" font-weight="bold" fill="#37474f">Root-CA B</text>
+<rect x="788" y="124" width="130" height="40" rx="6" fill="#ede7f6" stroke="#311b92" stroke-width="2"/>
+<text x="853" y="148" text-anchor="middle" font-size="13" font-weight="bold" fill="#311b92">istiod B</text>
+
+<rect x="612" y="190" width="316" height="86" rx="6" fill="#ffffff" stroke="#b0bec5" stroke-width="1"/>
+<text x="622" y="206" font-size="11" font-weight="bold" fill="#546e7a">Namespace istio-gateways</text>
+<rect x="622" y="214" width="150" height="52" rx="6" fill="#fff3e0" stroke="#e65100" stroke-width="2.5"/>
+<text x="697" y="236" text-anchor="middle" font-size="12" font-weight="bold" fill="#e65100">Gateway</text>
+<text x="697" y="254" text-anchor="middle" font-size="10" fill="#bf360c">einziger Eingang, Port 15443</text>
+
+<rect x="612" y="288" width="316" height="86" rx="6" fill="#ffffff" stroke="#b0bec5" stroke-width="1"/>
+<text x="622" y="304" font-size="11" font-weight="bold" fill="#546e7a">Namespace payments</text>
+<rect x="622" y="312" width="150" height="52" rx="6" fill="#ffffff" stroke="#0d47a1" stroke-width="2"/>
+<text x="697" y="334" text-anchor="middle" font-size="12" font-weight="bold" fill="#0d47a1">backend</text>
+<text x="697" y="352" text-anchor="middle" font-size="10" fill="#455a64">Pod in Mesh B</text>
+<text x="850" y="332" text-anchor="middle" font-size="11" fill="#455a64">Nur dieser Service ist</text>
+<text x="850" y="348" text-anchor="middle" font-size="11" fill="#455a64">freigegeben</text>
+
+<!-- Trust-Austausch -->
+<line x1="338" y1="144" x2="622" y2="144" stroke="#311b92" stroke-width="2.5" stroke-dasharray="7 4" marker-start="url(#p)" marker-end="url(#p)"/>
+<rect x="394" y="112" width="172" height="46" fill="#ffffff"/>
+<text x="480" y="130" text-anchor="middle" font-size="12" font-weight="bold" fill="#311b92">Trust-Bundles</text>
+<text x="480" y="146" text-anchor="middle" font-size="11" fill="#311b92">Root-Zertifikate tauschen</text>
+
+<!-- Aufruf -->
+<line x1="338" y1="240" x2="622" y2="240" stroke="#2e7d32" stroke-width="3" marker-end="url(#g)"/>
+<rect x="388" y="196" width="184" height="30" fill="#ffffff"/>
+<text x="480" y="212" text-anchor="middle" font-size="12" font-weight="bold" fill="#2e7d32">Aufruf mit mTLS</text>
+<text x="480" y="262" text-anchor="middle" font-size="11" fill="#2e7d32">über das Gateway von Mesh B</text>
+<line x1="750" y1="266" x2="750" y2="310" stroke="#2e7d32" stroke-width="3" marker-end="url(#g)"/>
+
+<!-- Fusszeile -->
+<rect x="20" y="428" width="920" height="118" rx="8" fill="#fafafa" stroke="#9e9e9e" stroke-width="1.5"/>
+<text x="36" y="450" font-size="14" font-weight="bold" fill="#263238">So funktioniert es</text>
+<text x="36" y="472" font-size="12" fill="#37474f">1. Beide Seiten importieren das Root-Zertifikat der anderen: Identitäten aus der anderen Trust Domain gelten als vertrauenswürdig.</text>
+<text x="36" y="490" font-size="12" fill="#37474f">2. Mesh B gibt den Service backend über ein Gateway frei und erlaubt per AuthorizationPolicy nur bestimmte Identitäten aus Mesh A.</text>
+<text x="36" y="508" font-size="12" fill="#37474f">3. Mesh A kennt backend über eine ServiceEntry, deren Endpoint die Adresse des Gateways ist.</text>
+<text x="36" y="526" font-size="12" fill="#37474f">4. Jeder Service wird einzeln freigegeben. Es gibt keine gemeinsame Service-Discovery und kein automatisches Failover.</text>
+</svg>
