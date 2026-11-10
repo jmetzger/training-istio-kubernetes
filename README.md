@@ -46,10 +46,8 @@
      * [Was ist in istio deep-defense (defense in depth) ?](/istio/overview/defense-in-depth.md)   
      * [Überblick 3 Säulen -  Sichere Service-Kommunikation](istio/overview/security/01-secure-service-communication.md)
      * [Übung Säule 1 (Sidecar): mTLS prüfen und aktivieren/deaktivieren](istio/overview/security/02-check-mtls-enable-disable.md)
-     * [Übung Säule 2 + 3: Authentication und Authorization mit JWT und RBAC](istio/exercises/12-jwt-rbac.md)
-
-  1. Sichere Service-Kommunikation mit istio im Ambient-Mode (mTLS)
      * [Übung Säule 1 (Ambient): mTLS prüfen und aktivieren/deaktivieren (ztunnel, HBONE, PeerAuthentication)](istio/overview/security/02-check-mtls-enable-disable-ambient.md)
+     * [Übung Säule 2 + 3: Authentication und Authorization mit JWT und RBAC](istio/exercises/12-jwt-rbac.md)
 
   1. Sicherheit, Fehlertoleranz & Observability    
      * Istio Authorization Policies (ingress/egress Security)
