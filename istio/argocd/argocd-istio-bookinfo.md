@@ -163,6 +163,7 @@ kubectl get applications -n argocd -w
 # istiod              Synced   Healthy
 # istio-cni           Synced   Healthy
 # ztunnel             Synced   Healthy
+# bookinfo           Synced   Healthy
 
 # Istio-Pods prüfen:
 kubectl get pods -n istio-system
@@ -371,6 +372,44 @@ spec:
   syncPolicy:
     automated:
       selfHeal: true
+```
+
+#### bookinfo (Sync Wave 2)
+
+Die Beispiel-Anwendung kommt **nach** ztunnel (Wave 2), damit die Pods beim Start
+bereits im Ambient Mesh sind. Die Application legt den Namespace samt Ambient-Label selbst an
+(`managedNamespaceMetadata`, ab ArgoCD 2.6):
+
+```yaml
+# apps/bookinfo/bookinfo-app.yaml
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: bookinfo
+  namespace: argocd
+  annotations:
+    argocd.argoproj.io/sync-wave: "2"
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/istio/istio.git
+    targetRevision: 1.24.2          # gleiche Version wie die Istio-Charts
+    path: samples/bookinfo/platform/kube
+    directory:
+      include: bookinfo.yaml        # nur die Anwendung, nicht die Varianten im Ordner
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: bookinfo
+  syncPolicy:
+    automated:
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+    managedNamespaceMetadata:
+      labels:
+        istio.io/dataplane-mode: ambient    # Namespace ins Ambient Mesh aufnehmen
 ```
 
 #### Multi-Source Variante (alles in einer Application)
