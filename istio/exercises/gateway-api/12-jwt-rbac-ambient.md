@@ -69,7 +69,6 @@ cd manifests/jwt
 ## Step 1: Create http-bin and curl workloads 
 
 ```
-kubectl create ns foo
 kubectl -n bookinfo apply -f ~/istio/samples/httpbin/httpbin.yaml
 kubectl -n bookinfo apply -f ~/istio/samples/curl/curl.yaml
 ```
@@ -77,7 +76,7 @@ kubectl -n bookinfo apply -f ~/istio/samples/curl/curl.yaml
 ## Step 2: Can we connect ? 
 
 ```
-kubectl exec "$(kubectl get pod -l app=curl -n foo -o jsonpath={.items..metadata.name})" -c curl -n foo -- curl http://httpbin.foo:8000/ip -sS -o /dev/null -w "%{http_code}\n"
+kubectl exec "$(kubectl get pod -l app=curl -n bookinfo -o jsonpath={.items..metadata.name})" -c curl -n bookinfo -- curl http://httpbin.bookinfo:8000/ip -sS -o /dev/null -w "%{http_code}\n"
 ```
 
 ## Step 3: Create a RequestAuthentication 
@@ -91,7 +90,7 @@ apiVersion: security.istio.io/v1
 kind: RequestAuthentication
 metadata:
   name: "jwt-example"
-  namespace: foo
+  namespace: bookinfo
 spec:
   selector:
     matchLabels:
@@ -110,7 +109,7 @@ kubectl apply -f .
   * Invalid is restricted, so we do not get access (no 200) 
 
 ```
-kubectl exec "$(kubectl get pod -l app=curl -n foo -o jsonpath={.items..metadata.name})" -c curl -n foo -- curl "http://httpbin.foo:8000/headers" -sS -o /dev/null -H "Authorization: Bearer invalidToken" -w "%{http_code}\n"
+kubectl exec "$(kubectl get pod -l app=curl -n bookinfo -o jsonpath={.items..metadata.name})" -c curl -n bookinfo -- curl "http://httpbin.bookinfo:8000/headers" -sS -o /dev/null -H "Authorization: Bearer invalidToken" -w "%{http_code}\n"
 ```
 
 ## Step 5: But: without a jwt -> its work 
@@ -118,7 +117,7 @@ kubectl exec "$(kubectl get pod -l app=curl -n foo -o jsonpath={.items..metadata
   * ... Because ! -> There is no AuthorizationPolicy
 
 ```
-kubectl exec "$(kubectl get pod -l app=curl -n foo -o jsonpath={.items..metadata.name})" -c curl -n foo -- curl "http://httpbin.foo:8000/headers" -sS -o /dev/null -w "%{http_code}\n"
+kubectl exec "$(kubectl get pod -l app=curl -n bookinfo -o jsonpath={.items..metadata.name})" -c curl -n bookinfo -- curl "http://httpbin.bookinfo:8000/headers" -sS -o /dev/null -w "%{http_code}\n"
 ```
 
 ## Step 6: We create an AuthorizationPolicy 
@@ -138,7 +137,7 @@ apiVersion: security.istio.io/v1
 kind: AuthorizationPolicy
 metadata:
   name: require-jwt
-  namespace: foo
+  namespace: bookinfo
 spec:
   selector:
     matchLabels:
@@ -172,12 +171,12 @@ echo $TOKEN
 
 ```
 # Testing with allowed jwt
-kubectl exec "$(kubectl get pod -l app=curl -n foo -o jsonpath={.items..metadata.name})" -c curl -n foo -- curl "http://httpbin.foo:8000/headers" -sS -o /dev/null -H "Authorization: Bearer $TOKEN" -w "%{http_code}\n"
+kubectl exec "$(kubectl get pod -l app=curl -n bookinfo -o jsonpath={.items..metadata.name})" -c curl -n bookinfo -- curl "http://httpbin.bookinfo:8000/headers" -sS -o /dev/null -H "Authorization: Bearer $TOKEN" -w "%{http_code}\n"
 ```
 
 ```
 # Testing without a jwt
-kubectl exec "$(kubectl get pod -l app=curl -n foo -o jsonpath={.items..metadata.name})" -c curl -n foo -- curl "http://httpbin.foo:8000/headers" -sS -o /dev/null -w "%{http_code}\n"
+kubectl exec "$(kubectl get pod -l app=curl -n bookinfo -o jsonpath={.items..metadata.name})" -c curl -n bookinfo -- curl "http://httpbin.bookinfo:8000/headers" -sS -o /dev/null -w "%{http_code}\n"
 ```
 
 ## Step 8: Update AuthorizationPolicy also needing a specific group 
@@ -191,7 +190,7 @@ apiVersion: security.istio.io/v1
 kind: AuthorizationPolicy
 metadata:
   name: require-jwt
-  namespace: foo
+  namespace: bookinfo
 spec:
   selector:
     matchLabels:
@@ -221,7 +220,7 @@ TOKEN_GROUP=$(curl https://raw.githubusercontent.com/istio/istio/release-1.29.1/
 ## Step 10: Test it with that token (so group1 must be included) 
 
 ```
-kubectl exec "$(kubectl get pod -l app=curl -n foo -o jsonpath={.items..metadata.name})" -c curl -n foo -- curl "http://httpbin.foo:8000/headers" -sS -o /dev/null -H "Authorization: Bearer $TOKEN_GROUP" -w "%{http_code}\n"
+kubectl exec "$(kubectl get pod -l app=curl -n bookinfo -o jsonpath={.items..metadata.name})" -c curl -n bookinfo -- curl "http://httpbin.bookinfo:8000/headers" -sS -o /dev/null -H "Authorization: Bearer $TOKEN_GROUP" -w "%{http_code}\n"
 ```
 
 ## Step 11: Test with a token without group included 
@@ -229,13 +228,13 @@ kubectl exec "$(kubectl get pod -l app=curl -n foo -o jsonpath={.items..metadata
   * We use that TOKEN before, which had not group 
 
 ```
-kubectl exec "$(kubectl get pod -l app=curl -n foo -o jsonpath={.items..metadata.name})" -c curl -n foo -- curl "http://httpbin.foo:8000/headers" -sS -o /dev/null -H "Authorization: Bearer $TOKEN" -w "%{http_code}\n"
+kubectl exec "$(kubectl get pod -l app=curl -n bookinfo -o jsonpath={.items..metadata.name})" -c curl -n bookinfo -- curl "http://httpbin.bookinfo:8000/headers" -sS -o /dev/null -H "Authorization: Bearer $TOKEN" -w "%{http_code}\n"
 ```
 
 ## Step 12: Cleanup 
 
 ```
-kubectl delete namespace foo
+kubectl delete -f .
 ```
 
 
