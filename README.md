@@ -36,6 +36,7 @@
      * [Pfadbasiertes Routing](istio/exercises/13-pfadbasiertes-routing-gateway-api.md)
      * [Übung: LoadBalancing (LEAST_CONN) - Regeln](istio/exercises/15-loadbalancing-least-conn-gateway-api.md)
      * [Übung: Bookinfo mit HTTPS und Let's Encrypt (cert-manager, Gateway API)](istio/exercises/17-https-letsencrypt-bookinfo.md)
+     * [Übung (Ambient): Kong als API-Gateway vor Istio Ambient (mTLS, STRICT, Waypoint-Umgehung)](istio/exercises/21-kong-api-gateway-ambient.md)
 
   1. Service Resilience & Fehlertoleranz (Gateway API)
      * [Circuit Breaker](istio/exercises/06-circuit-breaker.md) 

@@ -1,0 +1,74 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 600" width="960" height="600" font-family="Arial, Helvetica, sans-serif">
+  <defs>
+    <marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#37474f"/></marker>
+    <marker id="b" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#1565c0"/></marker>
+    <marker id="g" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#2e7d32"/></marker>
+    <marker id="t" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#00897b"/></marker>
+  </defs>
+  <rect width="960" height="600" fill="#ffffff"/>
+  <text x="480" y="26" text-anchor="middle" font-size="18" font-weight="bold" fill="#263238">Kong vor Istio Ambient: der Weg einer Anfrage</text>
+
+  <!-- Namespace-Baender -->
+  <rect x="10" y="118" width="940" height="112" rx="8" fill="#f3f8fd" stroke="#90caf9" stroke-width="1.5"/>
+  <text x="22" y="140" font-size="14" font-weight="bold" fill="#0d47a1">Namespace kong</text>
+  <rect x="10" y="244" width="940" height="92" rx="8" fill="#f5f7f8" stroke="#cfd8dc" stroke-width="1.5"/>
+  <text x="22" y="266" font-size="14" font-weight="bold" fill="#37474f">Namespace istio-system</text>
+  <rect x="10" y="350" width="940" height="112" rx="8" fill="#fffdf3" stroke="#ffe082" stroke-width="1.5"/>
+  <text x="22" y="372" font-size="14" font-weight="bold" fill="#5d4037">Namespace kong-demo</text>
+
+  <!-- Nodes als Spalten -->
+  <rect x="250" y="112" width="250" height="356" rx="10" fill="none" stroke="#78909c" stroke-width="1.5" stroke-dasharray="7 5"/>
+  <text x="375" y="486" text-anchor="middle" font-size="13" fill="#546e7a">Node A</text>
+  <rect x="530" y="112" width="400" height="356" rx="10" fill="none" stroke="#78909c" stroke-width="1.5" stroke-dasharray="7 5"/>
+  <text x="730" y="486" text-anchor="middle" font-size="13" fill="#546e7a">Node B</text>
+
+  <!-- Client -->
+  <rect x="260" y="48" width="230" height="46" rx="6" fill="#eceff1" stroke="#607d8b" stroke-width="2"/>
+  <text x="375" y="68" text-anchor="middle" font-size="15" font-weight="bold" fill="#263238">Client</text>
+  <text x="375" y="85" text-anchor="middle" font-size="12" fill="#37474f">außerhalb des Clusters / Mesh</text>
+
+  <!-- Kong -->
+  <rect x="262" y="150" width="226" height="64" rx="6" fill="#e3f2fd" stroke="#1565c0" stroke-width="2.5"/>
+  <text x="375" y="174" text-anchor="middle" font-size="15" font-weight="bold" fill="#0d47a1">Kong Gateway (Pod)</text>
+  <text x="375" y="194" text-anchor="middle" font-size="12" fill="#0d47a1">TLS, Routing, Auth, Rate-Limit</text>
+  <rect x="600" y="150" width="290" height="64" rx="6" fill="#e3f2fd" stroke="#1565c0" stroke-width="2"/>
+  <text x="745" y="174" text-anchor="middle" font-size="15" font-weight="bold" fill="#0d47a1">Kong Controller (Pod)</text>
+  <text x="745" y="194" text-anchor="middle" font-size="12" fill="#0d47a1">liest Gateway und HTTPRoute</text>
+
+  <!-- ztunnel -->
+  <rect x="262" y="274" width="226" height="52" rx="6" fill="#e8f5e9" stroke="#2e7d32" stroke-width="2.5"/>
+  <text x="375" y="296" text-anchor="middle" font-size="15" font-weight="bold" fill="#1b5e20">ztunnel (Node A)</text>
+  <text x="375" y="315" text-anchor="middle" font-size="12" fill="#1b5e20">fängt ab, Identität kong-gateway</text>
+  <rect x="600" y="274" width="290" height="52" rx="6" fill="#e8f5e9" stroke="#2e7d32" stroke-width="2.5"/>
+  <text x="745" y="296" text-anchor="middle" font-size="15" font-weight="bold" fill="#1b5e20">ztunnel (Node B)</text>
+  <text x="745" y="315" text-anchor="middle" font-size="12" fill="#1b5e20">prüft Identität, wendet L4-Regeln an</text>
+
+  <!-- Anwendung + Waypoint -->
+  <rect x="550" y="388" width="150" height="58" rx="6" fill="#fff8e1" stroke="#f9a825" stroke-width="2"/>
+  <text x="625" y="413" text-anchor="middle" font-size="15" font-weight="bold" fill="#5d4037">httpbin</text>
+  <text x="625" y="432" text-anchor="middle" font-size="12" fill="#5d4037">Anwendung (Pod)</text>
+  <rect x="750" y="388" width="160" height="58" rx="6" fill="#e0f2f1" stroke="#00897b" stroke-width="2" stroke-dasharray="6 4"/>
+  <text x="830" y="413" text-anchor="middle" font-size="15" font-weight="bold" fill="#004d40">Waypoint</text>
+  <text x="830" y="432" text-anchor="middle" font-size="12" fill="#004d40">optional, Layer 7</text>
+
+  <!-- Pfeile -->
+  <line x1="375" y1="94" x2="375" y2="148" stroke="#37474f" stroke-width="3" marker-end="url(#a)"/>
+  <text x="387" y="126" font-size="13" font-weight="bold" fill="#37474f">1 HTTPS</text>
+  <line x1="375" y1="214" x2="375" y2="272" stroke="#37474f" stroke-width="3" marker-end="url(#a)"/>
+  <text x="387" y="240" font-size="13" font-weight="bold" fill="#37474f">2 HTTP</text>
+  <line x1="490" y1="300" x2="598" y2="300" stroke="#2e7d32" stroke-width="4" marker-end="url(#g)"/>
+  <rect x="516" y="275" width="56" height="18" fill="#f5f7f8"/><text x="544" y="289" text-anchor="middle" font-size="12" font-weight="bold" fill="#1b5e20">3 HBONE</text>
+  <rect x="526" y="308" width="36" height="16" fill="#f5f7f8"/><text x="544" y="320" text-anchor="middle" font-size="12" fill="#1b5e20">mTLS</text>
+  <line x1="625" y1="326" x2="625" y2="386" stroke="#37474f" stroke-width="3" marker-end="url(#a)"/>
+  <text x="637" y="360" font-size="13" font-weight="bold" fill="#37474f">4 HTTP</text>
+  <line x1="830" y1="326" x2="830" y2="386" stroke="#00897b" stroke-width="2.5" stroke-dasharray="6 4" marker-end="url(#t)"/>
+  <line x1="748" y1="417" x2="702" y2="417" stroke="#00897b" stroke-width="2.5" stroke-dasharray="6 4" marker-end="url(#t)"/>
+  <line x1="598" y1="182" x2="490" y2="182" stroke="#1565c0" stroke-width="2.5" stroke-dasharray="6 4" marker-end="url(#b)"/>
+  <rect x="520" y="160" width="48" height="16" fill="#f3f8fd"/><text x="544" y="172" text-anchor="middle" font-size="12" fill="#0d47a1">steuert</text>
+
+  <!-- Legende -->
+  <rect x="10" y="508" width="940" height="76" rx="8" fill="#fafafa" stroke="#cfd8dc" stroke-width="1"/>
+  <text x="24" y="532" font-size="13" fill="#263238"><tspan font-weight="bold" fill="#0d47a1">Kong (Nord-Süd):</tspan> nimmt Anfragen von außen an, terminiert TLS, prüft API-Keys oder Token und wählt per HTTPRoute das Ziel.</text>
+  <text x="24" y="553" font-size="13" fill="#263238"><tspan font-weight="bold" fill="#1b5e20">Ambient (Ost-West):</tspan> der ztunnel verschlüsselt den Weg von Kong zur Anwendung (mTLS) und liefert die Identität von Kong.</text>
+  <text x="24" y="574" font-size="13" fill="#263238"><tspan font-weight="bold" fill="#004d40">Waypoint (gestrichelt):</tspan> nur nötig, wenn die Anwendung Layer-7-Regeln des Mesh braucht. Dann siehe Grafik zur Umgehung.</text>
+</svg>
