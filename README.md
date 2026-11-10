@@ -12,6 +12,7 @@
      * [Architektur & Komponenten von Istio (Ambient: istiod, ztunnel, Waypoint, istio-cni)](istio/overview/04-architektur-komponenten.md)
      * [Waypoint: was bedeutet --for service, workload und all?](istio/overview/10-waypoint-for-service-oder-workload.md)
      * [Istio Ingress Gateway vs. Kubernetes Gateway API](istio/overview/06-ingress-istio-gateway-vs-kubernetes-gateway-api.md)
+     * [Wildcards bei principals in der AuthorizationPolicy](istio/overview/12-authorizationpolicy-principals-wildcards.md)
 
   1. istioctl
      * [istioctl cheatsheet zum Debuggen](/istio/istioctl-cheatsheet.md)
