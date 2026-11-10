@@ -1,4 +1,7 @@
-# Übung: Säule 1 – mTLS prüfen und aktivieren/deaktivieren
+# Übung (Sidecar): Säule 1 – mTLS prüfen und aktivieren/deaktivieren
+
+> **Sidecar-Fassung.** Diese Übung gilt für den Sidecar-Mode (Envoy-Proxy in jedem Pod).
+> Für den Ambient-Mode (ztunnel, Waypoint) gibt es eine eigene Fassung: [02-check-mtls-enable-disable-ambient.md](02-check-mtls-enable-disable-ambient.md).
 
 ## Ziel
 
@@ -8,7 +11,7 @@ mTLS-Status im Mesh inspizieren, PeerAuthentication-Policies anwenden und die Au
 
 ## Voraussetzungen
 
-- Kubernetes-Cluster mit Istio (Sidecar- oder Ambient-Mode)
+- Kubernetes-Cluster mit Istio im **Sidecar-Mode** (für Ambient siehe die Ambient-Fassung)
 - `istioctl` installiert
 - Namespace `bookinfo` mit Istio-Injection:
 

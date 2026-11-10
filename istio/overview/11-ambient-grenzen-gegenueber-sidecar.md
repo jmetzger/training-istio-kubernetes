@@ -1,9 +1,8 @@
 # Was Ambient (noch) nicht kann, was Sidecar kann
 
-**Stand: 10.11.2026.** Grundlage ist die Istio-Dokumentation zu Version 1.32 (1.32.0 ist seit 09.11.2026 draußen).
-Im Training läuft Istio **1.31.4**. Die Aussagen gelten vermutlich auch dafür, abgeglichen ist das nicht.
+**Stand: 10.11.2026.** Grundlage ist die Istio-Doku zu Version 1.32. Im Training läuft **1.31.4**; die Aussagen gelten vermutlich auch dafür, abgeglichen ist das nicht.
 
-## Die Kurzfassung
+## Kurzfassung
 
 Für **einen einzelnen Kubernetes-Cluster** mit Gateway API, ztunnel und Waypoint (unser Aufbau) fehlt fast nichts.
 Die Lücken liegen bei VMs, EnvoyFilter, SPIRE und Multi-Cluster.
@@ -12,31 +11,27 @@ Die Lücken liegen bei VMs, EnvoyFilter, SPIRE und Multi-Cluster.
 
 | Thema | Sidecar | Ambient |
 |---|---|---|
-| **VMs im Mesh** | geht | nicht möglich |
-| **EnvoyFilter** | geht | wird nicht unterstützt, auch nicht auf Waypoints |
-| **SPIRE-Integration** | geht | nicht unterstützt |
-| **PeerAuthentication `DISABLE`** | geht | wird ignoriert |
-| **Multi-Cluster** | stabil | nur Multi-Primary, Primary-Remote geht nicht |
-| **Multi-Network** | stabil | laut Doku in Beta |
-| **Sidecar-Client zu Waypoint** | geht | Verkehr umgeht den Waypoint (siehe unten) |
+| VMs im Mesh | geht | nicht möglich |
+| EnvoyFilter | geht | nicht unterstützt, auch nicht am Waypoint |
+| SPIRE-Integration | geht | nicht unterstützt |
+| PeerAuthentication `DISABLE` | geht | wird ignoriert |
+| Multi-Cluster | stabil | nur Multi-Primary (Primary-Remote geht nicht) |
+| Multi-Network | stabil | laut Doku Beta |
+| Sidecar-Client → Waypoint | geht | Waypoint wird umgangen (siehe unten) |
 
 ## Was Ambient nur eingeschränkt kann
 
-* **Layer 7 braucht einen Waypoint.** Ohne Waypoint gibt es nur mTLS, L4-Autorisierung und L4-Telemetrie.
-  Mit nur ztunnel gilt: Load Balancing nur auf Verbindungsebene, Circuit Breaking nur für TCP, Metriken nur TCP (Bytes, Pakete), kein Tracing auf L4.
-* **`VirtualService`** ist in Ambient noch Alpha. Empfohlen ist `HTTPRoute` (Gateway API).
-  `VirtualService` und `HTTPRoute` dürfen nicht für denselben Workload gemischt werden.
+* **Layer 7 braucht einen Waypoint.** Nur mit ztunnel gibt es mTLS, L4-Autorisierung und TCP-Metriken, aber kein HTTP-Routing, kein HTTP-Tracing.
+* **`VirtualService`** ist in Ambient noch Alpha. Besser `HTTPRoute` (Gateway API) nehmen, und beides nicht für denselben Workload mischen.
 * **Ingress-Gateways (istio-ingressgateway)** nutzen den Waypoint standardmäßig nicht. Mit dem Label `istio.io/ingress-use-waypoint=true` am Service oder Namespace (Namespace ab Istio 1.25) geht es doch.
   Laut Istio-Doku gilt das nur, wenn istiod die Variable `ENABLE_INGRESS_WAYPOINT_ROUTING` aktiv hat (Standard `false`).
   **Auf unserem Cluster mit 1.31.4 ist die Variable nicht gesetzt, das Label wirkte trotzdem** (getestet in [Übung Zero Trust Ambient](../exercises/19-zerotrust-bookinfo-ambient.md)).
   Warum, ist nicht geklärt. Wirkt das Label bei dir nicht, zuerst die Variable an istiod prüfen.
-* **Plattform:** nur Kubernetes, jede CNI.
-* **Sicherheitsmodell:** laut Doku "stark", Sidecar "am stärksten". Der ztunnel hält pro Node die Schlüssel der dortigen Workloads, der Sidecar pro Pod.
+* **Sicherheitsmodell:** Ambient "stark", Sidecar "am stärksten". Der ztunnel hält pro Node die Schlüssel aller dortigen Workloads, der Sidecar nur die seines Pods.
 
 ## Ersatz für EnvoyFilter: `TrafficExtension` (Alpha)
 
-Einen 1:1-Ersatz gibt es nicht. Erweiterungen laufen nur **auf dem Waypoint**, mit Wasm oder Lua.
-Beide Varianten sind in der Doku als **Alpha** markiert und für Entwickler und Experten gedacht.
+Einen 1:1-Ersatz gibt es nicht. Erweiterungen laufen nur **am Waypoint**, mit Wasm oder Lua (beides Alpha).
 
 ```yaml
 apiVersion: extensions.istio.io/v1alpha1
@@ -53,66 +48,62 @@ spec:
     url: oci://ghcr.io/istio-ecosystem/wasm-extensions/basic_auth:1.12.0
 ```
 
-* `targetRefs` zeigt auf den Waypoint oder einen einzelnen Service. Es ersetzt den Label-`selector` aus dem Sidecar-Modus.
+* `targetRefs` zeigt auf den Waypoint (oder einen Service) und ersetzt den `selector` aus dem Sidecar-Modus.
 * Für Lua steht das Skript unter `lua.inlineCode` statt `wasm`.
-* Wasm und Lua sind HTTP-Filter. Alles, was `EnvoyFilter` darüber hinaus kann (Cluster, Listener, Filterketten patchen), geht in Ambient nicht.
-* Im ztunnel gibt es keine Erweiterungen, ohne Waypoint also auch nicht.
+* Es sind nur HTTP-Filter. Cluster, Listener oder Filterketten patchen wie mit `EnvoyFilter` geht nicht.
+* Im ztunnel gibt es keine Erweiterungen.
 
 Ob in 1.31 noch `WasmPlugin` der richtige Weg ist, ist nicht geprüft.
 
-## Mischbetrieb: Sidecar-Client zu Ambient-Ziel
+## Mischbetrieb: Sidecar-Client → Ambient-Ziel
 
-Sidecar und Ambient können im selben Mesh laufen. Es gibt aber eine Falle, die direkt aus der Doku kommt:
+Sidecar und Ambient können im selben Mesh laufen. Die Falle (aus der Doku):
 
 > Traffic from sidecar mode workloads bypasses waypoint proxies.
 
 ![Sidecar-Client umgeht den Waypoint](../../images/istio/sidecar-zu-ambient-waypoint-umgehung.svg)
 
-Der Verkehr geht dann direkt zum Ziel. Es gibt keinen Fehler, die Anfrage kommt an, aber **L7-Policies, HTTPRoute-Routing und L7-Telemetrie des Waypoints greifen nicht**.
+Es gibt keinen Fehler, die Anfrage kommt an. Aber **L7-Policies, HTTPRoute-Routing und L7-Telemetrie des Waypoints greifen nicht.**
 
 | Pfad | L7 |
 |---|---|
-| Sidecar zu Sidecar | wie gewohnt |
-| Ambient zu Ambient mit Waypoint | greift am Waypoint |
-| Ambient zu Sidecar | vermutlich ja, am Ziel-Sidecar (nicht getestet) |
-| **Sidecar zu Ambient mit Waypoint** | **Waypoint wird umgangen** |
+| Sidecar → Sidecar | wie gewohnt |
+| Ambient → Ambient mit Waypoint | greift am Waypoint |
+| Ambient → Sidecar | vermutlich am Ziel-Sidecar (nicht getestet) |
+| **Sidecar → Ambient mit Waypoint** | **Waypoint wird umgangen** |
 
-### Was das für die Migration bedeutet
+### Folgen für die Migration
 
-* **Nur mTLS und L4-Policies:** kein Problem, das macht der ztunnel ohne Waypoint.
-* **Mit L7-Policies:** Kein Sidecar-Client darf auf ein Ambient-Ziel mit L7-Regeln zugreifen.
-  Ziel und seine Clients also **zusammen** umstellen, nicht einzelne Services quer durch den Aufrufgraphen.
-* **Zero-Downtime ist mit L7-Policies nicht möglich.** Die alten selektorbasierten Policies müssen weg, bevor die waypoint-basierten greifen. Dazwischen gibt es ein Fenster ohne L7-Durchsetzung. Dafür ein Wartungsfenster einplanen.
-* **Abhängigkeiten vorher prüfen:** Wer ruft den Service auf? In Kiali oder den Metriken nachsehen, auch Jobs, Cronjobs und andere Namespaces.
-* **Waypoint erzwingen:** Eine `AuthorizationPolicy`, die nur die Identität des Waypoints zulässt, lässt umgangenen Verkehr sichtbar scheitern. In der Mischphase bricht das alle Sidecar-Clients auf dieses Ziel ab, also bewusst einsetzen.
-* **Als Dauerzustand ist der Mischbetrieb fragil.** Ein neuer Client mit Sidecar genügt, und die L7-Regel wirkt nicht mehr. Besser als Übergang nutzen.
+* **Nur mTLS und L4-Policies:** kein Problem, das macht der ztunnel allein.
+* **Mit L7-Policies:** Ziel und alle seine Clients **zusammen** umstellen, nicht einzelne Services quer durch den Aufrufgraphen.
+* **Zero-Downtime geht mit L7-Policies nicht.** Die alten selektorbasierten Policies müssen weg, bevor die waypoint-basierten greifen. Dazwischen fehlt die L7-Durchsetzung, also Wartungsfenster einplanen.
+* **Vorher prüfen, wer den Service aufruft** (Kiali, Metriken, auch Jobs, Cronjobs, andere Namespaces).
+* **Waypoint erzwingen:** Eine `AuthorizationPolicy`, die nur die Waypoint-Identität zulässt, lässt umgangenen Verkehr sichtbar scheitern. In der Mischphase bricht das alle Sidecar-Clients ab, also bewusst einsetzen.
+* **Dauerzustand ist das fragil:** Ein neuer Client mit Sidecar, und die L7-Regel wirkt nicht mehr. Mischbetrieb nur als Übergang.
 
-Empfohlene Reihenfolge laut Doku: Ambient-Komponenten installieren, Policies migrieren (bei reinem L4 entfällt das), dann Namespace für Ambient labeln, Waypoints aktivieren, Sidecar-Injection entfernen und Pods neu starten. Jeder Schritt lässt sich einzeln zurücknehmen.
+Reihenfolge laut Doku: Ambient installieren → Policies migrieren (bei reinem L4 entfällt das) → Namespace für Ambient labeln → Waypoints aktivieren → Sidecar-Injection entfernen → Pods neu starten. Jeder Schritt ist einzeln rückgängig zu machen.
 
-## Chaos-Tests und Fault Injection (Delay, Abort)
+## Chaos-Tests / Fault Injection (Delay, Abort)
 
-**Nicht verifiziert:** In der offiziellen Doku habe ich keine bestätigte Aussage dazu gefunden.
+**Nicht verifiziert.** In der offiziellen Doku gibt es dazu keine bestätigte Aussage für Ambient.
 
-* Die offizielle Aufgabe "Fault Injection" ([istio.io](https://istio.io/latest/docs/tasks/traffic-management/fault-injection/)) arbeitet mit **`VirtualService`** (`fault.delay`, `fault.abort`) und enthält keine Ambient- oder Waypoint-Anleitung.
-* Die Seite zu L7-Features im Ambient-Modus nennt für `HTTPRoute` (Beta), `TLSRoute` und `TCPRoute` (Alpha) keine Fault Injection.
-  `VirtualService` ist dort **Alpha**, und das Mischen mit Gateway-API-Konfiguration "will lead to undefined behavior".
-* Auf L4 (nur ztunnel) gibt es laut Vergleichstabelle keine Fault Injection, weil Delay und Abort auf TCP-Verbindungen nicht konfigurierbar sind.
-* Blog-Beiträge (keine offizielle Quelle) nennen als Weg: `VirtualService` am Waypoint, und der Standard-`HTTPRoute` hat kein Feld für Fault Injection.
+* Die Aufgabe "Fault Injection" ([istio.io](https://istio.io/latest/docs/tasks/traffic-management/fault-injection/)) nutzt `VirtualService` (`fault.delay`, `fault.abort`) und sagt nichts zu Ambient oder Waypoint.
+* `HTTPRoute` hat kein Feld für Fault Injection. `VirtualService` ist in Ambient Alpha, und Mischen mit Gateway API "will lead to undefined behavior".
+* Auf L4 (nur ztunnel) gibt es keine Fault Injection.
+* Blogs (keine offizielle Quelle) nennen: `VirtualService` am Waypoint.
 
-Vorsicht für das Training: Der Chaos-Link in der Agenda führt auf eine Seite aus der Sidecar-Welt.
-Bevor das im Ambient-Cluster gezeigt wird, auf dem Cluster einmal ausprobieren, ob ein `VirtualService` mit `fault` am Waypoint wirkt.
+**Fürs Training:** Der Chaos-Link in der Agenda führt in die Sidecar-Welt. Vor der Demo auf dem Ambient-Cluster ausprobieren, ob ein `VirtualService` mit `fault` am Waypoint wirkt.
 
-## Gateway API wird intern in `VirtualService` übersetzt
+## Gateway API wird intern zu `VirtualService`
 
-`HTTPRoute`, `GRPCRoute`, `TCPRoute` und `TLSRoute` werden in istiod intern in `VirtualService`-Objekte übersetzt
-(`pilot/pkg/config/kube/gateway/route_collections.go` im Istio-Repo, Branch `master`).
-Diese internen Objekte existieren nur im Speicher von istiod, `kubectl get virtualservice` zeigt sie nicht.
-Einen Hinweis auf eine Änderung gibt es nicht. Für Waypoints ist das nicht gesondert geprüft.
+istiod übersetzt `HTTPRoute`, `GRPCRoute`, `TCPRoute` und `TLSRoute` intern in `VirtualService`-Objekte
+(`pilot/pkg/config/kube/gateway/route_collections.go`, Branch `master`).
+Die gibt es nur im Speicher von istiod, `kubectl get virtualservice` zeigt sie nicht. Für Waypoints ist das nicht gesondert geprüft.
 
 ## Wann bleibt man bei Sidecar?
 
-Wenn eines davon zutrifft: VMs im Mesh, `EnvoyFilter`, SPIRE, Multi-Cluster mit Primary-Remote.
-Das sind die Gründe, die laut Doku wirklich gegen Ambient sprechen.
+Wenn eines davon zutrifft: **VMs im Mesh, `EnvoyFilter`, SPIRE, Multi-Cluster mit Primary-Remote.**
+Das sind laut Doku die echten Gründe gegen Ambient.
 
 ## Quellen
 
