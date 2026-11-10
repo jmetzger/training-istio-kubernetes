@@ -54,6 +54,7 @@
 
   1. Debugging
      * [Debugging mit debug/run pod](/istio/debug/01-debug-pod.md)
+     * [Übung: Fehlersuche im Ambient-Mesh - ztunnel-Log und Waypoint-Log](istio/exercises/18-ztunnel-log-debugging.md)
 
   1. Monitoring, Logging & Observability
      * [Installation Jaeger](istio/installation/addons/jaeger.md)
