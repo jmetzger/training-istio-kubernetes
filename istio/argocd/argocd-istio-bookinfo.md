@@ -75,7 +75,9 @@ helm version
 ```bash
 # Falls noch kein ArgoCD im Cluster:
 kubectl create namespace argocd
-kubectl apply -n argocd -f \
+# --server-side ist nötig: das CRD applicationsets.argoproj.io ist für ein normales
+# "kubectl apply" zu groß ("metadata.annotations: Too long")
+kubectl apply --server-side --force-conflicts -n argocd -f \
   https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
 
 # Warten bis alles läuft:
@@ -589,13 +591,18 @@ Traffic-Umbruch pro Node. In Produktion: `maxUnavailable: 1` in den Values setze
 
   * cert-manager ist installiert (siehe Übung [Bookinfo mit HTTPS und Let's Encrypt](../exercises/17-https-letsencrypt-bookinfo.md), Schritt 2).
   * Ein DNS-Eintrag `argocd.<dein-user>.do.t3isp.de` zeigt auf die öffentliche IP des Gateways (Trainer fragen).
-  * Auf dieser IP lauscht noch kein anderes Gateway auf Port 80/443. Läuft dort noch das `bookinfo-gateway` aus der HTTPS-Übung,
-    das vorher löschen.
+  * Das Gateway braucht eine **eigene IP**, auf der noch kein anderes Gateway auf Port 80/443 lauscht (zwei Gateways
+    mit derselben IP gehen nicht). Im Training hat jeder Cluster zwei Adressen im MetalLB-Pool: Worker 1 nutzt das
+    `bookinfo-gateway`, für ArgoCD nimmst du die von **Worker 2**. Der DNS-Eintrag `argocd.<dein-user>.do.t3isp.de`
+    muss auf diese zweite IP zeigen.
+  * **Reihenfolge beim DNS:** Den Namen erst abfragen (`dig`, Browser), **nachdem** der Eintrag existiert. Eine Abfrage vorher
+    wird als "nicht vorhanden" zwischengespeichert (Router, Windows, Browser), bei dieser Zone bis zu 30 Minuten.
 
 ```bash
 export HOST=argocd.$(whoami).do.t3isp.de
 export IP=$(dig +short $HOST)
 echo $HOST $IP
+kubectl -n metallb-system get ipaddresspool first-pool -o jsonpath='{.spec.addresses}'; echo   # IP muss im Pool stehen
 ```
 
 ### Schritt 1: ArgoCD hinter dem Gateway ohne eigenes TLS betreiben
