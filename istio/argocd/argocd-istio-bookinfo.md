@@ -549,6 +549,7 @@ istioctl ztunnel-config workloads
  ✓  NetworkPolicies: Port 15008 (HBONE) freigeben
  ✓  ArgoCD-Namespace NICHT ins Ambient Mesh (Management-Ebene bleibt unabhängig)
  ✓  Namespace-Label: istio.io/dataplane-mode=ambient
+ ✓  ArgoCD extern nur über HTTPS und mit geändertem admin-Passwort (Abschnitt 7)
  ✓  Waypoint nur deployen, wenn L7-Features nötig sind
  ✓  Alle Istio-Versionen einheitlich halten (base, istiod, cni, ztunnel)
  ✓  Bei Upgrades: targetRevision in Git ändern → ArgoCD synced automatisch
@@ -562,3 +563,178 @@ istioctl ztunnel-config workloads
 
 **Wichtig:** ztunnel ist ein DaemonSet – beim Upgrade gibt es einen kurzen
 Traffic-Umbruch pro Node. In Produktion: `maxUnavailable: 1` in den Values setzen.
+
+
+---
+
+## 7. ArgoCD von außen erreichbar machen (HTTPS + Passwort)
+
+![ArgoCD von außen: HTTPS am Gateway, Login am ArgoCD](../../images/istio/argocd-extern-zugriff.svg)
+
+> **Merkkasten: Das Gateway gehört nicht zum Mesh**
+>
+> Ein Gateway mit `gatewayClassName: istio` ist ein normaler Envoy-Ingress. Er kann an **jeden** Service im Cluster
+> weiterleiten, auch an Anwendungen außerhalb des Meshs. Backends im Ambient Mesh erreicht er per HBONE/mTLS,
+> Backends außerhalb per einfachem HTTP. Mesh-Policies (`PeerAuthentication`, `AuthorizationPolicy` für Workloads)
+> gelten nur für Pods im Mesh. Liegt das Backend in einem anderen Namespace als die Route, braucht es ein `ReferenceGrant`.
+
+**Wer schützt hier was?**
+
+  * **Das Passwort** kommt von ArgoCD selbst (Login-Seite, User `admin`). Istio bringt kein Basic-Auth mit.
+  * **Das Gateway** sorgt nur für HTTPS (Let's Encrypt). Ohne HTTPS würde das Passwort im Klartext übers Netz gehen.
+  * Der Namespace `argocd` bleibt **außerhalb des Meshs** (siehe Abschnitt 3). Das Gateway ist ein normaler Envoy-Pod
+    und spricht mit `argocd-server` per einfachem HTTP, ohne mTLS. Das geschieht nur innerhalb des Clusters.
+
+### Voraussetzungen
+
+  * cert-manager ist installiert (siehe Übung [Bookinfo mit HTTPS und Let's Encrypt](../exercises/17-https-letsencrypt-bookinfo.md), Schritt 2).
+  * Ein DNS-Eintrag `argocd.<dein-user>.do.t3isp.de` zeigt auf die öffentliche IP des Gateways (Trainer fragen).
+  * Auf dieser IP lauscht noch kein anderes Gateway auf Port 80/443. Läuft dort noch das `bookinfo-gateway` aus der HTTPS-Übung,
+    das vorher löschen.
+
+```bash
+export HOST=argocd.$(whoami).do.t3isp.de
+export IP=$(dig +short $HOST)
+echo $HOST $IP
+```
+
+### Schritt 1: ArgoCD hinter dem Gateway ohne eigenes TLS betreiben
+
+Das Gateway terminiert TLS. `argocd-server` soll deshalb selbst kein TLS sprechen (sonst gibt es Redirect-Schleifen):
+
+```bash
+kubectl -n argocd patch configmap argocd-cmd-params-cm \
+  --type merge -p '{"data":{"server.insecure":"true"}}'
+kubectl -n argocd rollout restart deployment argocd-server
+kubectl -n argocd rollout status deployment argocd-server
+```
+
+### Schritt 2: Issuer, Gateway und Routen
+
+```yaml
+# 01-argocd-extern.yaml
+apiVersion: cert-manager.io/v1
+kind: Issuer
+metadata:
+  name: letsencrypt
+  namespace: argocd
+spec:
+  acme:
+    server: https://acme-v02.api.letsencrypt.org/directory
+    privateKeySecretRef:
+      name: letsencrypt-account-key
+    solvers:
+    - http01:
+        gatewayHTTPRoute:
+          parentRefs:
+          - kind: Gateway
+            name: argocd-gateway
+---
+apiVersion: gateway.networking.k8s.io/v1
+kind: Gateway
+metadata:
+  name: argocd-gateway
+  namespace: argocd
+  annotations:
+    cert-manager.io/issuer: letsencrypt
+spec:
+  gatewayClassName: istio
+  addresses:
+  - type: IPAddress
+    value: ${IP}
+  listeners:
+  - name: http
+    hostname: ${HOST}
+    port: 80
+    protocol: HTTP
+    allowedRoutes:
+      namespaces:
+        from: Same
+  - name: https
+    hostname: ${HOST}
+    port: 443
+    protocol: HTTPS
+    tls:
+      mode: Terminate
+      certificateRefs:
+      - name: argocd-tls
+    allowedRoutes:
+      namespaces:
+        from: Same
+---
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: http-to-https
+  namespace: argocd
+spec:
+  parentRefs:
+  - name: argocd-gateway
+    sectionName: http
+  rules:
+  - filters:
+    - type: RequestRedirect
+      requestRedirect:
+        scheme: https
+        statusCode: 301
+---
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: argocd
+  namespace: argocd
+spec:
+  parentRefs:
+  - name: argocd-gateway
+    sectionName: https
+  rules:
+  - backendRefs:
+    - name: argocd-server
+      port: 80
+```
+
+```bash
+envsubst < 01-argocd-extern.yaml | kubectl apply -f -
+kubectl -n argocd get gateway argocd-gateway       # PROGRAMMED True
+kubectl -n argocd get certificate                  # READY True (ca. 1 Minute)
+```
+
+### Schritt 3: Passwort setzen
+
+Das Initial-Passwort ist nur für den ersten Login gedacht. Ändere es, bevor ArgoCD im Internet steht
+(am besten schon vor Schritt 2). Das Initial-Passwort steht, wie in Abschnitt 4 (Schritt 2) gezeigt,
+im Secret `argocd-initial-admin-secret`.
+
+```bash
+# Einloggen und Passwort ändern (CLI braucht --grpc-web hinter dem Gateway)
+argocd login $HOST --grpc-web --username admin
+argocd account update-password --grpc-web
+```
+
+Alternativ in der Oberfläche: **User Info → Update Password**. Danach das Initial-Secret löschen:
+
+```bash
+kubectl -n argocd delete secret argocd-initial-admin-secret
+```
+
+### Schritt 4: Testen
+
+```bash
+# Weiterleitung auf HTTPS
+curl -sI http://$HOST | head -n 2
+# Erwartet: 301, location: https://...
+
+# Ohne Login keine Daten (Erwartet: 401 oder 403)
+curl -s -o /dev/null -w '%{http_code}\n' https://$HOST/api/v1/applications
+```
+
+Im Browser `https://<HOST>` öffnen: Schloss in der Adressleiste und die ArgoCD-Login-Seite.
+
+### Gut zu wissen
+
+| Thema | Hinweis |
+|-------|---------|
+| Brute-Force | ArgoCD sperrt Logins nach mehreren Fehlversuchen zeitweise. |
+| Weitere Nutzer | Statt alle mit `admin` arbeiten zu lassen: lokale Accounts in `argocd-cm` (`accounts.<name>: login`) mit RBAC in `argocd-rbac-cm`, oder SSO (OIDC). |
+| Zusätzlicher Vorab-Schutz | Soll schon vor der Login-Seite ein zweites Passwort oder SSO greifen: `oauth2-proxy` plus `AuthorizationPolicy` mit `CUSTOM`-Provider (ext_authz) am Gateway. Das ist ein eigenes Thema. |
+| Zugriff einschränken | Die ArgoCD-API ist mächtig (sie deployed in den Cluster). Wenn möglich zusätzlich nach Quell-IP einschränken (Firewall oder `AuthorizationPolicy` mit `ipBlocks`). |

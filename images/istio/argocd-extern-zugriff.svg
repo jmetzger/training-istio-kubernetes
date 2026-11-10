@@ -1,0 +1,51 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 360" width="960" height="360" font-family="Arial, Helvetica, sans-serif">
+<defs>
+<marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#37474f"/></marker>
+<marker id="g" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#2e7d32"/></marker>
+<marker id="b" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#1565c0"/></marker>
+</defs>
+<rect width="960" height="360" fill="#ffffff"/>
+<text x="480" y="24" text-anchor="middle" font-size="18" font-weight="bold" fill="#263238">ArgoCD von außen: HTTPS am Gateway, Login am ArgoCD</text>
+
+<rect x="20" y="104" width="170" height="70" rx="8" fill="#eceff1" stroke="#607d8b" stroke-width="2"/>
+<text x="105" y="134" text-anchor="middle" font-size="15" font-weight="bold" fill="#37474f">Browser / CLI</text>
+<text x="105" y="154" text-anchor="middle" font-size="11" fill="#37474f">argocd.&lt;user&gt;.do.t3isp.de</text>
+
+<rect x="240" y="44" width="480" height="196" rx="10" fill="#eef4fb" stroke="#1565c0" stroke-width="2.5"/>
+<text x="480" y="64" text-anchor="middle" font-size="13" font-weight="bold" fill="#0d47a1">Namespace argocd (nicht im Mesh, ohne Ambient-Label)</text>
+<rect x="260" y="84" width="190" height="130" rx="8" fill="#e3f2fd" stroke="#1565c0" stroke-width="2"/>
+<text x="355" y="108" text-anchor="middle" font-size="14" font-weight="bold" fill="#0d47a1">Gateway</text>
+<text x="355" y="126" text-anchor="middle" font-size="11" fill="#0d47a1">argocd-gateway (Istio)</text>
+<text x="355" y="150" text-anchor="middle" font-size="12" fill="#0d47a1">terminiert TLS</text>
+<text x="355" y="168" text-anchor="middle" font-size="11" fill="#0d47a1">Zertifikat im Secret</text>
+<text x="355" y="183" text-anchor="middle" font-size="11" fill="#0d47a1">argocd-tls</text>
+<text x="355" y="204" text-anchor="middle" font-size="11" fill="#0d47a1">leitet HTTP auf HTTPS um</text>
+<rect x="510" y="84" width="190" height="130" rx="8" fill="#fff8e1" stroke="#f9a825" stroke-width="2.5"/>
+<text x="605" y="108" text-anchor="middle" font-size="14" font-weight="bold" fill="#37474f">argocd-server</text>
+<text x="605" y="126" text-anchor="middle" font-size="11" fill="#37474f">Service Port 80</text>
+<text x="605" y="150" text-anchor="middle" font-size="12" font-weight="bold" fill="#bf360c">Login mit Passwort</text>
+<text x="605" y="168" text-anchor="middle" font-size="11" fill="#37474f">User admin, Passwort</text>
+<text x="605" y="183" text-anchor="middle" font-size="11" fill="#37474f">vorher geändert</text>
+<text x="605" y="204" text-anchor="middle" font-size="11" fill="#37474f">server.insecure=true</text>
+
+<line x1="192" y1="139" x2="258" y2="139" stroke="#2e7d32" stroke-width="3" marker-end="url(#g)"/>
+<text x="225" y="128" text-anchor="middle" font-size="11" font-weight="bold" fill="#1b5e20">HTTPS</text>
+<text x="225" y="160" text-anchor="middle" font-size="10" fill="#1b5e20">443</text>
+<line x1="452" y1="139" x2="508" y2="139" stroke="#37474f" stroke-width="3" marker-end="url(#a)"/>
+<text x="480" y="128" text-anchor="middle" font-size="11" font-weight="bold" fill="#37474f">HTTP</text>
+<text x="480" y="160" text-anchor="middle" font-size="10" fill="#37474f">ohne mTLS</text>
+
+<rect x="240" y="268" width="480" height="76" rx="10" fill="#fafafa" stroke="#607d8b" stroke-width="2.5" stroke-dasharray="3 5"/>
+<text x="256" y="286" font-size="13" font-weight="bold" fill="#455a64">Namespace cert-manager</text>
+<rect x="400" y="294" width="160" height="42" rx="6" fill="#eceff1" stroke="#607d8b" stroke-width="2"/>
+<text x="480" y="312" text-anchor="middle" font-size="13" font-weight="bold" fill="#37474f">cert-manager</text>
+<text x="480" y="328" text-anchor="middle" font-size="11" fill="#37474f">holt und erneuert das Zertifikat</text>
+<path d="M420 292 V250 H355 V216" fill="none" stroke="#1565c0" stroke-width="2" marker-end="url(#b)"/>
+<text x="300" y="262" text-anchor="end" font-size="11" fill="#0d47a1">legt Secret ab</text>
+
+<rect x="780" y="278" width="160" height="56" rx="8" fill="#f5f5f5" stroke="#78909c" stroke-width="2"/>
+<text x="860" y="303" text-anchor="middle" font-size="14" font-weight="bold" fill="#37474f">Let's Encrypt</text>
+<text x="860" y="321" text-anchor="middle" font-size="11" fill="#37474f">ACME, HTTP-01</text>
+<line x1="562" y1="315" x2="778" y2="315" stroke="#37474f" stroke-width="2" marker-start="url(#a)" marker-end="url(#a)"/>
+<text x="670" y="306" text-anchor="middle" font-size="11" fill="#37474f">Zertifikat anfordern</text>
+</svg>
