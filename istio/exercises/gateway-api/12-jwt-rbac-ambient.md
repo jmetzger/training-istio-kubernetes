@@ -70,8 +70,8 @@ cd manifests/jwt
 
 ```
 kubectl create ns foo
-kubectl apply -f <(istioctl kube-inject -f ~/istio/samples/httpbin/httpbin.yaml) -n foo
-kubectl apply -f <(istioctl kube-inject -f ~/istio/samples/curl/curl.yaml) -n foo
+kubectl -n bookinfo apply -f ~/istio/samples/httpbin/httpbin.yaml
+kubectl -n bookinfo apply -f ~/istio/samples/curl/curl.yaml
 ```
 
 ## Step 2: Can we connect ? 
