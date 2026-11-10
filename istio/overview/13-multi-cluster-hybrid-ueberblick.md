@@ -72,7 +72,8 @@ er braucht nur drei Dinge: istiod erreichen, ein Token zur Anmeldung, das Root-Z
 
 Beim Start verbindet sich der Agent mit istiod (Port **15012**, TLS plus Token), holt ein Zertifikat, und istiod legt
 den `WorkloadEntry` mit der VM-IP an (Auto-Registration). Ab da ist die VM ein Endpoint wie ein Pod.
-Der Verkehr läuft mit mTLS in beide Richtungen direkt auf die IP, wenn das Netz das erlaubt (sonst über ein East-West-Gateway).
+Das mTLS läuft zwischen den Sidecars (Pod-Sidecar und Sidecar der VM), nie bis in die Anwendung: Sie spricht nur lokal mit ihrem Sidecar.
+Der Verkehr geht in beide Richtungen direkt auf die VM-IP, wenn das Netz das erlaubt (sonst über ein East-West-Gateway).
 
 **Nur mit Sidecar.** Ambient kann keine VMs ins Mesh aufnehmen (siehe [Was Ambient noch nicht kann](11-ambient-grenzen-gegenueber-sidecar.md)).
 
