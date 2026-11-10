@@ -48,11 +48,11 @@
      * [Übung Säule 1 (Sidecar): mTLS prüfen und aktivieren/deaktivieren](istio/overview/security/02-check-mtls-enable-disable.md)
      * [Übung Säule 1 (Ambient): mTLS prüfen und aktivieren/deaktivieren (ztunnel, HBONE, PeerAuthentication)](istio/overview/security/02-check-mtls-enable-disable-ambient.md)
      * [Übung Säule 2 + 3: Authentication und Authorization mit JWT und RBAC](istio/exercises/12-jwt-rbac.md)
+     * [Übung (Ambient): Zero Trust für bookinfo Schritt für Schritt (ztunnel Layer 4, Waypoint Layer 7)](istio/exercises/19-zerotrust-bookinfo-ambient.md)
+     * [Übung (Sidecar): ZeroTrust für bookinfo Namespace bookinfo einrichten](istio/exercises/16-zerotrust-bookinfo-einrichten.md)
 
   1. Sicherheit, Fehlertoleranz & Observability    
      * Istio Authorization Policies (ingress/egress Security)
-     * [Übung (Ambient): Zero Trust für bookinfo Schritt für Schritt (ztunnel Layer 4, Waypoint Layer 7)](istio/exercises/19-zerotrust-bookinfo-ambient.md)
-     * [Übung (Sidecar): ZeroTrust für bookinfo Namespace bookinfo einrichten](istio/exercises/16-zerotrust-bookinfo-einrichten.md)
      * [Übung (Ambient): Egress-Gateway mit Waypoint - externe Ziele steuern, TLS-Origination, Weg per NetworkPolicy erzwingen](istio/exercises/20-egress-gateway-ambient.md)
 
   1. Debugging
