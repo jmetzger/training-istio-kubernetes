@@ -38,7 +38,6 @@
 
   1. Service Resilience & Fehlertoleranz (Gateway API)
      * [Circuit Breaker](istio/exercises/06-circuit-breaker.md) 
-     * [Rate Limiting](istio/exercises/08-local-rate-limit.md)
      * [Chaos Engineering mit Istio](https://istio.io/latest/docs/examples/microservices-istio/production-testing/)
 
   1. Sichere Service-Kommunikation mit istio (Sicherheit)
@@ -125,6 +124,9 @@
      * [Bemerkungen zu nur VirtualService und nicht Gateway API - httproute](istio/overview/virtualservice-only-features-why.md)
      * [Retries VirtualService only !](istio/exercises/07-retries.md)
      * [Fehlerinjektion (z.B. 500er) VirtualService only !](istio/exercises/03-fault-injection.md)
+
+  1. Service Resilience & Fehlertoleranz (nur Sidecar, EnvoyFilter)
+     * [Local Rate Limit mit EnvoyFilter - nur Sidecar !](istio/exercises/08-local-rate-limit.md)
 
   1. Demo-App (istio api)
      * [Istio demo-app *bookinfo* installieren (istio API - Variante)](istio/installation/istio-api/04-install-demo-app-bookinfo.md)

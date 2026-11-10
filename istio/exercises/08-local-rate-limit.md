@@ -1,4 +1,8 @@
-# Local Rate Limit 
+# Local Rate Limit (nur Sidecar-Mode)
+
+> **Nur für Sidecar-Mode.** Der EnvoyFilter greift im Sidecar (`context: SIDECAR_INBOUND`, `workloadSelector: app=productpage`).
+> Im Ambient-Mode gibt es diesen Sidecar nicht: ztunnel ist kein Envoy (kein EnvoyFilter), der Waypoint wird von EnvoyFilter nicht offiziell unterstützt.
+> Diese Übung läuft deshalb nur auf einem Cluster mit Sidecar-Injection (`istio-injection=enabled`).
 
 ## Walkthrough 
 
