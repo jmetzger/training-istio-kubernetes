@@ -1,0 +1,79 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 545" width="960" height="545" font-family="Arial, Helvetica, sans-serif">
+<defs>
+<marker id="g" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#2e7d32"/></marker>
+<marker id="r" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#c62828"/></marker>
+</defs>
+<rect width="960" height="545" fill="#ffffff"/>
+<text x="480" y="26" text-anchor="middle" font-size="18" font-weight="bold" fill="#263238">Hybrid-Ausfall: Was passiert, wenn das istiod der VM wegfällt?</text>
+
+<!-- Cluster A (aus) -->
+<rect x="20" y="45" width="300" height="250" rx="10" fill="#fafafa" stroke="#c62828" stroke-width="2.5" stroke-dasharray="8 5"/>
+<text x="170" y="68" text-anchor="middle" font-size="14" font-weight="bold" fill="#c62828">Cluster A (ausgefallen)</text>
+<rect x="45" y="90" width="250" height="42" rx="6" fill="#ffebee" stroke="#c62828" stroke-width="2"/>
+<text x="170" y="116" text-anchor="middle" font-size="13" font-weight="bold" fill="#c62828">istiod A (aus)</text>
+<rect x="45" y="146" width="250" height="42" rx="6" fill="#ffebee" stroke="#c62828" stroke-width="2"/>
+<text x="170" y="172" text-anchor="middle" font-size="13" font-weight="bold" fill="#c62828">kube-API A (aus)</text>
+<rect x="45" y="202" width="250" height="52" rx="6" fill="#ffffff" stroke="#9e9e9e" stroke-width="2" stroke-dasharray="5 3"/>
+<text x="170" y="224" text-anchor="middle" font-size="12" font-weight="bold" fill="#616161">WorkloadEntry (veraltet)</text>
+<text x="170" y="241" text-anchor="middle" font-size="11" fill="#616161">bleibt stehen, Aufräumen im Runbook</text>
+
+<!-- Cluster B -->
+<rect x="640" y="45" width="300" height="250" rx="10" fill="#f1f8fe" stroke="#2e7d32" stroke-width="2.5"/>
+<text x="790" y="68" text-anchor="middle" font-size="14" font-weight="bold" fill="#2e7d32">Cluster B (läuft)</text>
+<rect x="665" y="90" width="250" height="42" rx="6" fill="#ede7f6" stroke="#311b92" stroke-width="2"/>
+<text x="790" y="116" text-anchor="middle" font-size="13" font-weight="bold" fill="#311b92">istiod B</text>
+<rect x="665" y="146" width="250" height="42" rx="6" fill="#eceff1" stroke="#455a64" stroke-width="2"/>
+<text x="790" y="172" text-anchor="middle" font-size="13" font-weight="bold" fill="#37474f">kube-API B</text>
+<rect x="665" y="202" width="250" height="52" rx="6" fill="#fffde7" stroke="#f9a825" stroke-width="2.5"/>
+<text x="790" y="224" text-anchor="middle" font-size="12" font-weight="bold" fill="#e65100">WorkloadEntry (neu)</text>
+<text x="790" y="241" text-anchor="middle" font-size="11" fill="#455a64">nur mit Namespace, SA, WorkloadGroup</text>
+
+<!-- VM -->
+<rect x="380" y="95" width="200" height="130" rx="10" fill="#f5f5f5" stroke="#37474f" stroke-width="2.5"/>
+<text x="480" y="118" text-anchor="middle" font-size="14" font-weight="bold" fill="#263238">VM</text>
+<text x="480" y="138" text-anchor="middle" font-size="11" fill="#37474f">/etc/hosts, zwei Zeilen:</text>
+<rect x="395" y="148" width="170" height="26" rx="4" fill="#ffebee" stroke="#c62828" stroke-width="1.5"/>
+<text x="480" y="165" text-anchor="middle" font-size="11" fill="#c62828">1. istiod A (zuerst)</text>
+<rect x="395" y="180" width="170" height="26" rx="4" fill="#e8f5e9" stroke="#2e7d32" stroke-width="1.5"/>
+<text x="480" y="197" text-anchor="middle" font-size="11" fill="#2e7d32">2. istiod B (Ausweich)</text>
+<line x1="378" y1="161" x2="322" y2="130" stroke="#c62828" stroke-width="2.5" stroke-dasharray="6 4" marker-end="url(#r)"/>
+<text x="338" y="110" text-anchor="middle" font-size="22" font-weight="bold" fill="#c62828">✗</text>
+<line x1="582" y1="193" x2="638" y2="118" stroke="#2e7d32" stroke-width="3" marker-end="url(#g)"/>
+
+<text x="480" y="252" text-anchor="middle" font-size="12" font-weight="bold" fill="#c62828">Versuch 1 auf A: Zeitlimit, bis ca. 16 s</text>
+<text x="480" y="272" text-anchor="middle" font-size="12" font-weight="bold" fill="#2e7d32">Versuch 2 auf B: Rejoin, Verkehr läuft wieder</text>
+<text x="480" y="291" text-anchor="middle" font-size="11" fill="#455a64">Die VM bleibt danach bei B (kein Rückwechsel nach A)</text>
+
+<!-- Vier Bausteine -->
+<text x="480" y="326" text-anchor="middle" font-size="14" font-weight="bold" fill="#263238">Vier Bausteine, damit der Ausweichweg funktioniert</text>
+<rect x="15" y="338" width="225" height="135" rx="8" fill="#e8eaf6" stroke="#311b92" stroke-width="2"/>
+<text x="127" y="360" text-anchor="middle" font-size="13" font-weight="bold" fill="#311b92">1. Gemeinsame Root-CA</text>
+<text x="127" y="384" text-anchor="middle" font-size="11" fill="#263238">In allen Clustern dieselbe</text>
+<text x="127" y="399" text-anchor="middle" font-size="11" fill="#263238">Vertrauenswurzel.</text>
+<text x="127" y="423" text-anchor="middle" font-size="11" fill="#263238">Sonst lehnt istiod B das</text>
+<text x="127" y="438" text-anchor="middle" font-size="11" fill="#263238">Zertifikat der VM ab.</text>
+<rect x="250" y="338" width="225" height="135" rx="8" fill="#e8eaf6" stroke="#311b92" stroke-width="2"/>
+<text x="362" y="360" text-anchor="middle" font-size="13" font-weight="bold" fill="#311b92">2. Gleiche VM-Objekte</text>
+<text x="362" y="384" text-anchor="middle" font-size="11" fill="#263238">Namespace, ServiceAccount,</text>
+<text x="362" y="399" text-anchor="middle" font-size="11" fill="#263238">WorkloadGroup in mindestens</text>
+<text x="362" y="414" text-anchor="middle" font-size="11" fill="#263238">zwei Clustern (z. B. per GitOps).</text>
+<text x="362" y="438" text-anchor="middle" font-size="11" fill="#263238">Sonst legt istiod B keinen</text>
+<text x="362" y="453" text-anchor="middle" font-size="11" fill="#263238">WorkloadEntry an.</text>
+<rect x="485" y="338" width="225" height="135" rx="8" fill="#e8eaf6" stroke="#311b92" stroke-width="2"/>
+<text x="597" y="360" text-anchor="middle" font-size="13" font-weight="bold" fill="#311b92">3. Mehrere istiod-Adressen</text>
+<text x="597" y="384" text-anchor="middle" font-size="11" fill="#263238">Zwei Zeilen für istiod in der</text>
+<text x="597" y="399" text-anchor="middle" font-size="11" fill="#263238">hosts-Datei der VM. Der Agent</text>
+<text x="597" y="414" text-anchor="middle" font-size="11" fill="#263238">weicht selbst aus.</text>
+<text x="597" y="438" text-anchor="middle" font-size="11" fill="#263238">Die Reihenfolge ist der</text>
+<text x="597" y="453" text-anchor="middle" font-size="11" fill="#263238">Normalfall: so verteilt man VMs.</text>
+<rect x="720" y="338" width="225" height="135" rx="8" fill="#e8eaf6" stroke="#311b92" stroke-width="2"/>
+<text x="832" y="360" text-anchor="middle" font-size="13" font-weight="bold" fill="#311b92">4. Token vom lebenden Cluster</text>
+<text x="832" y="384" text-anchor="middle" font-size="11" fill="#263238">Das Token gehört dem Cluster,</text>
+<text x="832" y="399" text-anchor="middle" font-size="11" fill="#263238">der es ausstellt. Mit Token von B</text>
+<text x="832" y="414" text-anchor="middle" font-size="11" fill="#263238">ist die Cluster-ID der VM cluster-b.</text>
+<text x="832" y="438" text-anchor="middle" font-size="11" fill="#263238">Ein Token von A klappt bei A-Ausfall</text>
+<text x="832" y="453" text-anchor="middle" font-size="11" fill="#263238">nicht (Prüfung braucht A-API).</text>
+
+<text x="480" y="505" text-anchor="middle" font-size="12" fill="#37474f">Zusätzlicher Hebel: SECRET_TTL=72h in der cluster.env gibt dem VM-Zertifikat 72 statt 24 Stunden Laufzeit (mehr Zeit zum Reparieren).</text>
+<text x="480" y="525" text-anchor="middle" font-size="11" fill="#78909c">Werte aus einem Vorbereitungs-Lab (zwei kubeadm-Cluster, eine VM), nicht aus einem Produktivsystem. Die Erneuerung braucht weiterhin eine erreichbare CA.</text>
+</svg>

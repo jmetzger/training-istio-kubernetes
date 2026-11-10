@@ -1,0 +1,117 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 600" width="960" height="600" font-family="Arial, Helvetica, sans-serif">
+<defs>
+<marker id="b" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#0d47a1"/></marker>
+<marker id="p" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#311b92"/></marker>
+</defs>
+<rect width="960" height="600" fill="#ffffff"/>
+<text x="480" y="26" text-anchor="middle" font-size="18" font-weight="bold" fill="#263238">Multi-Cluster in Istio: zwei Fragen, vier Bauformen</text>
+
+<!-- Spaltenköpfe -->
+<text x="380" y="62" text-anchor="middle" font-size="14" font-weight="bold" fill="#37474f">Frage 1: Wie liegen die Netze?</text>
+<rect x="210" y="72" width="340" height="30" rx="6" fill="#eceff1" stroke="#455a64" stroke-width="1.5"/>
+<text x="380" y="92" text-anchor="middle" font-size="13" font-weight="bold" fill="#263238">Ein flaches Netz</text>
+<rect x="590" y="72" width="340" height="30" rx="6" fill="#eceff1" stroke="#455a64" stroke-width="1.5"/>
+<text x="760" y="92" text-anchor="middle" font-size="13" font-weight="bold" fill="#263238">Mehrere Netze</text>
+<text x="760" y="62" text-anchor="middle" font-size="12" fill="#546e7a">(oder überlappende IP-Bereiche)</text>
+
+<!-- Zeilenköpfe -->
+<text x="100" y="110" text-anchor="middle" font-size="14" font-weight="bold" fill="#37474f">Frage 2:</text>
+<text x="100" y="128" text-anchor="middle" font-size="14" font-weight="bold" fill="#37474f">Wo läuft istiod?</text>
+<rect x="20" y="145" width="160" height="130" rx="8" fill="#e8eaf6" stroke="#311b92" stroke-width="2"/>
+<text x="100" y="188" text-anchor="middle" font-size="14" font-weight="bold" fill="#311b92">Multi-Primary</text>
+<text x="100" y="212" text-anchor="middle" font-size="11" fill="#311b92">in jedem Cluster ein</text>
+<text x="100" y="227" text-anchor="middle" font-size="11" fill="#311b92">eigenes istiod</text>
+<rect x="20" y="355" width="160" height="130" rx="8" fill="#e8eaf6" stroke="#311b92" stroke-width="2"/>
+<text x="100" y="398" text-anchor="middle" font-size="14" font-weight="bold" fill="#311b92">Primary-Remote</text>
+<text x="100" y="422" text-anchor="middle" font-size="11" fill="#311b92">istiod nur im Primary,</text>
+<text x="100" y="437" text-anchor="middle" font-size="11" fill="#311b92">Remote nutzt dieses</text>
+
+<!-- Zelle 1: Multi-Primary, ein Netz -->
+<rect x="210" y="115" width="340" height="190" rx="8" fill="#fafafa" stroke="#b0bec5" stroke-width="1.5"/>
+<rect x="222" y="128" width="316" height="110" rx="8" fill="none" stroke="#78909c" stroke-width="1.5" stroke-dasharray="6 4"/>
+<text x="230" y="143" font-size="11" fill="#546e7a">Netz 1</text>
+<rect x="238" y="150" width="125" height="78" rx="6" fill="#e3f2fd" stroke="#0d47a1" stroke-width="2"/>
+<text x="300" y="168" text-anchor="middle" font-size="12" font-weight="bold" fill="#0d47a1">Cluster A</text>
+<circle cx="300" cy="196" r="15" fill="#ede7f6" stroke="#311b92" stroke-width="2"/>
+<text x="300" y="200" text-anchor="middle" font-size="10" font-weight="bold" fill="#311b92">istiod</text>
+<rect x="397" y="150" width="125" height="78" rx="6" fill="#e3f2fd" stroke="#0d47a1" stroke-width="2"/>
+<text x="459" y="168" text-anchor="middle" font-size="12" font-weight="bold" fill="#0d47a1">Cluster B</text>
+<circle cx="459" cy="196" r="15" fill="#ede7f6" stroke="#311b92" stroke-width="2"/>
+<text x="459" y="200" text-anchor="middle" font-size="10" font-weight="bold" fill="#311b92">istiod</text>
+<line x1="365" y1="212" x2="395" y2="212" stroke="#0d47a1" stroke-width="2" marker-end="url(#b)" marker-start="url(#b)"/>
+<text x="380" y="256" text-anchor="middle" font-size="11" fill="#0d47a1">Pod-IPs direkt erreichbar, kein Gateway</text>
+<rect x="222" y="266" width="140" height="28" rx="14" fill="#e8f5e9" stroke="#1b5e20" stroke-width="1.5"/>
+<text x="292" y="285" text-anchor="middle" font-size="11" font-weight="bold" fill="#1b5e20">Sidecar: stabil</text>
+<rect x="372" y="266" width="166" height="28" rx="14" fill="#fff8e1" stroke="#e65100" stroke-width="1.5"/>
+<text x="455" y="285" text-anchor="middle" font-size="11" font-weight="bold" fill="#e65100">Ambient: ungetestet</text>
+
+<!-- Zelle 2: Multi-Primary, mehrere Netze -->
+<rect x="590" y="115" width="340" height="190" rx="8" fill="#fafafa" stroke="#b0bec5" stroke-width="1.5"/>
+<rect x="600" y="128" width="130" height="110" rx="8" fill="none" stroke="#78909c" stroke-width="1.5" stroke-dasharray="6 4"/>
+<text x="608" y="143" font-size="11" fill="#546e7a">Netz 1</text>
+<rect x="790" y="128" width="130" height="110" rx="8" fill="none" stroke="#78909c" stroke-width="1.5" stroke-dasharray="6 4"/>
+<text x="798" y="143" font-size="11" fill="#546e7a">Netz 2</text>
+<rect x="608" y="150" width="86" height="78" rx="6" fill="#e3f2fd" stroke="#0d47a1" stroke-width="2"/>
+<text x="651" y="168" text-anchor="middle" font-size="12" font-weight="bold" fill="#0d47a1">Cluster A</text>
+<circle cx="651" cy="196" r="15" fill="#ede7f6" stroke="#311b92" stroke-width="2"/>
+<text x="651" y="200" text-anchor="middle" font-size="10" font-weight="bold" fill="#311b92">istiod</text>
+<rect x="826" y="150" width="86" height="78" rx="6" fill="#e3f2fd" stroke="#0d47a1" stroke-width="2"/>
+<text x="869" y="168" text-anchor="middle" font-size="12" font-weight="bold" fill="#0d47a1">Cluster B</text>
+<circle cx="869" cy="196" r="15" fill="#ede7f6" stroke="#311b92" stroke-width="2"/>
+<text x="869" y="200" text-anchor="middle" font-size="10" font-weight="bold" fill="#311b92">istiod</text>
+<rect x="702" y="186" width="26" height="22" rx="3" fill="#fff3e0" stroke="#e65100" stroke-width="2"/>
+<text x="715" y="201" text-anchor="middle" font-size="10" font-weight="bold" fill="#e65100">GW</text>
+<rect x="792" y="186" width="26" height="22" rx="3" fill="#fff3e0" stroke="#e65100" stroke-width="2"/>
+<text x="805" y="201" text-anchor="middle" font-size="10" font-weight="bold" fill="#e65100">GW</text>
+<line x1="730" y1="197" x2="790" y2="197" stroke="#e65100" stroke-width="2.5" marker-end="url(#b)" marker-start="url(#b)"/>
+<text x="760" y="256" text-anchor="middle" font-size="11" fill="#e65100">Verkehr nur über East-West-Gateways (GW)</text>
+<rect x="602" y="266" width="140" height="28" rx="14" fill="#e8f5e9" stroke="#1b5e20" stroke-width="1.5"/>
+<text x="672" y="285" text-anchor="middle" font-size="11" font-weight="bold" fill="#1b5e20">Sidecar: stabil</text>
+<rect x="752" y="266" width="166" height="28" rx="14" fill="#fff8e1" stroke="#e65100" stroke-width="1.5"/>
+<text x="835" y="285" text-anchor="middle" font-size="11" font-weight="bold" fill="#e65100">Ambient: Beta</text>
+
+<!-- Zelle 3: Primary-Remote, ein Netz -->
+<rect x="210" y="325" width="340" height="190" rx="8" fill="#fafafa" stroke="#b0bec5" stroke-width="1.5"/>
+<rect x="222" y="338" width="316" height="110" rx="8" fill="none" stroke="#78909c" stroke-width="1.5" stroke-dasharray="6 4"/>
+<text x="230" y="353" font-size="11" fill="#546e7a">Netz 1</text>
+<rect x="238" y="360" width="125" height="78" rx="6" fill="#e3f2fd" stroke="#0d47a1" stroke-width="2"/>
+<text x="300" y="378" text-anchor="middle" font-size="12" font-weight="bold" fill="#0d47a1">Primary</text>
+<circle cx="300" cy="406" r="15" fill="#ede7f6" stroke="#311b92" stroke-width="2"/>
+<text x="300" y="410" text-anchor="middle" font-size="10" font-weight="bold" fill="#311b92">istiod</text>
+<rect x="397" y="360" width="125" height="78" rx="6" fill="#e3f2fd" stroke="#0d47a1" stroke-width="2" stroke-dasharray="5 3"/>
+<text x="459" y="378" text-anchor="middle" font-size="12" font-weight="bold" fill="#0d47a1">Remote</text>
+<text x="459" y="410" text-anchor="middle" font-size="11" fill="#455a64">kein istiod</text>
+<line x1="395" y1="422" x2="365" y2="422" stroke="#311b92" stroke-width="2" stroke-dasharray="5 3" marker-end="url(#p)"/>
+<text x="380" y="466" text-anchor="middle" font-size="11" fill="#311b92">Remote holt Konfiguration vom Primary</text>
+<rect x="222" y="476" width="140" height="28" rx="14" fill="#e8f5e9" stroke="#1b5e20" stroke-width="1.5"/>
+<text x="292" y="495" text-anchor="middle" font-size="11" font-weight="bold" fill="#1b5e20">Sidecar: stabil</text>
+<rect x="372" y="476" width="166" height="28" rx="14" fill="#ffebee" stroke="#c62828" stroke-width="1.5"/>
+<text x="455" y="495" text-anchor="middle" font-size="11" font-weight="bold" fill="#c62828">Ambient: nicht möglich</text>
+
+<!-- Zelle 4: Primary-Remote, mehrere Netze -->
+<rect x="590" y="325" width="340" height="190" rx="8" fill="#fafafa" stroke="#b0bec5" stroke-width="1.5"/>
+<rect x="600" y="338" width="130" height="110" rx="8" fill="none" stroke="#78909c" stroke-width="1.5" stroke-dasharray="6 4"/>
+<text x="608" y="353" font-size="11" fill="#546e7a">Netz 1</text>
+<rect x="790" y="338" width="130" height="110" rx="8" fill="none" stroke="#78909c" stroke-width="1.5" stroke-dasharray="6 4"/>
+<text x="798" y="353" font-size="11" fill="#546e7a">Netz 2</text>
+<rect x="608" y="360" width="86" height="78" rx="6" fill="#e3f2fd" stroke="#0d47a1" stroke-width="2"/>
+<text x="651" y="378" text-anchor="middle" font-size="12" font-weight="bold" fill="#0d47a1">Primary</text>
+<circle cx="651" cy="406" r="15" fill="#ede7f6" stroke="#311b92" stroke-width="2"/>
+<text x="651" y="410" text-anchor="middle" font-size="10" font-weight="bold" fill="#311b92">istiod</text>
+<rect x="826" y="360" width="86" height="78" rx="6" fill="#e3f2fd" stroke="#0d47a1" stroke-width="2" stroke-dasharray="5 3"/>
+<text x="869" y="378" text-anchor="middle" font-size="12" font-weight="bold" fill="#0d47a1">Remote</text>
+<text x="869" y="410" text-anchor="middle" font-size="11" fill="#455a64">kein istiod</text>
+<rect x="702" y="396" width="26" height="22" rx="3" fill="#fff3e0" stroke="#e65100" stroke-width="2"/>
+<text x="715" y="411" text-anchor="middle" font-size="10" font-weight="bold" fill="#e65100">GW</text>
+<rect x="792" y="396" width="26" height="22" rx="3" fill="#fff3e0" stroke="#e65100" stroke-width="2"/>
+<text x="805" y="411" text-anchor="middle" font-size="10" font-weight="bold" fill="#e65100">GW</text>
+<line x1="730" y1="407" x2="790" y2="407" stroke="#e65100" stroke-width="2.5" marker-end="url(#b)" marker-start="url(#b)"/>
+<text x="760" y="466" text-anchor="middle" font-size="11" fill="#e65100">Gateways, Remote hängt am Primary-istiod</text>
+<rect x="602" y="476" width="140" height="28" rx="14" fill="#e8f5e9" stroke="#1b5e20" stroke-width="1.5"/>
+<text x="672" y="495" text-anchor="middle" font-size="11" font-weight="bold" fill="#1b5e20">Sidecar: stabil</text>
+<rect x="752" y="476" width="166" height="28" rx="14" fill="#ffebee" stroke="#c62828" stroke-width="1.5"/>
+<text x="835" y="495" text-anchor="middle" font-size="11" font-weight="bold" fill="#c62828">Ambient: nicht möglich</text>
+
+<text x="480" y="548" text-anchor="middle" font-size="12" fill="#37474f">Immer gleich auf allen Clustern: ein Mesh (meshID), gemeinsame Root-CA, gleiche Trust Domain. Je Cluster verschieden: clusterName.</text>
+<text x="480" y="568" text-anchor="middle" font-size="12" fill="#37474f">Stand der Ambient-Angaben: Istio-Doku „Ambient multicluster“ (Beta, nur Multi-Network, Primary-Remote nicht unterstützt), Stand 10.11.2026.</text>
+</svg>

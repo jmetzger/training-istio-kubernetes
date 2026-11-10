@@ -1,0 +1,73 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 560" width="960" height="560" font-family="Arial, Helvetica, sans-serif">
+<defs>
+<marker id="g" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#2e7d32"/></marker>
+<marker id="p" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#311b92"/></marker>
+<marker id="b" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#0d47a1"/></marker>
+</defs>
+<rect width="960" height="560" fill="#ffffff"/>
+<text x="480" y="26" text-anchor="middle" font-size="18" font-weight="bold" fill="#263238">Multi-Primary in einem flachen Netz: jedes istiod liest beide Cluster</text>
+
+<!-- Netz -->
+<rect x="10" y="42" width="940" height="360" rx="12" fill="none" stroke="#78909c" stroke-width="2" stroke-dasharray="8 5"/>
+<text x="24" y="62" font-size="12" font-weight="bold" fill="#546e7a">Ein Netz: jede Pod-IP ist von überall direkt erreichbar (kein NAT, kein Tunnel, kein Gateway)</text>
+
+<!-- Cluster A -->
+<rect x="25" y="75" width="385" height="312" rx="8" fill="#f1f8fe" stroke="#0d47a1" stroke-width="2.5"/>
+<text x="217" y="97" text-anchor="middle" font-size="14" font-weight="bold" fill="#0d47a1">Cluster A (clusterName: cluster-a)</text>
+<rect x="260" y="112" width="135" height="40" rx="6" fill="#ede7f6" stroke="#311b92" stroke-width="2"/>
+<text x="327" y="137" text-anchor="middle" font-size="13" font-weight="bold" fill="#311b92">istiod A</text>
+<rect x="260" y="172" width="135" height="40" rx="6" fill="#eceff1" stroke="#455a64" stroke-width="2"/>
+<text x="327" y="197" text-anchor="middle" font-size="13" font-weight="bold" fill="#37474f">kube-API A</text>
+<text x="40" y="132" font-size="11" fill="#455a64">gleich auf allen Clustern:</text>
+<text x="40" y="148" font-size="11" fill="#455a64">meshID, Root-CA, Trust Domain,</text>
+<text x="40" y="164" font-size="11" fill="#455a64">Istio-Version, Mesh-Config</text>
+<text x="40" y="188" font-size="11" fill="#455a64">Pods und VMs liegen im selben</text>
+<text x="40" y="204" font-size="11" fill="#455a64">Netz, Netzname identisch</text>
+<rect x="40" y="250" width="115" height="60" rx="6" fill="#ffffff" stroke="#0d47a1" stroke-width="2"/>
+<text x="97" y="273" text-anchor="middle" font-size="12" font-weight="bold" fill="#0d47a1">backend</text>
+<text x="97" y="291" text-anchor="middle" font-size="10" fill="#455a64">10.244.1.7</text>
+<rect x="195" y="250" width="115" height="60" rx="6" fill="#ffffff" stroke="#0d47a1" stroke-width="2"/>
+<text x="252" y="273" text-anchor="middle" font-size="12" font-weight="bold" fill="#0d47a1">frontend</text>
+<text x="252" y="291" text-anchor="middle" font-size="10" fill="#455a64">10.244.2.4</text>
+<text x="217" y="340" text-anchor="middle" font-size="11" fill="#455a64">Namespace, Service und Deployments sind in beiden</text>
+<text x="217" y="356" text-anchor="middle" font-size="11" fill="#455a64">Clustern angelegt (gleiche Namen)</text>
+<line x1="195" y1="280" x2="157" y2="280" stroke="#0d47a1" stroke-width="2" marker-end="url(#b)"/>
+
+<!-- Cluster B -->
+<rect x="550" y="75" width="385" height="312" rx="8" fill="#f1f8fe" stroke="#0d47a1" stroke-width="2.5"/>
+<text x="742" y="97" text-anchor="middle" font-size="14" font-weight="bold" fill="#0d47a1">Cluster B (clusterName: cluster-b)</text>
+<rect x="565" y="112" width="135" height="40" rx="6" fill="#eceff1" stroke="#455a64" stroke-width="2"/>
+<text x="632" y="137" text-anchor="middle" font-size="13" font-weight="bold" fill="#37474f">kube-API B</text>
+<rect x="565" y="172" width="135" height="40" rx="6" fill="#ede7f6" stroke="#311b92" stroke-width="2"/>
+<text x="632" y="197" text-anchor="middle" font-size="13" font-weight="bold" fill="#311b92">istiod B</text>
+<text x="725" y="132" font-size="11" fill="#455a64">nur verschieden:</text>
+<text x="725" y="148" font-size="11" fill="#455a64">clusterName und das</text>
+<text x="725" y="164" font-size="11" fill="#455a64">Remote-Secret je Cluster</text>
+<rect x="565" y="250" width="115" height="60" rx="6" fill="#ffffff" stroke="#0d47a1" stroke-width="2"/>
+<text x="622" y="273" text-anchor="middle" font-size="12" font-weight="bold" fill="#0d47a1">backend</text>
+<text x="622" y="291" text-anchor="middle" font-size="10" fill="#455a64">10.245.1.9</text>
+<text x="742" y="340" text-anchor="middle" font-size="11" fill="#455a64">Die Cluster kennen sich nicht, nur die istiod</text>
+<text x="742" y="356" text-anchor="middle" font-size="11" fill="#455a64">lesen die Kubernetes-API des anderen Clusters</text>
+
+<!-- Remote Secrets -->
+<line x1="395" y1="132" x2="565" y2="132" stroke="#311b92" stroke-width="2.5" marker-end="url(#p)"/>
+<text x="480" y="124" text-anchor="middle" font-size="11" font-weight="bold" fill="#311b92">liest Services, Endpoints</text>
+<text x="480" y="150" text-anchor="middle" font-size="10" fill="#311b92">(Remote-Secret = Kubeconfig)</text>
+<line x1="565" y1="192" x2="395" y2="192" stroke="#311b92" stroke-width="2.5" marker-end="url(#p)"/>
+<text x="480" y="184" text-anchor="middle" font-size="11" font-weight="bold" fill="#311b92">liest Services, Endpoints</text>
+<text x="480" y="210" text-anchor="middle" font-size="10" fill="#311b92">(Remote-Secret = Kubeconfig)</text>
+
+<!-- Datenpfad -->
+<line x1="310" y1="268" x2="563" y2="268" stroke="#2e7d32" stroke-width="3" marker-end="url(#g)"/>
+<text x="436" y="258" text-anchor="middle" font-size="12" font-weight="bold" fill="#2e7d32">Aufruf direkt auf die Pod-IP</text>
+<text x="436" y="287" text-anchor="middle" font-size="11" fill="#2e7d32">mTLS, ohne East-West-Gateway</text>
+
+<!-- Fußtext -->
+<rect x="10" y="415" width="940" height="130" rx="8" fill="#fafafa" stroke="#b0bec5" stroke-width="1.5"/>
+<text x="26" y="438" font-size="13" font-weight="bold" fill="#263238">So funktioniert es</text>
+<text x="26" y="460" font-size="12" fill="#37474f">1. Jedes istiod bekommt für jeden anderen Cluster ein Remote-Secret (istioctl create-remote-secret) und liest dort Services und Endpoints.</text>
+<text x="26" y="480" font-size="12" fill="#37474f">2. frontend ruft den Service backend: sein Proxy kennt die Endpoints aus beiden Clustern (Kontrolle: istioctl proxy-config endpoint).</text>
+<text x="26" y="500" font-size="12" fill="#37474f">3. Weil das Netz flach ist, sind die Endpoints die echten Pod-IPs. Der Verkehr geht direkt, ohne Gateway.</text>
+<text x="26" y="520" font-size="12" fill="#37474f">4. Voraussetzung: Die kube-API jedes Clusters ist für das istiod des anderen erreichbar (z. B. über ein Gateway mit fester IP).</text>
+<text x="26" y="538" font-size="11" fill="#78909c">Sidecar-Mode. Ambient kennt für ein einzelnes flaches Netz nur eine ungetestete Konfiguration (Istio-Doku, Stand 10.11.2026).</text>
+</svg>

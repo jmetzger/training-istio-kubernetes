@@ -1,0 +1,77 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 580" width="960" height="580" font-family="Arial, Helvetica, sans-serif">
+<defs>
+<marker id="p" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#311b92"/></marker>
+<marker id="g" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#2e7d32"/></marker>
+<marker id="b" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#0d47a1"/></marker>
+<marker id="k" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#455a64"/></marker>
+</defs>
+<rect width="960" height="580" fill="#ffffff"/>
+<text x="480" y="26" text-anchor="middle" font-size="18" font-weight="bold" fill="#263238">Hybrid: eine VM wird Mitglied im Mesh (Sidecar-Mode)</text>
+
+<!-- Cluster -->
+<rect x="20" y="45" width="520" height="375" rx="10" fill="#f1f8fe" stroke="#0d47a1" stroke-width="2.5"/>
+<text x="280" y="68" text-anchor="middle" font-size="14" font-weight="bold" fill="#0d47a1">Kubernetes-Cluster</text>
+<rect x="40" y="90" width="150" height="50" rx="6" fill="#ffffff" stroke="#0d47a1" stroke-width="2"/>
+<text x="115" y="112" text-anchor="middle" font-size="12" font-weight="bold" fill="#0d47a1">Namespace +</text>
+<text x="115" y="128" text-anchor="middle" font-size="12" font-weight="bold" fill="#0d47a1">ServiceAccount</text>
+<rect x="205" y="90" width="150" height="50" rx="6" fill="#ffffff" stroke="#0d47a1" stroke-width="2"/>
+<text x="280" y="112" text-anchor="middle" font-size="12" font-weight="bold" fill="#0d47a1">WorkloadGroup</text>
+<text x="280" y="128" text-anchor="middle" font-size="11" fill="#455a64">Vorlage für die VM</text>
+<rect x="400" y="90" width="125" height="50" rx="8" fill="#ede7f6" stroke="#311b92" stroke-width="2.5"/>
+<text x="462" y="112" text-anchor="middle" font-size="14" font-weight="bold" fill="#311b92">istiod</text>
+<text x="462" y="128" text-anchor="middle" font-size="11" fill="#311b92">Port 15012</text>
+<rect x="40" y="190" width="150" height="50" rx="6" fill="#ffffff" stroke="#0d47a1" stroke-width="2"/>
+<text x="115" y="212" text-anchor="middle" font-size="12" font-weight="bold" fill="#0d47a1">Service</text>
+<text x="115" y="228" text-anchor="middle" font-size="11" fill="#455a64">Selector wie bei Pods</text>
+<rect x="205" y="190" width="150" height="50" rx="6" fill="#fffde7" stroke="#f9a825" stroke-width="2.5"/>
+<text x="280" y="212" text-anchor="middle" font-size="12" font-weight="bold" fill="#e65100">WorkloadEntry</text>
+<text x="280" y="228" text-anchor="middle" font-size="11" fill="#455a64">mit der VM-IP, automatisch</text>
+<rect x="40" y="310" width="165" height="75" rx="6" fill="#ffffff" stroke="#0d47a1" stroke-width="2"/>
+<text x="122" y="336" text-anchor="middle" font-size="12" font-weight="bold" fill="#0d47a1">Pod frontend</text>
+<text x="122" y="354" text-anchor="middle" font-size="11" fill="#455a64">Anwendung + Sidecar</text>
+<line x1="280" y1="140" x2="280" y2="188" stroke="#455a64" stroke-width="2" marker-end="url(#k)"/>
+<text x="290" y="168" font-size="11" fill="#455a64">Vorlage</text>
+<line x1="430" y1="142" x2="357" y2="205" stroke="#311b92" stroke-width="2" stroke-dasharray="5 3" marker-end="url(#p)"/>
+<text x="425" y="188" font-size="11" font-weight="bold" fill="#311b92">legt an</text>
+<line x1="205" y1="215" x2="192" y2="215" stroke="#455a64" stroke-width="2" marker-end="url(#k)"/>
+
+<!-- VM -->
+<rect x="680" y="45" width="260" height="375" rx="10" fill="#f5f5f5" stroke="#37474f" stroke-width="2.5"/>
+<text x="810" y="68" text-anchor="middle" font-size="14" font-weight="bold" fill="#263238">VM (kein Pod, kein Kubelet)</text>
+<rect x="695" y="80" width="230" height="102" rx="6" fill="#ffffff" stroke="#78909c" stroke-width="1.5"/>
+<text x="810" y="98" text-anchor="middle" font-size="11" font-weight="bold" fill="#37474f">Dateien (vom Admin-Rechner abgelegt)</text>
+<text x="707" y="116" font-size="11" fill="#37474f">root-cert.pem  (Vertrauenswurzel)</text>
+<text x="707" y="131" font-size="11" fill="#37474f">istio-token  (kurzlebig, zur Anmeldung)</text>
+<text x="707" y="146" font-size="11" fill="#37474f">cluster.env  (Namespace, SA, Cluster)</text>
+<text x="707" y="161" font-size="11" fill="#37474f">mesh.yaml  (Adresse von istiod)</text>
+<text x="707" y="176" font-size="11" fill="#37474f">/etc/hosts  (Eintrag für istiod)</text>
+<rect x="695" y="205" width="230" height="62" rx="6" fill="#e3f2fd" stroke="#0d47a1" stroke-width="2.5"/>
+<text x="810" y="228" text-anchor="middle" font-size="12" font-weight="bold" fill="#0d47a1">Sidecar-Paket (Dienst istio)</text>
+<text x="810" y="247" text-anchor="middle" font-size="12" fill="#0d47a1">pilot-agent + Envoy</text>
+<rect x="695" y="300" width="230" height="62" rx="6" fill="#ffffff" stroke="#37474f" stroke-width="2"/>
+<text x="810" y="327" text-anchor="middle" font-size="12" font-weight="bold" fill="#37474f">Anwendung auf der VM</text>
+<text x="810" y="345" text-anchor="middle" font-size="11" fill="#455a64">Port wie im Service</text>
+<line x1="810" y1="268" x2="810" y2="298" stroke="#0d47a1" stroke-width="2" marker-end="url(#b)" marker-start="url(#b)"/>
+<line x1="810" y1="183" x2="810" y2="203" stroke="#455a64" stroke-width="2" marker-end="url(#k)"/>
+
+<!-- Agent -> istiod -->
+<path d="M693 236 H590 V115 H527" fill="none" stroke="#311b92" stroke-width="2.5" marker-end="url(#p)"/>
+<text x="635" y="150" text-anchor="middle" font-size="11" font-weight="bold" fill="#311b92">xDS + CSR</text>
+<text x="635" y="165" text-anchor="middle" font-size="11" fill="#311b92">TLS + Token</text>
+<text x="635" y="180" text-anchor="middle" font-size="11" fill="#311b92">Port 15012</text>
+<text x="635" y="195" text-anchor="middle" font-size="10" fill="#311b92">VM → istiod</text>
+
+<!-- Daten -->
+<line x1="207" y1="340" x2="693" y2="330" stroke="#2e7d32" stroke-width="3" marker-end="url(#g)" marker-start="url(#g)"/>
+<text x="400" y="318" text-anchor="middle" font-size="12" font-weight="bold" fill="#2e7d32">mTLS direkt auf die VM-IP</text>
+<text x="400" y="362" text-anchor="middle" font-size="11" fill="#2e7d32">in beide Richtungen (Netz erreichbar)</text>
+
+<!-- Ablauf -->
+<rect x="10" y="432" width="940" height="140" rx="8" fill="#fafafa" stroke="#b0bec5" stroke-width="1.5"/>
+<text x="26" y="454" font-size="13" font-weight="bold" fill="#263238">Ablauf</text>
+<text x="26" y="475" font-size="12" fill="#37474f">1. Kubernetes: Namespace, ServiceAccount, WorkloadGroup und Service anlegen. Die Dateien für die VM erzeugt istioctl x workload entry configure.</text>
+<text x="26" y="494" font-size="12" fill="#37474f">2. VM: Sidecar-Paket installieren, Dateien ablegen, Dienst istio starten.</text>
+<text x="26" y="513" font-size="12" fill="#37474f">3. Der Agent verbindet sich mit istiod auf Port 15012, meldet sich mit dem Token an und holt ein Zertifikat. istiod legt den WorkloadEntry an.</text>
+<text x="26" y="532" font-size="12" fill="#37474f">4. Ab da ist die VM ein Endpoint wie ein Pod: Der Service findet sie, mTLS läuft in beide Richtungen.</text>
+<text x="26" y="555" font-size="11" fill="#78909c">Nur mit Sidecar. Ambient kann keine VMs ins Mesh aufnehmen (Istio-Doku, Stand 10.11.2026). Die VM kennt nur eine istiod-Adresse: siehe nächste Grafik.</text>
+</svg>

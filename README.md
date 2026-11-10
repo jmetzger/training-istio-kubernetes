@@ -87,7 +87,7 @@
      * [Canary Update von istiod mit tags und revisions](/istio/installation/ambient/05-istio-canary-upgrade-revisions.md)
 
   1. Multi-Cluster (nur Theorie)
-     * Multi-Cluster- & Hybrid-Umgebungen mit Istio
+     * [Multi-Cluster- & Hybrid-Umgebungen mit Istio (Überblick mit Grafiken)](istio/overview/13-multi-cluster-hybrid-ueberblick.md)
      * Istio Federation & Cross-Cluster Traffic
 
   1. Erweiterbarkeit von Istio (nur Theorie)
