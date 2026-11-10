@@ -50,7 +50,8 @@
 
   1. Sicherheit, Fehlertoleranz & Observability    
      * Istio Authorization Policies (ingress/egress Security)
-     * [ZeroTrust für bookinfo Namespace bookinfo einrichten](istio/exercises/16-zerotrust-bookinfo-einrichten.md)
+     * [Übung (Ambient): Zero Trust für bookinfo Schritt für Schritt (ztunnel Layer 4, Waypoint Layer 7)](istio/exercises/19-zerotrust-bookinfo-ambient.md)
+     * [Übung (Sidecar): ZeroTrust für bookinfo Namespace bookinfo einrichten](istio/exercises/16-zerotrust-bookinfo-einrichten.md)
 
   1. Debugging
      * [Debugging mit debug/run pod](/istio/debug/01-debug-pod.md)

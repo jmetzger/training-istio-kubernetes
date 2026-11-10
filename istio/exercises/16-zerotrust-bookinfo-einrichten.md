@@ -1,5 +1,8 @@
 # Istio Authorization Policies – Zero Trust mit Bookinfo (sidecar/gateway api)
 
+> Diese Übung gilt für den **Sidecar-Modus**. Für den **Ambient-Modus** (ztunnel und Waypoint) siehe
+> [Zero Trust mit Bookinfo im Ambient-Mesh](19-zerotrust-bookinfo-ambient.md).
+
 ## Ziel
 
 In dieser Übung setzen wir **Zero Trust** im Mesh um:  
