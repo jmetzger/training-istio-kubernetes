@@ -368,10 +368,59 @@ kubectl -n bookinfo delete peerauthentication ratings-per-port
 
 ---
 
-## Schritt 7: Client-Seite - was entfaellt im Ambient-Mode?
+## Schritt 7: Client-Seite - was aendert sich im Ambient-Mode?
 
-In der Sidecar-Uebung haben wir eine `DestinationRule` mit `tls.mode: ISTIO_MUTUAL` angeschaut (Auto-mTLS).
-Im Ambient-Mode brauchst du das nicht: Der ztunnel der Quelle baut zu jedem Ziel im Mesh selbst den HBONE-Tunnel auf, ohne dass du auf der Client-Seite etwas einstellst.
+mTLS auf der Client-Seite passiert in **beiden** Modi automatisch (Auto-mTLS): Im Sidecar-Mode sendet der Sidecar des Clients mTLS, sobald das Ziel einen Sidecar hat. Im Ambient-Mode baut der ztunnel der Quelle zu jedem Ziel im Mesh den HBONE-Tunnel auf.
+
+Der Unterschied ist der **Hebel zum Ueberschreiben**:
+
+| | Sidecar | Ambient |
+|---|---|---|
+| mTLS zum Ziel | automatisch (Auto-mTLS) | automatisch (HBONE durch den ztunnel) |
+| Ueberschreiben per `DestinationRule` (`tls.mode: DISABLE` oder `ISTIO_MUTUAL`) | moeglich, der Sidecar des Clients richtet sich danach | **wirkungslos**, mTLS ist fest |
+
+Du kannst es nachstellen: `ratings` auf STRICT setzen und dazu eine `DestinationRule` mit `tls.mode: DISABLE` anlegen:
+
+```
+kubectl apply -f - <<EOF
+apiVersion: security.istio.io/v1
+kind: PeerAuthentication
+metadata:
+  name: ratings-strict
+  namespace: bookinfo
+spec:
+  selector:
+    matchLabels:
+      app: ratings
+  mtls:
+    mode: STRICT
+EOF
+
+kubectl apply -f - <<EOF
+apiVersion: networking.istio.io/v1
+kind: DestinationRule
+metadata:
+  name: ratings-disable
+  namespace: bookinfo
+spec:
+  host: ratings.bookinfo.svc.cluster.local
+  trafficPolicy:
+    tls:
+      mode: DISABLE
+EOF
+```
+
+```
+kubectl -n bookinfo exec deploy/sleep -- \
+  curl -s -o /dev/null -w "%{http_code}\n" ratings:9080/ratings/0
+```
+
+Erwartet: `200`. Der Aufruf kommt trotz `DISABLE` und STRICT durch und laeuft weiter ueber Port 15008 (ztunnel-Log wie in Schritt 2e). Im Sidecar-Mode wuerde `DISABLE` Klartext senden, und STRICT wuerde ihn ablehnen.
+
+```
+kubectl -n bookinfo delete destinationrule ratings-disable
+kubectl -n bookinfo delete peerauthentication ratings-strict
+```
 
 **Frage:** Wo wuerdest du im Ambient-Mode eine `DestinationRule` trotzdem noch brauchen? (Tipp: Waypoint, Layer 7)
 
@@ -399,7 +448,7 @@ kubectl delete ns no-mesh
 | **PeerAuthentication** | Entscheidet, ob Klartext von Clients ausserhalb des Mesh angenommen wird (PERMISSIVE) oder nicht (STRICT) |
 | **Ohne Policy** | Clients ausserhalb des Mesh kommen durch (wie PERMISSIVE) |
 | **STRICT** | Zero-Trust: nur mTLS, der ztunnel des Ziels lehnt Klartext ab |
-| **Client-Seite** | Nichts zu konfigurieren, der ztunnel der Quelle baut den Tunnel selbst auf |
+| **Client-Seite** | mTLS ist automatisch (wie bei Sidecars, dort Auto-mTLS). Neu im Ambient-Mode: Der ztunnel der Quelle baut den Tunnel, `tls.mode` in einer `DestinationRule` ist wirkungslos |
 | **Policy-Hierarchie** | Mesh-weit (`istio-system`) -> Namespace -> Workload (die spezifischste gewinnt) |
 
 ---
@@ -425,6 +474,6 @@ kubectl delete ns no-mesh
 
 **Schritt 6:** Port-Level-Konfiguration ist sinnvoll, wenn ein Port (z. B. ein Health-Check- oder Metrics-Endpunkt) auch von Clients ausserhalb des Mesh erreichbar sein muss, waehrend der Rest des Workloads STRICT bleibt.
 
-**Schritt 7:** Fuer Layer-7-Verhalten, das der Waypoint umsetzt, z. B. Subsets, Load-Balancing (`LEAST_CONN`) oder Circuit Breaker. Die mTLS-Einstellung dagegen braucht keine DestinationRule.
+**Schritt 7:** Fuer Layer-7-Verhalten, das der Waypoint umsetzt, z. B. Subsets, Load-Balancing (`LEAST_CONN`) oder Circuit Breaker. Die mTLS-Einstellung dagegen kannst du per `DestinationRule` nicht mehr beeinflussen: mTLS ist im Ambient-Mode automatisch und fest (`tls.mode: DISABLE` wird ignoriert, siehe Test oben).
 
 </details>
