@@ -1,0 +1,7 @@
+# Hilfs-Issuer: stellt nur das Root-Zertifikat aus (selbstsigniert)
+apiVersion: cert-manager.io/v1
+kind: ClusterIssuer
+metadata:
+  name: selfsigned
+spec:
+  selfSigned: {}

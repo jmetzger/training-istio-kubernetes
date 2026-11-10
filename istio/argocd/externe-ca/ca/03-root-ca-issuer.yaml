@@ -1,0 +1,9 @@
+# Issuer, der mit der Root-CA unterschreibt.
+# In Produktion steht hier der Issuer der externen CA (z. B. Vault).
+apiVersion: cert-manager.io/v1
+kind: ClusterIssuer
+metadata:
+  name: root-ca
+spec:
+  ca:
+    secretName: root-ca

@@ -1,0 +1,22 @@
+# Zwischen-CA fuer Istio. cert-manager legt daraus das Secret cacerts an,
+# istiod unterschreibt damit die Zertifikate der Workloads.
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: istio-ca
+  namespace: istio-system
+spec:
+  isCA: true
+  commonName: Istio Intermediate CA
+  subject:
+    organizations:
+      - Training
+  secretName: cacerts
+  duration: 2160h       # 90 Tage
+  renewBefore: 360h     # 15 Tage vorher erneuern
+  privateKey:
+    algorithm: RSA
+    size: 4096
+  issuerRef:
+    kind: ClusterIssuer
+    name: root-ca
