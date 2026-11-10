@@ -48,7 +48,8 @@
      * [Überblick 3 Säulen -  Sichere Service-Kommunikation](istio/overview/security/01-secure-service-communication.md)
      * [Übung Säule 1 (Sidecar): mTLS prüfen und aktivieren/deaktivieren](istio/overview/security/02-check-mtls-enable-disable.md)
      * [Übung Säule 1 (Ambient): mTLS prüfen und aktivieren/deaktivieren (ztunnel, HBONE, PeerAuthentication)](istio/overview/security/02-check-mtls-enable-disable-ambient.md)
-     * [Übung Säule 2 + 3: Authentication und Authorization mit JWT und RBAC](istio/exercises/12-jwt-rbac.md)
+     * [Übung Säule 2 + 3 (Sidecar): Authentication und Authorization mit JWT und RBAC](istio/exercises/12-jwt-rbac.md)
+     * [Übung Säule 2 + 3 (Ambient): Authentication und Authorization mit JWT und RBAC (Waypoint, targetRefs)](istio/exercises/gateway-api/12-jwt-rbac-ambient.md)
      * [Übung (Ambient): Zero Trust für bookinfo Schritt für Schritt (ztunnel Layer 4, Waypoint Layer 7)](istio/exercises/19-zerotrust-bookinfo-ambient.md)
      * [Übung (Sidecar): ZeroTrust für bookinfo Namespace bookinfo einrichten](istio/exercises/16-zerotrust-bookinfo-einrichten.md)
 

@@ -1,4 +1,7 @@
-# JWT-Token mit RBAC verwenden 
+# JWT-Token mit RBAC verwenden (Sidecar)
+
+> Das ist die **Sidecar**-Fassung der Übung. Die Fassung für Ambient (Waypoint, `targetRefs`) steht in
+> [gateway-api/12-jwt-rbac-ambient.md](gateway-api/12-jwt-rbac-ambient.md).
 
 ## Grundlagen 
 
