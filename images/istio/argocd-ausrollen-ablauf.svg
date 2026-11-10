@@ -1,0 +1,51 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 590" width="960" height="590" font-family="Arial, Helvetica, sans-serif">
+<defs>
+<marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#37474f"/></marker>
+<marker id="b" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#1565c0"/></marker>
+</defs>
+<rect width="960" height="590" fill="#ffffff"/>
+<text x="480" y="24" text-anchor="middle" font-size="18" font-weight="bold" fill="#263238">Initiales Ausrollen: Was du tust, was ArgoCD tut</text>
+
+<text x="190" y="54" text-anchor="middle" font-size="14" font-weight="bold" fill="#e65100">Du (manuell)</text>
+<text x="770" y="54" text-anchor="middle" font-size="14" font-weight="bold" fill="#0d47a1">ArgoCD (automatisch)</text>
+
+<rect x="20" y="70" width="340" height="60" rx="8" fill="#fff8e1" stroke="#f9a825" stroke-width="2"/>
+<text x="190" y="95" text-anchor="middle" font-size="14" font-weight="bold" fill="#37474f">Schritt 1: Cluster + ArgoCD</text>
+<text x="190" y="115" text-anchor="middle" font-size="12" fill="#37474f">bereitstellen</text>
+<line x1="190" y1="132" x2="190" y2="158" stroke="#37474f" stroke-width="2.5" marker-end="url(#a)"/>
+<rect x="20" y="160" width="340" height="60" rx="8" fill="#fff8e1" stroke="#f9a825" stroke-width="2"/>
+<text x="190" y="185" text-anchor="middle" font-size="14" font-weight="bold" fill="#37474f">Schritt 2: Git-Repo anlegen</text>
+<text x="190" y="205" text-anchor="middle" font-size="12" fill="#37474f">mit allen Application-YAMLs</text>
+<line x1="190" y1="222" x2="190" y2="248" stroke="#37474f" stroke-width="2.5" marker-end="url(#a)"/>
+<rect x="20" y="250" width="340" height="60" rx="8" fill="#ffe0b2" stroke="#e65100" stroke-width="2.5"/>
+<text x="190" y="275" text-anchor="middle" font-size="14" font-weight="bold" fill="#37474f">Schritt 3: root-app.yaml</text>
+<text x="190" y="295" text-anchor="middle" font-size="12" font-weight="bold" fill="#bf360c">kubectl apply (1× manuell!)</text>
+
+<line x1="362" y1="280" x2="598" y2="280" stroke="#1565c0" stroke-width="2.5" marker-end="url(#b)"/>
+<text x="480" y="270" text-anchor="middle" font-size="12" fill="#0d47a1">root-App im Cluster</text>
+
+<rect x="600" y="250" width="340" height="60" rx="8" fill="#e3f2fd" stroke="#1565c0" stroke-width="2"/>
+<text x="770" y="275" text-anchor="middle" font-size="14" font-weight="bold" fill="#0d47a1">ArgoCD liest apps/ aus Git</text>
+<text x="770" y="295" text-anchor="middle" font-size="12" fill="#0d47a1">App-of-Apps</text>
+<line x1="770" y1="312" x2="770" y2="344" stroke="#1565c0" stroke-width="2.5" marker-end="url(#b)"/>
+<text x="758" y="334" text-anchor="end" font-size="12" fill="#0d47a1">Sync Waves steuern die Reihenfolge</text>
+
+<rect x="600" y="346" width="340" height="158" rx="8" fill="#e3f2fd" stroke="#1565c0" stroke-width="2"/>
+<text x="770" y="368" text-anchor="middle" font-size="13" font-weight="bold" fill="#0d47a1">erstellt je eine Application:</text>
+<text x="640" y="392" font-size="13" fill="#0d47a1">1. gateway-api-crds</text>
+<text x="640" y="412" font-size="13" fill="#0d47a1">2. istio-base</text>
+<text x="640" y="432" font-size="13" fill="#0d47a1">3. istiod</text>
+<text x="640" y="452" font-size="13" fill="#0d47a1">4. istio-cni</text>
+<text x="640" y="472" font-size="13" fill="#0d47a1">5. ztunnel</text>
+<text x="640" y="492" font-size="13" fill="#0d47a1">6. bookinfo</text>
+<line x1="770" y1="506" x2="770" y2="532" stroke="#1565c0" stroke-width="2.5" marker-end="url(#b)"/>
+<rect x="600" y="534" width="340" height="44" rx="8" fill="#e8f5e9" stroke="#2e7d32" stroke-width="2.5"/>
+<text x="770" y="562" text-anchor="middle" font-size="15" font-weight="bold" fill="#1b5e20">Istio Ambient läuft!</text>
+
+<line x1="190" y1="312" x2="190" y2="344" stroke="#37474f" stroke-width="2.5" marker-end="url(#a)"/>
+<rect x="20" y="346" width="340" height="124" rx="8" fill="#fff8e1" stroke="#f9a825" stroke-width="2.5"/>
+<text x="190" y="378" text-anchor="middle" font-size="15" font-weight="bold" fill="#37474f">Ab jetzt: Änderungen</text>
+<text x="190" y="398" text-anchor="middle" font-size="15" font-weight="bold" fill="#bf360c">NUR noch über Git-Commits</text>
+<text x="190" y="428" text-anchor="middle" font-size="12" fill="#37474f">git commit, git push</text>
+<text x="190" y="446" text-anchor="middle" font-size="12" fill="#37474f">ArgoCD erkennt die Änderung und synced</text>
+</svg>

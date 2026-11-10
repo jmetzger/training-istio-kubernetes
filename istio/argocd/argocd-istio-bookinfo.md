@@ -7,47 +7,7 @@
 Im Gegensatz zum Sidecar-Modus gibt es bei Ambient Mode **kein Envoy-Sidecar** pro Pod.
 Stattdessen wird die Mesh-Funktionalität in zwei Schichten aufgeteilt:
 
-```
-┌─────────────────────────────────────────────────────────────────────┐
-│                        Kubernetes Cluster                           │
-│                                                                     │
-│  ┌───────────────────────────────────────────────────────────────┐  │
-│  │                    Control Plane (istio-system)               │  │
-│  │                                                               │  │
-│  │   ┌─────────┐     ┌──────────────┐     ┌──────────────────┐  │  │
-│  │   │ istiod  │     │  istio-cni   │     │   Gateway API    │  │  │
-│  │   │ (xDS)   │     │  (DaemonSet) │     │     CRDs         │  │  │
-│  │   └────┬────┘     └──────────────┘     └──────────────────┘  │  │
-│  │        │  xDS-Config                                          │  │
-│  └────────┼──────────────────────────────────────────────────────┘  │
-│           │                                                         │
-│  ┌────────┼──────────────────────────────────────────────────────┐  │
-│  │  L4    │   Data Plane – ztunnel (DaemonSet, pro Node)        │  │
-│  │        ▼                                                      │  │
-│  │   ┌─────────┐          ┌─────────┐          ┌─────────┐     │  │
-│  │   │ ztunnel │          │ ztunnel │          │ ztunnel │     │  │
-│  │   │ Node 1  │◄─HBONE──►│ Node 2  │◄─HBONE──►│ Node 3  │     │  │
-│  │   └────┬────┘          └────┬────┘          └────┬────┘     │  │
-│  │        │                    │                    │           │  │
-│  └────────┼────────────────────┼────────────────────┼───────────┘  │
-│           │                    │                    │               │
-│  ┌────────┼────────────────────┼────────────────────┼───────────┐  │
-│  │  L7    │   Optional: Waypoint Proxies (Envoy, pro Namespace) │  │
-│  │        ▼                    ▼                                 │  │
-│  │   ┌──────────┐        ┌──────────┐                           │  │
-│  │   │ Waypoint │        │ Waypoint │   ← Nur bei L7-Bedarf    │  │
-│  │   │ ns: app  │        │ ns: web  │     (AuthzPolicy, Retry) │  │
-│  │   └──────────┘        └──────────┘                           │  │
-│  └──────────────────────────────────────────────────────────────┘  │
-│                                                                     │
-│  ┌──────────────────────────────────────────────────────────────┐   │
-│  │  Application Pods (KEIN Sidecar!)                            │   │
-│  │   ┌─────┐  ┌─────┐  ┌─────┐  ┌─────┐  ┌─────┐             │   │
-│  │   │App A│  │App B│  │App C│  │App D│  │App E│             │   │
-│  │   └─────┘  └─────┘  └─────┘  └─────┘  └─────┘             │   │
-│  └──────────────────────────────────────────────────────────────┘   │
-└─────────────────────────────────────────────────────────────────────┘
-```
+![Istio Ambient: Komponenten, Nodes und Namespaces](../../images/istio/argocd-ambient-komponenten.svg)
 
 **Zusammenfassung der Komponenten:**
 
@@ -66,61 +26,13 @@ Stattdessen wird die Mesh-Funktionalität in zwei Schichten aufgeteilt:
 
 ### GitOps-Workflow
 
-```
-┌──────────────┐    Push     ┌──────────────┐    Sync     ┌──────────────┐
-│              │────────────►│              │────────────►│              │
-│   Developer  │             │   Git Repo   │             │   ArgoCD     │
-│              │◄────────────│              │◄────────────│   Controller │
-│              │    PR/Review│  (Source of   │   Diff/     │              │
-└──────────────┘             │   Truth)     │   Status    └──────┬───────┘
-                             └──────────────┘                    │
-                                                                 │ Helm
-                                                                 │ Template
-                                                                 │ + Apply
-                                                                 ▼
-                             ┌────────────────────────────────────────────┐
-                             │          Kubernetes Cluster                │
-                             │                                            │
-                             │  ┌─────────┐ ┌────────┐ ┌───────────┐    │
-                             │  │istio-   │ │istiod  │ │ztunnel    │    │
-                             │  │base     │ │        │ │+ istio-cni│    │
-                             │  │(CRDs)   │ │(CP)    │ │(DP)       │    │
-                             │  └─────────┘ └────────┘ └───────────┘    │
-                             │                                            │
-                             │  ┌──────────────────────────────────┐     │
-                             │  │  App-Namespace (ambient labeled) │     │
-                             │  │  ┌──────┐ ┌──────┐ ┌──────────┐ │     │
-                             │  │  │App A │ │App B │ │Waypoint  │ │     │
-                             │  │  └──────┘ └──────┘ └──────────┘ │     │
-                             │  └──────────────────────────────────┘     │
-                             └────────────────────────────────────────────┘
-```
+![GitOps-Workflow: ArgoCD rollt Istio Ambient aus](../../images/istio/argocd-gitops-workflow.svg)
 
 ### Install-Reihenfolge (kritisch!)
 
 ArgoCD deployed Helm Charts. Bei Istio Ambient gibt es **Abhängigkeiten**:
 
-```
-  Sync Wave 0        Sync Wave 1       Sync Wave 2        Sync Wave 3
-┌──────────────┐  ┌──────────────┐  ┌──────────────┐  ┌──────────────┐
-│  Gateway API │  │  istio-base  │  │   istiod     │  │  istio-cni   │
-│  CRDs        │──►│  (CRDs)      │──►│  (profile:   │──►│  (profile:   │
-│              │  │              │  │   ambient)   │  │   ambient)   │
-└──────────────┘  └──────────────┘  └──────┬───────┘  └──────┬───────┘
-                                           │                  │
-                                           │                  ▼
-                                           │          ┌──────────────┐
-                                           └─────────►│   ztunnel    │
-                                                      │              │
-                                                      └──────────────┘
-                                                              │
-                                                              ▼
-                                                      ┌──────────────┐
-                                                      │  Apps +      │
-                                                      │  Namespace   │
-                                                      │  Labeling    │
-                                                      └──────────────┘
-```
+![Install-Reihenfolge mit Sync Waves](../../images/istio/argocd-sync-waves.svg)
 
 **Reihenfolge:** Gateway API CRDs → istio-base → istiod → cni → ztunnel → Apps
 
@@ -133,16 +45,7 @@ ArgoCD deployed Helm Charts. Bei Istio Ambient gibt es **Abhängigkeiten**:
 Das ist der häufigste Fehler! Ambient Mode nutzt HBONE (HTTP/2 + mTLS) über **Port 15008**.
 Bestehende NetworkPolicies blockieren diesen Port oft.
 
-```
-  PROBLEM:                                  LÖSUNG:
-┌───────────────┐                        ┌───────────────┐
-│  NetworkPolicy│                        │  NetworkPolicy│
-│               │                        │               │
-│  ingress:     │                        │  ingress:     │
-│  - port: 8080 │  ← blockiert 15008!   │  - port: 8080 │
-│               │                        │  - port: 15008│  ← HBONE erlauben!
-└───────────────┘                        └───────────────┘
-```
+![NetworkPolicy und HBONE (Port 15008)](../../images/istio/argocd-networkpolicy-hbone.svg)
 
 ### ArgoCD HA + Ambient Mode
 
@@ -155,37 +58,7 @@ ArgoCD verwaltet Istio – es muss nicht selbst im Mesh sein.
 
 ## 4. Initiales Ausrollen – Schritt für Schritt
 
-```
-Was Du tust (manuell)              Was ArgoCD tut (automatisch)
-─────────────────────              ────────────────────────────
-
-Schritt 1: Cluster + ArgoCD
-  bereitstellen
-         │
-         ▼
-Schritt 2: Git-Repo anlegen
-  mit allen Application-YAMLs
-         │
-         ▼
-Schritt 3: root-app.yaml
-  kubectl apply (1× manuell!)
-         │                         ArgoCD liest apps/ aus Git
-         └────────────────────────►      │
-                                         ├─► erstellt gateway-api-crds App
-                                         ├─► erstellt istio-base App
-                                         ├─► erstellt istiod App
-                                         ├─► erstellt istio-cni App
-                                         ├─► erstellt ztunnel App
-                                         └─► erstellt bookinfo App
-                                                     │
-                                              Sync Waves steuern
-                                              die Reihenfolge
-                                                     │
-                                                     ▼
-                                              Istio Ambient läuft!
-
-Ab jetzt: Änderungen NUR noch über Git-Commits.
-```
+![Initiales Ausrollen: Was du tust, was ArgoCD tut](../../images/istio/argocd-ausrollen-ablauf.svg)
 
 ### Schritt 1: Voraussetzungen prüfen
 
@@ -646,21 +519,7 @@ istioctl ztunnel-config workloads
 
 ## 6. Upgrade-Workflow
 
-```
-┌────────────────┐     ┌────────────────┐     ┌────────────────┐
-│ 1. Git Branch  │     │ 2. PR Review   │     │ 3. Merge       │
-│                │     │                │     │                │
-│ targetRevision │────►│ Diff prüfen:   │────►│ ArgoCD synced  │
-│ 1.24.2 → 1.25.0│    │ - Release Notes│     │ automatisch    │
-│                │     │ - Breaking Ch. │     │                │
-└────────────────┘     └────────────────┘     └────┬───────────┘
-                                                    │
-                                        ┌───────────┼───────────┐
-                                        │           │           │
-                                        ▼           ▼           ▼
-                                    base CRDs    istiod     ztunnel
-                                    (update)    (rollout)  (rollout)
-```
+![Upgrade-Workflow: Version in Git ändern](../../images/istio/argocd-upgrade-workflow.svg)
 
 **Wichtig:** ztunnel ist ein DaemonSet – beim Upgrade gibt es einen kurzen
 Traffic-Umbruch pro Node. In Produktion: `maxUnavailable: 1` in den Values setzen.

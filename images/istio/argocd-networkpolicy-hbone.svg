@@ -1,0 +1,51 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 360" width="960" height="360" font-family="Arial, Helvetica, sans-serif">
+<defs>
+<marker id="g" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#2e7d32"/></marker>
+<marker id="r" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#c62828"/></marker>
+</defs>
+<rect width="960" height="360" fill="#ffffff"/>
+<text x="480" y="24" text-anchor="middle" font-size="18" font-weight="bold" fill="#263238">NetworkPolicy und HBONE (Port 15008)</text>
+
+<!-- Problem -->
+<rect x="10" y="40" width="460" height="260" rx="10" fill="#fff5f5" stroke="#c62828" stroke-width="2.5"/>
+<text x="240" y="66" text-anchor="middle" font-size="15" font-weight="bold" fill="#b71c1c">Problem: Port 15008 ist nicht erlaubt</text>
+<rect x="26" y="120" width="100" height="60" rx="6" fill="#e8f5e9" stroke="#2e7d32" stroke-width="2"/>
+<text x="76" y="148" text-anchor="middle" font-size="14" font-weight="bold" fill="#1b5e20">ztunnel</text>
+<text x="76" y="165" text-anchor="middle" font-size="11" fill="#1b5e20">Quell-Node</text>
+<line x1="128" y1="150" x2="182" y2="150" stroke="#c62828" stroke-width="3"/>
+<text x="155" y="138" text-anchor="middle" font-size="11" font-weight="bold" fill="#b71c1c">HBONE</text>
+<text x="155" y="172" text-anchor="middle" font-size="10" fill="#b71c1c">TCP 15008</text>
+<path d="M188 141 L206 159 M206 141 L188 159" stroke="#c62828" stroke-width="4" stroke-linecap="round"/>
+<rect x="210" y="84" width="244" height="200" rx="8" fill="#ffffff" stroke="#c62828" stroke-width="2.5" stroke-dasharray="7 4"/>
+<text x="332" y="106" text-anchor="middle" font-size="12" font-weight="bold" fill="#b71c1c">NetworkPolicy am Ziel-Pod</text>
+<text x="226" y="128" font-size="12" fill="#263238">ingress erlaubt nur:</text>
+<rect x="226" y="136" width="212" height="26" rx="4" fill="#f5f5f5" stroke="#78909c"/>
+<text x="240" y="154" font-size="13" fill="#263238">TCP 8080</text>
+<rect x="226" y="198" width="212" height="70" rx="6" fill="#fff8e1" stroke="#f9a825" stroke-width="2.5"/>
+<text x="332" y="226" text-anchor="middle" font-size="14" font-weight="bold" fill="#37474f">Ziel-Pod</text>
+<text x="332" y="245" text-anchor="middle" font-size="11" fill="#37474f">Namespace bookinfo</text>
+
+<!-- Loesung -->
+<rect x="490" y="40" width="460" height="260" rx="10" fill="#f3faf4" stroke="#2e7d32" stroke-width="2.5"/>
+<text x="720" y="66" text-anchor="middle" font-size="15" font-weight="bold" fill="#1b5e20">Lösung: Port 15008 erlauben</text>
+<rect x="506" y="120" width="100" height="60" rx="6" fill="#e8f5e9" stroke="#2e7d32" stroke-width="2"/>
+<text x="556" y="148" text-anchor="middle" font-size="14" font-weight="bold" fill="#1b5e20">ztunnel</text>
+<text x="556" y="165" text-anchor="middle" font-size="11" fill="#1b5e20">Quell-Node</text>
+<line x1="608" y1="150" x2="688" y2="150" stroke="#2e7d32" stroke-width="3" marker-end="url(#g)"/>
+<text x="648" y="138" text-anchor="middle" font-size="11" font-weight="bold" fill="#1b5e20">HBONE</text>
+<text x="648" y="172" text-anchor="middle" font-size="10" fill="#1b5e20">TCP 15008</text>
+<rect x="690" y="84" width="244" height="200" rx="8" fill="#ffffff" stroke="#2e7d32" stroke-width="2.5" stroke-dasharray="7 4"/>
+<text x="812" y="106" text-anchor="middle" font-size="12" font-weight="bold" fill="#1b5e20">NetworkPolicy am Ziel-Pod</text>
+<text x="706" y="128" font-size="12" fill="#263238">ingress erlaubt:</text>
+<rect x="706" y="136" width="212" height="26" rx="4" fill="#f5f5f5" stroke="#78909c"/>
+<text x="720" y="154" font-size="13" fill="#263238">TCP 8080</text>
+<rect x="706" y="166" width="212" height="26" rx="4" fill="#e8f5e9" stroke="#2e7d32" stroke-width="2"/>
+<text x="720" y="184" font-size="13" font-weight="bold" fill="#1b5e20">TCP 15008 (HBONE)</text>
+<rect x="706" y="204" width="212" height="64" rx="6" fill="#fff8e1" stroke="#f9a825" stroke-width="2.5"/>
+<text x="812" y="231" text-anchor="middle" font-size="14" font-weight="bold" fill="#37474f">Ziel-Pod</text>
+<text x="812" y="250" text-anchor="middle" font-size="11" fill="#37474f">Namespace bookinfo</text>
+
+<rect x="8" y="314" width="944" height="38" rx="6" fill="#f5f7f8" stroke="#cfd8dc"/>
+<text x="22" y="331" font-size="12" fill="#263238"><tspan font-weight="bold">HBONE</tspan> ist HTTP/2 mit mTLS über Port 15008. Der ztunnel verbindet sich damit zum Ziel, eine bestehende NetworkPolicy</text>
+<text x="22" y="346" font-size="12" fill="#263238">kennt diesen Port nicht und blockiert ihn. Das ist der häufigste Fehler beim Einführen von Ambient.</text>
+</svg>

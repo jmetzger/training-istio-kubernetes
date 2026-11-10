@@ -1,0 +1,72 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 500" width="960" height="500" font-family="Arial, Helvetica, sans-serif">
+<defs>
+<marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#37474f"/></marker>
+<marker id="b" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#1565c0"/></marker>
+</defs>
+<rect width="960" height="500" fill="#ffffff"/>
+<text x="480" y="24" text-anchor="middle" font-size="18" font-weight="bold" fill="#263238">GitOps-Workflow: ArgoCD rollt Istio Ambient aus</text>
+
+<rect x="16" y="290" width="170" height="60" rx="8" fill="#eceff1" stroke="#607d8b" stroke-width="2"/>
+<text x="101" y="316" text-anchor="middle" font-size="15" font-weight="bold" fill="#37474f">Developer</text>
+<text x="101" y="334" text-anchor="middle" font-size="11" fill="#37474f">Branch, Pull Request, Review</text>
+<rect x="16" y="72" width="170" height="80" rx="8" fill="#fff8e1" stroke="#f9a825" stroke-width="2.5"/>
+<text x="101" y="98" text-anchor="middle" font-size="15" font-weight="bold" fill="#37474f">Git-Repo</text>
+<text x="101" y="116" text-anchor="middle" font-size="11" fill="#37474f">Source of Truth</text>
+<text x="101" y="132" text-anchor="middle" font-size="11" fill="#37474f">apps/istio/, apps/bookinfo/</text>
+<line x1="101" y1="288" x2="101" y2="154" stroke="#37474f" stroke-width="2" marker-end="url(#a)"/>
+<text x="111" y="215" font-size="12" fill="#263238">git push /</text>
+<text x="111" y="230" font-size="12" fill="#263238">Pull Request</text>
+
+
+<rect x="290" y="36" width="654" height="420" rx="10" fill="none" stroke="#78909c" stroke-width="2.5"/>
+<text x="304" y="56" font-size="14" font-weight="bold" fill="#546e7a">Kubernetes Cluster</text>
+
+<rect x="302" y="66" width="630" height="84" rx="10" fill="#eef4fb" stroke="#1565c0" stroke-width="2.5"/>
+<text x="316" y="84" font-size="13" font-weight="bold" fill="#0d47a1">Namespace argocd</text>
+<rect x="520" y="88" width="200" height="48" rx="8" fill="#e3f2fd" stroke="#1565c0" stroke-width="2"/>
+<text x="620" y="108" text-anchor="middle" font-size="15" font-weight="bold" fill="#0d47a1">ArgoCD Controller</text>
+<text x="620" y="125" text-anchor="middle" font-size="11" fill="#0d47a1">vergleicht Git mit Cluster</text>
+
+<rect x="302" y="166" width="630" height="78" rx="10" fill="#fafafa" stroke="#607d8b" stroke-width="2.5" stroke-dasharray="3 5"/>
+<text x="316" y="184" font-size="13" font-weight="bold" fill="#455a64">Cluster-weit (CRDs)</text>
+<rect x="330" y="192" width="230" height="44" rx="6" fill="#eceff1" stroke="#607d8b" stroke-width="2"/>
+<text x="445" y="210" text-anchor="middle" font-size="13" font-weight="bold" fill="#37474f">Gateway API CRDs</text>
+<text x="445" y="227" text-anchor="middle" font-size="11" fill="#37474f">App gateway-api-crds</text>
+<rect x="580" y="192" width="230" height="44" rx="6" fill="#eceff1" stroke="#607d8b" stroke-width="2"/>
+<text x="695" y="210" text-anchor="middle" font-size="13" font-weight="bold" fill="#37474f">Istio CRDs</text>
+<text x="695" y="227" text-anchor="middle" font-size="11" fill="#37474f">App istio-base</text>
+
+<rect x="302" y="258" width="630" height="84" rx="10" fill="#eef4fb" stroke="#1565c0" stroke-width="2.5"/>
+<text x="316" y="276" font-size="13" font-weight="bold" fill="#0d47a1">Namespace istio-system</text>
+<rect x="330" y="290" width="165" height="44" rx="6" fill="#e3f2fd" stroke="#1565c0" stroke-width="2"/>
+<text x="412" y="308" text-anchor="middle" font-size="13" font-weight="bold" fill="#0d47a1">istiod</text>
+<text x="412" y="325" text-anchor="middle" font-size="11" fill="#0d47a1">App istiod</text>
+<rect x="511" y="290" width="165" height="44" rx="6" fill="#e8f5e9" stroke="#2e7d32" stroke-width="2"/>
+<text x="593" y="308" text-anchor="middle" font-size="13" font-weight="bold" fill="#1b5e20">istio-cni</text>
+<text x="593" y="325" text-anchor="middle" font-size="11" fill="#1b5e20">App istio-cni · DaemonSet</text>
+<rect x="692" y="290" width="165" height="44" rx="6" fill="#e8f5e9" stroke="#2e7d32" stroke-width="2"/>
+<text x="774" y="308" text-anchor="middle" font-size="13" font-weight="bold" fill="#1b5e20">ztunnel</text>
+<text x="774" y="325" text-anchor="middle" font-size="11" fill="#1b5e20">App ztunnel · DaemonSet</text>
+
+<rect x="302" y="356" width="630" height="84" rx="10" fill="#fffde7" stroke="#f9a825" stroke-width="2.5"/>
+<text x="316" y="374" font-size="13" font-weight="bold" fill="#e65100">Namespace bookinfo (ambient)</text>
+<rect x="330" y="388" width="230" height="44" rx="6" fill="#fff8e1" stroke="#f9a825" stroke-width="2.5"/>
+<text x="445" y="406" text-anchor="middle" font-size="13" font-weight="bold" fill="#37474f">Anwendungs-Pods</text>
+<text x="445" y="423" text-anchor="middle" font-size="11" fill="#37474f">App bookinfo</text>
+<rect x="580" y="388" width="230" height="44" rx="6" fill="#ede7f6" stroke="#5e35b1" stroke-width="2" stroke-dasharray="7 4"/>
+<text x="695" y="406" text-anchor="middle" font-size="13" font-weight="bold" fill="#311b92">Waypoint</text>
+<text x="695" y="423" text-anchor="middle" font-size="11" fill="#311b92">optional, nur bei Layer-7-Bedarf</text>
+
+<line x1="188" y1="112" x2="518" y2="112" stroke="#1565c0" stroke-width="2.5" marker-end="url(#b)"/>
+<text x="239" y="102" text-anchor="middle" font-size="12" fill="#0d47a1">Soll-Zustand</text>
+<text x="239" y="130" text-anchor="middle" font-size="12" fill="#0d47a1">per Pull</text>
+<path d="M720 112 H900 V410" fill="none" stroke="#1565c0" stroke-width="2.5"/>
+<text x="810" y="104" text-anchor="middle" font-size="12" font-weight="bold" fill="#0d47a1">Helm template + apply</text>
+<text x="810" y="130" text-anchor="middle" font-size="11" fill="#0d47a1">in Sync-Wave-Reihenfolge</text>
+<line x1="900" y1="214" x2="814" y2="214" stroke="#1565c0" stroke-width="2.5" marker-end="url(#b)"/>
+<line x1="900" y1="312" x2="861" y2="312" stroke="#1565c0" stroke-width="2.5" marker-end="url(#b)"/>
+<line x1="900" y1="410" x2="814" y2="410" stroke="#1565c0" stroke-width="2.5" marker-end="url(#b)"/>
+
+<rect x="8" y="464" width="944" height="30" rx="6" fill="#f5f7f8" stroke="#cfd8dc"/>
+<text x="22" y="484" font-size="12" fill="#263238"><tspan font-weight="bold">App</tspan> = ArgoCD Application. Jede Zeile ist ein Namespace (bzw. die Cluster-Ebene), die blauen Pfeile zeigen, wohin ArgoCD ausrollt.</text>
+</svg>

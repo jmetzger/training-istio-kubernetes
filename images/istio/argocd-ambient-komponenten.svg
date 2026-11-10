@@ -1,0 +1,108 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 560" width="960" height="560" font-family="Arial, Helvetica, sans-serif">
+<defs>
+<marker id="g" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#2e7d32"/></marker>
+<marker id="b" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#1565c0"/></marker>
+</defs>
+<rect width="960" height="560" fill="#ffffff"/>
+<text x="480" y="24" text-anchor="middle" font-size="18" font-weight="bold" fill="#263238">Istio Ambient: Komponenten, Nodes und Namespaces</text>
+
+<rect x="8" y="36" width="944" height="76" rx="10" fill="#fafafa" stroke="#607d8b" stroke-width="2.5" stroke-dasharray="3 5"/>
+<text x="480" y="54" text-anchor="middle" font-size="13" font-weight="bold" fill="#455a64">Cluster-weit (CRDs, kein Namespace)</text>
+<rect x="250" y="62" width="220" height="42" rx="6" fill="#eceff1" stroke="#607d8b" stroke-width="2"/>
+<text x="360" y="80" text-anchor="middle" font-size="14" font-weight="bold" fill="#37474f">Gateway API CRDs</text>
+<text x="360" y="96" text-anchor="middle" font-size="11" fill="#37474f">Application gateway-api-crds</text>
+<rect x="490" y="62" width="220" height="42" rx="6" fill="#eceff1" stroke="#607d8b" stroke-width="2"/>
+<text x="600" y="80" text-anchor="middle" font-size="14" font-weight="bold" fill="#37474f">Istio CRDs</text>
+<text x="600" y="96" text-anchor="middle" font-size="11" fill="#37474f">Chart base</text>
+
+<rect x="8" y="124" width="944" height="246" rx="10" fill="#eef4fb" stroke="#1565c0" stroke-width="2.5"/>
+<text x="480" y="142" text-anchor="middle" font-size="13" font-weight="bold" fill="#0d47a1">Namespace istio-system (Plattform)</text>
+<rect x="350" y="150" width="260" height="54" rx="8" fill="#e3f2fd" stroke="#1565c0" stroke-width="2"/>
+<text x="480" y="171" text-anchor="middle" font-size="15" font-weight="bold" fill="#0d47a1">istiod (Control Plane)</text>
+<text x="480" y="187" text-anchor="middle" font-size="11" fill="#0d47a1">Deployment · Chart istiod</text>
+<text x="480" y="199" text-anchor="middle" font-size="11" fill="#0d47a1">Config (xDS) · CA · Discovery</text>
+
+<rect x="8" y="382" width="944" height="96" rx="10" fill="#fffde7" stroke="#f9a825" stroke-width="2.5"/>
+<text x="480" y="400" text-anchor="middle" font-size="13" font-weight="bold" fill="#e65100">Namespace bookinfo</text>
+
+<!-- Node 1 -->
+<rect x="10" y="218" width="280" height="272" rx="10" fill="none" stroke="#78909c" stroke-width="2.5"/>
+<text x="24" y="236" font-size="13" font-weight="bold" fill="#546e7a">Node 1</text>
+<rect x="20" y="246" width="260" height="54" rx="6" fill="#e8f5e9" stroke="#2e7d32" stroke-width="2"/>
+<text x="150" y="265" text-anchor="middle" font-size="15" font-weight="bold" fill="#1b5e20">ztunnel</text>
+<text x="150" y="281" text-anchor="middle" font-size="11" fill="#1b5e20">DaemonSet · Layer 4 · mTLS</text>
+<text x="150" y="294" text-anchor="middle" font-size="11" fill="#1b5e20">Chart ztunnel</text>
+<rect x="20" y="310" width="165" height="46" rx="6" fill="#f5f5f5" stroke="#78909c" stroke-width="2"/>
+<text x="102" y="329" text-anchor="middle" font-size="14" font-weight="bold" fill="#37474f">istio-cni</text>
+<text x="102" y="345" text-anchor="middle" font-size="11" fill="#37474f">DaemonSet · Chart cni</text>
+<rect x="20" y="414" width="125" height="50" rx="6" fill="#fff8e1" stroke="#f9a825" stroke-width="2.5"/>
+<text x="82" y="436" text-anchor="middle" font-size="13" font-weight="bold" fill="#37474f">productpage</text>
+<text x="82" y="453" text-anchor="middle" font-size="11" fill="#37474f">Pod</text>
+<rect x="155" y="414" width="125" height="50" rx="6" fill="#fff8e1" stroke="#f9a825" stroke-width="2.5"/>
+<text x="217" y="436" text-anchor="middle" font-size="13" font-weight="bold" fill="#37474f">details</text>
+<text x="217" y="453" text-anchor="middle" font-size="11" fill="#37474f">Pod</text>
+<line x1="218" y1="412" x2="218" y2="302" stroke="#2e7d32" stroke-width="2" stroke-dasharray="6 4" marker-end="url(#g)"/>
+<text x="226" y="350" font-size="11" fill="#1b5e20">Traffic</text>
+<text x="226" y="363" font-size="11" fill="#1b5e20">umgeleitet</text>
+
+<!-- Node 2 -->
+<rect x="340" y="218" width="280" height="272" rx="10" fill="none" stroke="#78909c" stroke-width="2.5"/>
+<text x="354" y="236" font-size="13" font-weight="bold" fill="#546e7a">Node 2</text>
+<rect x="350" y="246" width="260" height="54" rx="6" fill="#e8f5e9" stroke="#2e7d32" stroke-width="2"/>
+<text x="480" y="265" text-anchor="middle" font-size="15" font-weight="bold" fill="#1b5e20">ztunnel</text>
+<text x="480" y="281" text-anchor="middle" font-size="11" fill="#1b5e20">DaemonSet · Layer 4 · mTLS</text>
+<text x="480" y="294" text-anchor="middle" font-size="11" fill="#1b5e20">Chart ztunnel</text>
+<rect x="350" y="310" width="165" height="46" rx="6" fill="#f5f5f5" stroke="#78909c" stroke-width="2"/>
+<text x="432" y="329" text-anchor="middle" font-size="14" font-weight="bold" fill="#37474f">istio-cni</text>
+<text x="432" y="345" text-anchor="middle" font-size="11" fill="#37474f">DaemonSet · Chart cni</text>
+<rect x="350" y="414" width="125" height="50" rx="6" fill="#ede7f6" stroke="#5e35b1" stroke-width="2" stroke-dasharray="7 4"/>
+<text x="412" y="436" text-anchor="middle" font-size="13" font-weight="bold" fill="#311b92">Waypoint</text>
+<text x="412" y="453" text-anchor="middle" font-size="11" fill="#311b92">Envoy, optional</text>
+<rect x="485" y="414" width="125" height="50" rx="6" fill="#fff8e1" stroke="#f9a825" stroke-width="2.5"/>
+<text x="547" y="436" text-anchor="middle" font-size="13" font-weight="bold" fill="#37474f">reviews</text>
+<text x="547" y="453" text-anchor="middle" font-size="11" fill="#37474f">Pod</text>
+<line x1="548" y1="412" x2="548" y2="302" stroke="#2e7d32" stroke-width="2" stroke-dasharray="6 4" marker-end="url(#g)"/>
+<text x="556" y="350" font-size="11" fill="#1b5e20">Traffic</text>
+<text x="556" y="363" font-size="11" fill="#1b5e20">umgeleitet</text>
+
+<!-- Node 3 -->
+<rect x="670" y="218" width="280" height="272" rx="10" fill="none" stroke="#78909c" stroke-width="2.5"/>
+<text x="684" y="236" font-size="13" font-weight="bold" fill="#546e7a">Node 3</text>
+<rect x="680" y="246" width="260" height="54" rx="6" fill="#e8f5e9" stroke="#2e7d32" stroke-width="2"/>
+<text x="810" y="265" text-anchor="middle" font-size="15" font-weight="bold" fill="#1b5e20">ztunnel</text>
+<text x="810" y="281" text-anchor="middle" font-size="11" fill="#1b5e20">DaemonSet · Layer 4 · mTLS</text>
+<text x="810" y="294" text-anchor="middle" font-size="11" fill="#1b5e20">Chart ztunnel</text>
+<rect x="680" y="310" width="165" height="46" rx="6" fill="#f5f5f5" stroke="#78909c" stroke-width="2"/>
+<text x="762" y="329" text-anchor="middle" font-size="14" font-weight="bold" fill="#37474f">istio-cni</text>
+<text x="762" y="345" text-anchor="middle" font-size="11" fill="#37474f">DaemonSet · Chart cni</text>
+<rect x="680" y="414" width="125" height="50" rx="6" fill="#fff8e1" stroke="#f9a825" stroke-width="2.5"/>
+<text x="742" y="436" text-anchor="middle" font-size="13" font-weight="bold" fill="#37474f">reviews</text>
+<text x="742" y="453" text-anchor="middle" font-size="11" fill="#37474f">Pod</text>
+<rect x="815" y="414" width="125" height="50" rx="6" fill="#fff8e1" stroke="#f9a825" stroke-width="2.5"/>
+<text x="877" y="436" text-anchor="middle" font-size="13" font-weight="bold" fill="#37474f">ratings</text>
+<text x="877" y="453" text-anchor="middle" font-size="11" fill="#37474f">Pod</text>
+<line x1="878" y1="412" x2="878" y2="302" stroke="#2e7d32" stroke-width="2" stroke-dasharray="6 4" marker-end="url(#g)"/>
+<text x="886" y="350" font-size="11" fill="#1b5e20">Traffic</text>
+<text x="886" y="363" font-size="11" fill="#1b5e20">umgeleitet</text>
+
+<!-- istiod -> ztunnel -->
+<line x1="420" y1="204" x2="190" y2="244" stroke="#1565c0" stroke-width="2" marker-end="url(#b)"/>
+<line x1="480" y1="204" x2="480" y2="244" stroke="#1565c0" stroke-width="2" marker-end="url(#b)"/>
+<line x1="540" y1="204" x2="860" y2="244" stroke="#1565c0" stroke-width="2" marker-end="url(#b)"/>
+<text x="340" y="182" text-anchor="end" font-size="11" fill="#0d47a1">Config +</text>
+<text x="340" y="195" text-anchor="end" font-size="11" fill="#0d47a1">Zertifikate</text>
+<text x="620" y="182" font-size="11" fill="#0d47a1">Config +</text>
+<text x="620" y="195" font-size="11" fill="#0d47a1">Zertifikate</text>
+
+<!-- HBONE -->
+<line x1="282" y1="273" x2="348" y2="273" stroke="#2e7d32" stroke-width="3" marker-start="url(#g)" marker-end="url(#g)"/>
+<text x="315" y="263" text-anchor="middle" font-size="11" font-weight="bold" fill="#1b5e20">HBONE</text>
+<text x="315" y="290" text-anchor="middle" font-size="10" fill="#1b5e20">15008</text>
+<line x1="612" y1="273" x2="678" y2="273" stroke="#2e7d32" stroke-width="3" marker-start="url(#g)" marker-end="url(#g)"/>
+<text x="645" y="263" text-anchor="middle" font-size="11" font-weight="bold" fill="#1b5e20">HBONE</text>
+<text x="645" y="290" text-anchor="middle" font-size="10" fill="#1b5e20">15008</text>
+
+<rect x="8" y="502" width="944" height="52" rx="6" fill="#f5f7f8" stroke="#cfd8dc"/>
+<text x="22" y="522" font-size="12" fill="#263238"><tspan font-weight="bold">Spalten = Nodes, Zeilen = Namespaces.</tspan> ztunnel und istio-cni laufen als DaemonSet auf jedem Node, istiod einmal im Cluster.</text>
+<text x="22" y="541" font-size="12" fill="#263238">Der Waypoint (Layer 7) liegt im Namespace der Anwendung (Label istio.io/dataplane-mode=ambient) und ist optional. Jeder Chart = eine Application.</text>
+</svg>
