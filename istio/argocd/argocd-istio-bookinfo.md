@@ -319,6 +319,10 @@ meshConfig:
   accessLogFile: /dev/stdout
 ```
 
+> **Externe CA statt der eigenen CA von istiod?** Dann muss das Secret `cacerts` vor dem ersten Start von istiod
+> vorhanden sein. Wie das mit ArgoCD und cert-manager geht, steht in der Übung
+> [Externe CA für Istio mit ArgoCD ausliefern](argocd-externe-ca.md).
+
 #### istio-cni (Sync Wave 0)
 
 ```yaml

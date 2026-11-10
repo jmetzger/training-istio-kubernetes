@@ -53,6 +53,8 @@
      * [Übung Säule 2 + 3 (Ambient): Authentication und Authorization mit JWT und RBAC (Waypoint, targetRefs)](istio/exercises/gateway-api/12-jwt-rbac-ambient.md)
      * [Übung (Ambient): Zero Trust für bookinfo Schritt für Schritt (ztunnel Layer 4, Waypoint Layer 7)](istio/exercises/19-zerotrust-bookinfo-ambient.md)
      * [Übung (Sidecar): ZeroTrust für bookinfo Namespace bookinfo einrichten](istio/exercises/16-zerotrust-bookinfo-einrichten.md)
+     * [Überblick: CloudNativePG (Postgres) im Ambient-Mesh - lohnt sich das? (Grafiken)](istio/overview/15-cnpg-postgres-im-ambient-mesh.md)
+     * [Übung (Ambient): CloudNativePG im Ambient-Mesh absichern (Operator Port 8000, Replikation, NetworkPolicy Port 15008)](istio/exercises/22-cnpg-postgres-ambient.md)
 
   1. Sicherheit, Fehlertoleranz & Observability    
      * Istio Authorization Policies (ingress/egress Security)
@@ -95,8 +97,9 @@
      * [Wo läuft WASM (WebAssembly) im Rahmen von istio ?](istio/wasm/plugins/where-is-the-wasm-runtime.md)
 
   1. Automatisierung mit GitOps & ArgoCD
-     * [Was ist ArgoCD](/istio/argocd/argocd-istio-bookinfo.md)
+     * [Was ist ArgoCD](/istio/argocd/was-ist-argocd.md)
      * [istio ambient und bookinfo mit argocd ausrollen](/istio/argocd/argocd-istio-bookinfo.md)
+     * [Übung: Externe CA für Istio mit ArgoCD ausliefern (cert-manager, Secret cacerts)](/istio/argocd/argocd-externe-ca.md)
 
 ## Backlog
 
