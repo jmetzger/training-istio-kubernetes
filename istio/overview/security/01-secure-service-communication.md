@@ -273,13 +273,13 @@ spec:
 
 ## Debugging & Verifizierung
 
-### mTLS-Status prüfen
+### mTLS-Status prüfen (sidecar)
 
 ```bash
 # Prüfen ob mTLS aktiv ist
 istioctl x describe pod <pod-name> -n <namespace>
 
-# PeerAuthentication-Policies anzeigen
+# PeerAuthentication-Policies anzeigen (auch für ambient)
 kubectl get peerauthentication --all-namespaces
 
 # TLS-Verbindung verifizieren
