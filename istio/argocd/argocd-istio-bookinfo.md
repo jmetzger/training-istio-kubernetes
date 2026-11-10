@@ -378,7 +378,7 @@ spec:
 
 Die Beispiel-Anwendung kommt **nach** ztunnel (Wave 2), damit die Pods beim Start
 bereits im Ambient Mesh sind. Die Application legt den Namespace samt Ambient-Label selbst an
-(`managedNamespaceMetadata`, ab ArgoCD 2.6):
+(`managedNamespaceMetadata`, braucht `CreateNamespace=true`):
 
 ```yaml
 # apps/bookinfo/bookinfo-app.yaml
@@ -702,11 +702,12 @@ kubectl -n argocd get certificate                  # READY True (ca. 1 Minute)
 ### Schritt 3: Passwort setzen
 
 Das Initial-Passwort ist nur für den ersten Login gedacht. Ändere es, bevor ArgoCD im Internet steht
-(am besten schon vor Schritt 2). Das Initial-Passwort steht, wie in Abschnitt 4 (Schritt 2) gezeigt,
-im Secret `argocd-initial-admin-secret`.
+(am besten schon vor Schritt 2). Das Initial-Passwort steht im Secret `argocd-initial-admin-secret`
+(Abschnitt 4, Schritt 2) und lässt sich auch mit `argocd admin initial-password -n argocd` anzeigen.
 
 ```bash
-# Einloggen und Passwort ändern (CLI braucht --grpc-web hinter dem Gateway)
+# Einloggen und Passwort ändern
+# (--grpc-web: mit einer einfachen HTTPRoute auf Port 80 läuft die CLI über gRPC-Web statt HTTP/2)
 argocd login $HOST --grpc-web --username admin
 argocd account update-password --grpc-web
 ```
@@ -738,3 +739,11 @@ Im Browser `https://<HOST>` öffnen: Schloss in der Adressleiste und die ArgoCD-
 | Weitere Nutzer | Statt alle mit `admin` arbeiten zu lassen: lokale Accounts in `argocd-cm` (`accounts.<name>: login`) mit RBAC in `argocd-rbac-cm`, oder SSO (OIDC). |
 | Zusätzlicher Vorab-Schutz | Soll schon vor der Login-Seite ein zweites Passwort oder SSO greifen: `oauth2-proxy` plus `AuthorizationPolicy` mit `CUSTOM`-Provider (ext_authz) am Gateway. Das ist ein eigenes Thema. |
 | Zugriff einschränken | Die ArgoCD-API ist mächtig (sie deployed in den Cluster). Wenn möglich zusätzlich nach Quell-IP einschränken (Firewall oder `AuthorizationPolicy` mit `ipBlocks`). |
+
+### Quellen
+
+  * ArgoCD, Ingress-Konfiguration (`server.insecure`, Gateway-API-Beispiel mit Gateway, HTTPRoute, GRPCRoute, BackendTLSPolicy): https://argo-cd.readthedocs.io/en/stable/operator-manual/ingress/
+  * ArgoCD, Initial-Passwort ändern und Secret löschen: https://argo-cd.readthedocs.io/en/stable/getting_started/
+  * ArgoCD, `managedNamespaceMetadata`: https://argo-cd.readthedocs.io/en/stable/user-guide/sync-options/
+  * Istio, Gateway API: https://istio.io/latest/docs/tasks/traffic-management/ingress/gateway-api/
+  * cert-manager, Gateway API: https://cert-manager.io/docs/usage/gateway/
