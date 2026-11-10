@@ -323,10 +323,7 @@ kubectl -n bookinfo exec deploy/sleep -- \
 
 **Frage:** In welcher Reihenfolge wertet Istio PeerAuthentication-Policies aus?
 
-```
-# Aufraeumen
-kubectl -n bookinfo delete peerauthentication ratings-strict
-```
+> **Wichtig:** Lass `ratings-strict` **stehen**, wir brauchen die Policy gleich in Schritt 6.
 
 ---
 
@@ -353,12 +350,48 @@ spec:
 EOF
 ```
 
+Die Policy `ratings-strict` aus Schritt 5 ist noch da. Warte ca. 10 Sekunden und teste von ausserhalb des Mesh:
+
 ```
 kubectl -n no-mesh exec deploy/sleep -- \
   curl -s -o /dev/null -w "%{http_code}\n" ratings.bookinfo:9080/ratings/0
 ```
 
-Erwartet: `200`, weil Port 9080 auf PERMISSIVE steht, obwohl der Workload sonst STRICT ist.
+**Erwartet: der Aufruf schlaegt fehl.** curl gibt `000` aus (Exit-Code 52 oder 56), obwohl Port 9080 in `ratings-per-port` auf PERMISSIVE steht.
+
+**Frage:** Warum greift die Ausnahme fuer Port 9080 nicht? (Tipp: Schau dir die Policies sortiert nach Alter an.)
+
+```
+kubectl -n bookinfo get peerauthentication --sort-by=.metadata.creationTimestamp
+```
+
+Jetzt loeschen wir die aeltere Policy `ratings-strict`, warten wieder ca. 10 Sekunden und testen noch einmal:
+
+```
+kubectl -n bookinfo delete peerauthentication ratings-strict
+```
+
+```
+kubectl -n no-mesh exec deploy/sleep -- \
+  curl -s -o /dev/null -w "%{http_code}\n" ratings.bookinfo:9080/ratings/0
+```
+
+Erwartet: `200`, weil jetzt nur noch `ratings-per-port` gilt und Port 9080 dort auf PERMISSIVE steht, obwohl der Workload sonst STRICT ist.
+
+> **Info: Mehrere PeerAuthentications auf denselben Workload**
+>
+> Passen mehrere workload-spezifische PeerAuthentications (mit `selector`) auf denselben Workload, gilt nur **eine**: die **aelteste**. Die anderen werden ignoriert, sie werden nicht zusammengefuehrt. Eine aeltere, reine STRICT-Policy ueberstimmt deshalb eine juengere mit Port-Ausnahme, unabhaengig davon, welche "strenger" ist.
+>
+> Aus der Istio-Doku (Abschnitt "Selector field"):
+>
+> - "When more than one workload-specific peer authentication policy matches, Istio picks the oldest one."
+> - "When you configure multiple mesh- or namespace-wide peer authentication policies for the same mesh or namespace, Istio ignores the newer policies."
+>
+> Quelle: <https://istio.io/latest/docs/concepts/security/#selector-field>
+>
+> Zu `portLevelMtls` sagt die [PeerAuthentication-Referenz](https://istio.io/latest/docs/reference/config/security/peer_authentication/): "The port refers to the port of the workload, not the port of the Kubernetes service." Eingetragen wird also der Port des Containers (`targetPort`), nicht der des Service. Bei `ratings` sind beide `9080`.
+>
+> Praxis: Pro Workload nur **eine** PeerAuthentication mit `selector` anlegen und die Port-Ausnahme dort mit `portLevelMtls` setzen.
 
 **Frage:** Fuer welches Szenario ist Port-Level-Konfiguration sinnvoll?
 
@@ -472,7 +505,9 @@ kubectl delete ns no-mesh
 
 **Schritt 5:** Istio wertet PeerAuthentication in dieser Reihenfolge aus: Workload-spezifisch (mit `selector`) > Namespace-weit (ohne `selector`, im App-Namespace) > Mesh-weit (ohne `selector`, in `istio-system`). Die spezifischste Policy gewinnt.
 
-**Schritt 6:** Port-Level-Konfiguration ist sinnvoll, wenn ein Port (z. B. ein Health-Check- oder Metrics-Endpunkt) auch von Clients ausserhalb des Mesh erreichbar sein muss, waehrend der Rest des Workloads STRICT bleibt.
+**Schritt 6 (Warum geht es zuerst nicht?):** Auf `ratings` passen jetzt zwei workload-spezifische PeerAuthentications: `ratings-strict` (Schritt 5) und `ratings-per-port`. Istio nimmt davon nur die aelteste, und das ist `ratings-strict`, ein reines STRICT ohne Port-Ausnahme. `ratings-per-port` wird ignoriert, deshalb wird Klartext von ausserhalb weiter abgelehnt. Nach dem Loeschen von `ratings-strict` gilt `ratings-per-port`, und Port 9080 ist PERMISSIVE. Die Reihenfolge beim Anlegen entscheidet, nicht die Strenge.
+
+**Schritt 6 (Szenario):** Port-Level-Konfiguration ist sinnvoll, wenn ein Port (z. B. ein Health-Check- oder Metrics-Endpunkt) auch von Clients ausserhalb des Mesh erreichbar sein muss, waehrend der Rest des Workloads STRICT bleibt.
 
 **Schritt 7:** Fuer Layer-7-Verhalten, das der Waypoint umsetzt, z. B. Subsets, Load-Balancing (`LEAST_CONN`) oder Circuit Breaker. Die mTLS-Einstellung dagegen kannst du per `DestinationRule` nicht mehr beeinflussen: mTLS ist im Ambient-Mode automatisch und fest (`tls.mode: DISABLE` wird ignoriert, siehe Test oben).
 
