@@ -26,7 +26,7 @@ Die Lücken liegen bei VMs, EnvoyFilter, SPIRE und Multi-Cluster.
   Mit nur ztunnel gilt: Load Balancing nur auf Verbindungsebene, Circuit Breaking nur für TCP, Metriken nur TCP (Bytes, Pakete), kein Tracing auf L4.
 * **`VirtualService`** ist in Ambient noch Alpha. Empfohlen ist `HTTPRoute` (Gateway API).
   `VirtualService` und `HTTPRoute` dürfen nicht für denselben Workload gemischt werden.
-* **Ingress-Gateways** nutzen den Waypoint standardmäßig nicht. Mit dem Label `istio.io/ingress-use-waypoint` am Service oder Namespace (und `ENABLE_INGRESS_WAYPOINT_ROUTING` in istiod) geht es doch.
+* **Ingress-Gateways (istio-ingressgateway) ** nutzen den Waypoint standardmäßig nicht. Mit dem Label `istio.io/ingress-use-waypoint` am Service oder Namespace (und `ENABLE_INGRESS_WAYPOINT_ROUTING` in istiod) geht es doch.
 * **Plattform:** nur Kubernetes, jede CNI.
 * **Sicherheitsmodell:** laut Doku "stark", Sidecar "am stärksten". Der ztunnel hält pro Node die Schlüssel der dortigen Workloads, der Sidecar pro Pod.
 
