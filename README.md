@@ -38,6 +38,7 @@
 
   1. Service Resilience & Fehlertoleranz (Gateway API)
      * [Circuit Breaker](istio/exercises/06-circuit-breaker.md) 
+     * [Circuit Breaker - Gateway API (Ambient + Waypoint)](istio/exercises/gateway-api/06-circuit-breaker-gateway-api.md)
      * [Chaos Engineering mit Istio](https://istio.io/latest/docs/examples/microservices-istio/production-testing/)
 
   1. Sichere Service-Kommunikation mit istio (Sicherheit)
