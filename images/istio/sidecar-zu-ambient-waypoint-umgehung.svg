@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 400" width="960" height="400" font-family="Arial, Helvetica, sans-serif">
+  <defs>
+    <marker id="g" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#2e7d32"/></marker>
+    <marker id="r" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#c62828"/></marker>
+  </defs>
+  <rect width="960" height="400" fill="#ffffff"/>
+  <text x="480" y="26" text-anchor="middle" font-size="18" font-weight="bold" fill="#263238">Mischbetrieb: Der Sidecar-Client umgeht den Waypoint</text>
+
+  <rect x="20" y="46" width="320" height="140" rx="10" fill="#fafafa" stroke="#90a4ae" stroke-width="2" stroke-dasharray="8 5"/>
+  <text x="36" y="70" font-size="14" font-weight="bold" fill="#546e7a">Namespace frontend-ambient</text>
+  <rect x="60" y="94" width="240" height="70" rx="6" fill="#fff8e1" stroke="#f9a825" stroke-width="2"/>
+  <text x="180" y="124" text-anchor="middle" font-size="15" font-weight="bold" fill="#5d4037">Client im Ambient-Modus</text>
+  <text x="180" y="146" text-anchor="middle" font-size="12" fill="#5d4037">Pod ohne Sidecar</text>
+
+  <rect x="20" y="216" width="320" height="140" rx="10" fill="#fafafa" stroke="#90a4ae" stroke-width="2" stroke-dasharray="8 5"/>
+  <text x="36" y="240" font-size="14" font-weight="bold" fill="#546e7a">Namespace frontend-sidecar</text>
+  <rect x="50" y="264" width="130" height="70" rx="6" fill="#fff8e1" stroke="#f9a825" stroke-width="2"/>
+  <text x="115" y="294" text-anchor="middle" font-size="14" font-weight="bold" fill="#5d4037">Client</text>
+  <text x="115" y="314" text-anchor="middle" font-size="12" fill="#5d4037">Anwendung</text>
+  <rect x="190" y="264" width="130" height="70" rx="6" fill="#ffebee" stroke="#c62828" stroke-width="2"/>
+  <text x="255" y="294" text-anchor="middle" font-size="14" font-weight="bold" fill="#b71c1c">Sidecar</text>
+  <text x="255" y="314" text-anchor="middle" font-size="12" fill="#b71c1c">istio-proxy</text>
+
+  <rect x="480" y="46" width="460" height="310" rx="10" fill="#fafafa" stroke="#90a4ae" stroke-width="2" stroke-dasharray="8 5"/>
+  <text x="496" y="70" font-size="14" font-weight="bold" fill="#546e7a">Namespace bookinfo (Ambient, mit Waypoint)</text>
+  <rect x="520" y="94" width="180" height="70" rx="6" fill="#e8f5e9" stroke="#2e7d32" stroke-width="2"/>
+  <text x="610" y="124" text-anchor="middle" font-size="15" font-weight="bold" fill="#1b5e20">Waypoint</text>
+  <text x="610" y="146" text-anchor="middle" font-size="12" fill="#1b5e20">L7-Regeln, HTTPRoute</text>
+  <rect x="740" y="240" width="170" height="70" rx="6" fill="#fff8e1" stroke="#f9a825" stroke-width="2"/>
+  <text x="825" y="270" text-anchor="middle" font-size="15" font-weight="bold" fill="#5d4037">reviews</text>
+  <text x="825" y="292" text-anchor="middle" font-size="12" fill="#5d4037">Ambient-Pod</text>
+
+  <path d="M300 129 L520 129" stroke="#2e7d32" stroke-width="3" fill="none" marker-end="url(#g)"/>
+  <text x="410" y="118" text-anchor="middle" font-size="12" font-weight="bold" fill="#1b5e20">über den Waypoint</text>
+  <path d="M700 140 L800 240" stroke="#2e7d32" stroke-width="3" fill="none" marker-end="url(#g)"/>
+
+  <path d="M320 299 L740 275" stroke="#c62828" stroke-width="3" stroke-dasharray="9 6" fill="none" marker-end="url(#r)"/>
+  <text x="530" y="268" text-anchor="middle" font-size="12" font-weight="bold" fill="#b71c1c">direkt zum Ziel, am Waypoint vorbei</text>
+  <text x="530" y="325" text-anchor="middle" font-size="12" fill="#b71c1c">L7-Regeln des Waypoints greifen hier nicht</text>
+
+  <text x="480" y="386" text-anchor="middle" font-size="12" fill="#546e7a">Ambient und Sidecar im selben Mesh. mTLS gilt auf beiden Wegen, L7 nur auf dem grünen.</text>
+</svg>

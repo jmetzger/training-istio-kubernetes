@@ -75,6 +75,7 @@
      * [Istio Sidecar-Injection](istio/exercises/01-exercise-injection.md)
      * Sidecar-Overhead & Ressourcenoptimierung
      * [Vergleich ohne istio, istio sidecar, istio ambient](/istio/overview/performance-comparison-baseline-sidecar-ambient.md)
+     * [Was Ambient (noch) nicht kann, was Sidecar kann (Stand 10.11.2026)](istio/overview/11-ambient-grenzen-gegenueber-sidecar.md)
      * Ressourcenverbrauch messen: Sidecar-Modus gegen Ambient-Modus mit denselben Pods
      * [Bookinfo von Sidecar auf Ambient umstellen](istio/installation/ambient/04-upgrade-bookinfo-sidecar-2-ambient.md)
      * [Canary Update von istiod mit tags und revisions](/istio/installation/ambient/05-istio-canary-upgrade-revisions.md)
