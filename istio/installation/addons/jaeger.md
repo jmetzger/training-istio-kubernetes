@@ -191,16 +191,6 @@ Traces siehst du noch keine. Die kommen in der Uebung [Distributed Tracing mit J
 | `500` oder `404` mit Passwort | Gibt es die `Middleware` im selben Namespace wie die Route? `kubectl -n istio-system get middleware` |
 | Hostname wird nicht gefunden | `dig +short $HOST`, sonst Trainer fragen |
 
-## Aufraeumen
-
-Nur ausfuehren, wenn du Jaeger nicht mehr brauchst (die Tracing-Uebung braucht es).
-
-```
-kubectl -n istio-system delete httproute jaeger
-kubectl -n istio-system delete middleware basic-auth
-kubectl -n istio-system delete secret addons-basic-auth
-kubectl delete -f ~/istio/samples/addons/jaeger.yaml
-```
 
 ## Ref
 
