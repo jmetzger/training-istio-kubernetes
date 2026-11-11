@@ -375,9 +375,17 @@ Danach liefert der Aufruf aus Schritt 6 wieder `200`.
 
 ## Variante: Dasselbe mit ArgoCD
 
-Bisher hast du Issuer, Root-CA und istio-csr von Hand angelegt (Schritt 2 bis 4). Mit ArgoCD liegen sie im Git,
-und zwei Applications rollen sie aus. Die Manifeste liegen fertig in diesem Repo unter
+Bisher hast du Issuer, Root-CA und istio-csr von Hand angelegt (Schritt 2 bis 4). Mit ArgoCD liegt alles im Git,
+auch die beiden Applications selbst. Von Hand legst du nur noch **eine** Wurzel-Application an (App of Apps),
+die auf den Ordner `apps/` zeigt. Die Manifeste liegen fertig in diesem Repo unter
 [`istio/argocd/istio-csr/`](../argocd/istio-csr/). Du brauchst kein eigenes Git-Repo.
+
+```
+Wurzel-Application istio-csr-root   (einziger Handgriff am Cluster)
+  └── Ordner apps/ im Git
+        ├── Application istio-csr-ca  →  Ordner ca/ im Git (Issuer, Root-CA)
+        └── Application istio-csr     →  Helm-Chart cert-manager-istio-csr
+```
 
 | Datei | Was | Ersetzt |
 |-------|-----|---------|
@@ -388,9 +396,9 @@ und zwei Applications rollen sie aus. Die Manifeste liegen fertig in diesem Repo
 Voraussetzungen: ArgoCD ist installiert (siehe [ArgoCD-Übung](../argocd/argocd-istio-bookinfo.md), Abschnitt 4, Schritt 2),
 cert-manager läuft, und der Stand von Hand ist aufgeräumt (Abschnitt "Aufräumen").
 
-### ArgoCD Schritt 1: Die beiden Applications anlegen
+### ArgoCD Schritt 1: Die Wurzel-Application anlegen
 
-Die Application für istio-csr:
+Die beiden Applications liegen im Git. So sieht die für istio-csr aus (nur zum Ansehen, nicht anwenden):
 
 ```yaml
 # istio-csr/apps/istio-csr-app.yaml
@@ -430,21 +438,49 @@ spec:
         maxDuration: 2m
 ```
 
+Die Wurzel-Application liegt nicht im Git, sie ist der einzige Handgriff am Cluster. Sie zeigt auf den Ordner
+`apps/`, ArgoCD legt daraus die beiden Applications an:
+
 ```bash
-REPO=https://raw.githubusercontent.com/jmetzger/training-istio-kubernetes/main/istio/argocd/istio-csr
-kubectl apply -f $REPO/apps/istio-csr-ca-app.yaml
-kubectl apply -f $REPO/apps/istio-csr-app.yaml
+cat <<'EOF' | kubectl apply -f -
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: istio-csr-root
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/jmetzger/training-istio-kubernetes.git
+    targetRevision: main
+    path: istio/argocd/istio-csr/apps
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: argocd
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+EOF
 ```
+
+> Die Warnung `prefer a domain-qualified finalizer name` kannst du ignorieren.
 
 ```bash
 kubectl -n argocd get applications
 ```
 
 ```
-NAME           SYNC STATUS   HEALTH STATUS
-istio-csr      Synced        Healthy
-istio-csr-ca   Synced        Healthy
+NAME             SYNC STATUS   HEALTH STATUS
+istio-csr        Synced        Healthy
+istio-csr-ca     Synced        Healthy
+istio-csr-root   Synced        Healthy
 ```
+
+> Mit eigenem Git-Repo: Ordner `istio-csr/` kopieren, in der Wurzel-Application und in `istio-csr-ca-app.yaml`
+> die `repoURL` und den `path` anpassen. Änderungen an den Applications machst du dann per Commit, nicht per `kubectl`.
 
 Das dauert etwa eine halbe Minute.
 
@@ -512,10 +548,10 @@ Das ist der Weg, den cert-manager vorsieht: istio-csr ist da, bevor Istio zum er
 ### ArgoCD: Aufräumen
 
 ```bash
-kubectl -n argocd delete application istio-csr istio-csr-ca
+kubectl -n argocd delete application istio-csr-root
 ```
 
-Das entfernt istio-csr, Issuer und Certificates. Die Secrets und das Lease bleiben liegen, deshalb von Hand:
+Das Löschen der Wurzel entfernt die beiden Applications und damit istio-csr, Issuer und Certificates. Die Secrets und das Lease bleiben liegen, deshalb von Hand:
 
 ```bash
 kubectl -n istio-system delete secret istio-ca istiod-tls
