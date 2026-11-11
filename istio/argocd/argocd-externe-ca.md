@@ -16,6 +16,69 @@ sondern ein `Certificate` für cert-manager. cert-manager erzeugt daraus das Sec
 > In der Übung erzeugt cert-manager eine selbstsignierte Root-CA im Cluster. Sie steht für die externe CA.
 > In Produktion ersetzt du genau diese Stelle durch den Issuer eurer PKI (z. B. Vault). Alles danach bleibt gleich.
 
+## Wer unterschreibt was? Die Zertifikatskette
+
+Die externe CA unterschreibt **nicht** die Zertifikate der Workloads. Sie unterschreibt nur ein einziges Zertifikat:
+das der Zwischen-CA. Alle Workload-Zertifikate unterschreibt weiterhin istiod, jetzt mit dem Schlüssel der Zwischen-CA.
+
+![Zertifikatskette: Wer unterschreibt was?](../../images/istio/argocd-externe-ca-kette.svg)
+
+Mit ihrer Unterschrift sagt die Root-CA: "Diese Zwischen-CA darf in meinem Namen Zertifikate ausstellen."
+Im Zertifikat der Zwischen-CA steht das als `CA:TRUE`.
+
+### Was bedeutet `CA:TRUE`?
+
+`CA:TRUE` ist X.509-Standard (Erweiterung **Basic Constraints**, RFC 5280) und keine Besonderheit von cert-manager.
+`isCA: true` im `Certificate` ist nur der Schalter dafür: cert-manager schreibt den Wunsch in die Zertifikatsanfrage,
+die Root-CA übernimmt ihn ins Zertifikat.
+
+  * Mit `CA:TRUE` darf der **private Schlüssel** zu diesem Zertifikat andere Zertifikate unterschreiben.
+    Das Zertifikat ist der öffentliche Nachweis dafür.
+  * Mit `CA:FALSE` (oder ohne die Erweiterung) ist es ein Endzertifikat, z. B. das Zertifikat eines Workloads.
+  * Durchgesetzt wird die Regel **beim Prüfen**, nicht beim Ausstellen: Die Gegenseite verlangt bei jedem
+    ausstellenden Zertifikat in der Kette `CA:TRUE`, sonst lehnt sie ab.
+
+`CA:TRUE` allein reicht nicht. Damit ein ausgestelltes Zertifikat gilt, muss außerdem stimmen:
+
+| Bedingung | Bedeutung |
+|-----------|-----------|
+| Kette | Das CA-Zertifikat ist selbst von einer vertrauten CA unterschrieben, bis hoch zur Root-CA |
+| Key Usage | Ist die Erweiterung gesetzt, muss `Certificate Sign` enthalten sein (cert-manager setzt das bei `isCA: true` mit) |
+| Gültigkeit | Das CA-Zertifikat ist nicht abgelaufen |
+| Pfadlänge | Ein `pathlen` weiter oben in der Kette wird nicht überschritten (`pathlen:0` = nur Endzertifikate, keine weiteren CAs darunter) |
+
+Ein selbst gebautes Zertifikat mit `CA:TRUE` nützt also nichts, solange keine vertraute CA es unterschrieben hat.
+Einzige Ausnahme ist die Root-CA: Sie unterschreibt sich selbst, und man vertraut ihr, weil sie als Vertrauensanker hinterlegt ist.
+
+Ob die Zwischen-CA `CA:TRUE` bekommt, entscheidet die Root-CA. Eine Firmen-PKI kann das ablehnen oder mit `pathlen:0` begrenzen. Für Istio reicht `pathlen:0`.
+
+### Was liegt im Secret `cacerts`?
+
+Weil istiod selbst unterschreibt, liegt im Secret `cacerts` mehr als nur ein Zertifikat der externen CA:
+
+| Feld | Inhalt | Wozu |
+|------|--------|------|
+| `tls.crt` | Zertifikat der Zwischen-CA | wird als Teil der Kette mit ausgeliefert |
+| `tls.key` | **privater Schlüssel** der Zwischen-CA | damit unterschreibt istiod die Workload-Zertifikate |
+| `ca.crt` | Zertifikat der Root-CA | Vertrauensanker, gegen den alle prüfen |
+
+### Wie wird die Kette geprüft?
+
+Wer ein Workload-Zertifikat prüft, geht die Kette von unten nach oben:
+
+  1. Das Workload-Zertifikat ist von der Zwischen-CA unterschrieben (also von istiod).
+  2. Das Zertifikat der Zwischen-CA ist von der Root-CA unterschrieben.
+  3. Der Root-CA vertraue ich, also vertraue ich auch dem Workload-Zertifikat.
+
+Es wird dabei nichts vorgetäuscht: Als Aussteller (Issuer) steht im Workload-Zertifikat die Zwischen-CA, nicht die Root-CA.
+Die Kette siehst du in Schritt 6 mit `istioctl ztunnel-config certificates`.
+
+> **Merkkasten: Woher kommt der Schlüssel der Zwischen-CA?**
+>
+> cert-manager erzeugt ihn im Cluster und legt ihn im Secret `cacerts` ab. Zur externen CA geht nur die
+> Zertifikatsanfrage (CSR) mit dem öffentlichen Schlüssel, zurück kommt das unterschriebene Zertifikat.
+> Der private Schlüssel der Root-CA kommt nie in den Cluster.
+
 Getestet mit Istio 1.31.4 (Ambient), cert-manager v1.21.3, Kubernetes 1.37.
 
 ## Voraussetzungen
@@ -204,6 +267,15 @@ tls.key:  3243 bytes
 
 `ca.crt` ist die Root-CA, `tls.crt` und `tls.key` sind die Zwischen-CA. istiod versteht dieses Format direkt.
 
+Darf die Zwischen-CA Zertifikate ausstellen? Das steht in ihrem Zertifikat:
+
+```bash
+kubectl -n istio-system get secret cacerts -o jsonpath='{.data.tls\.crt}' \
+  | base64 -d | openssl x509 -noout -text | grep -A1 -E "Basic Constraints|Key Usage"
+```
+
+Erwartet: unter `Basic Constraints` steht `CA:TRUE`, unter `Key Usage` steht `Certificate Sign`.
+
 Das Mesh nutzt die neue CA **noch nicht**:
 
 ```bash
@@ -262,7 +334,8 @@ kubectl -n bookinfo rollout status deployment waypoint
 (Hast du keinen Waypoint oder ein anderes Gateway, passe die Namen an: `kubectl -n bookinfo get deploy`.)
 
 ```bash
-ZTUNNEL=$(kubectl -n istio-system get pod -l app=ztunnel -o name | head -n 1)
+NODE=$(kubectl -n bookinfo get pod -l app=productpage -o jsonpath='{.items[0].spec.nodeName}')
+ZTUNNEL=$(kubectl -n istio-system get pod -l app=ztunnel --field-selector spec.nodeName=$NODE -o name)
 istioctl ztunnel-config certificates -n istio-system $ZTUNNEL
 ```
 
@@ -320,7 +393,7 @@ Zwei Dinge sind dabei zu beachten (dieser Abschnitt ist **nicht** auf dem Traini
 | Umstellung im laufenden Betrieb | Wie in Schritt 5 und 6 wechselt die Root-CA. Plane dafür ein Wartungsfenster ein und starte alles zügig nacheinander neu. |
 | Produktion | Ersetze `01` bis `03` im Ordner `ca/` durch den Issuer eurer PKI (z. B. Vault). `04-istio-ca.yaml` zeigt dann per `issuerRef` darauf. |
 | Schlüssel der Zwischen-CA | Er liegt als Secret in `istio-system`. Wer dort Secrets lesen darf, kann Zertifikate für jeden Workload ausstellen. Zugriff per RBAC eng halten. |
-| Gar kein CA-Schlüssel im Cluster | Mit `istio-csr` unterschreibt cert-manager jede Anfrage der Workloads selbst, istiod hat dann keine CA mehr. Das ist ein eigenes Thema. |
+| Gar kein CA-Schlüssel im Cluster | Mit `istio-csr` unterschreibt cert-manager jede Anfrage der Workloads selbst, istiod hat dann keine CA mehr. Siehe [Übung: cert-manager als CA für das Mesh mit istio-csr](../exercises/23-istio-csr-cert-manager-ambient.md). |
 
 ## Aufräumen
 
