@@ -143,6 +143,24 @@ kubectl -n bookinfo apply -f .
 sleep 10
 ```
 
+### Warum diese Regel?
+
+Die Regel ist hier nur ein Messfuehler. Sie macht sichtbar, ob ein Aufruf durch den Waypoint laeuft.
+Ohne sie liefern beide Wege `200`, und mTLS ist in beiden Faellen an. Mit ihr gilt:
+
+  * `403` auf `/api/v1/products`: Der Aufruf lief durch den Waypoint, die Regel wurde gefragt.
+  * `200` auf `/api/v1/products`: Der Aufruf ging am Waypoint vorbei.
+
+| Teil | Grund |
+|---|---|
+| `targetRefs` auf den Service `productpage` | Damit wertet der **Waypoint** die Regel aus. Mit `selector` (am Pod) wuerde der ztunnel sie auswerten, und der kann keine Pfade pruefen. |
+| `action: DENY` | Sperrt nur diesen einen Pfad. Bei `ALLOW` waere alles andere automatisch verboten, und Bookinfo liefe nicht mehr. |
+| `paths: ["/api/v1/products*"]` | Ein Pfad ist Layer 7, das kann nur der Waypoint. Der Pfad ist ueber die `HTTPRoute` von aussen erreichbar, und die Produktseite selbst braucht ihn nicht. Deshalb bleibt `/productpage` bei `200`. |
+| `ports: ["9080"]` | Ohne die Angabe warnt Istio beim Anlegen: "will deny all traffic to TCP ports under its scope". Mit dem Port ist die Regel auf den HTTP-Port begrenzt. |
+
+In der Praxis steht hier eine echte Regel, zum Beispiel "`/admin` nur fuer bestimmte Aufrufer" oder eine JWT-Pruefung.
+Das Problem ist dasselbe: Sie gilt fuer Aufrufe aus dem Mesh, aber nicht fuer Aufrufe ueber das Gateway, solange das Label aus Schritt 6 fehlt.
+
 ## Schritt 4: Aus dem Mesh greift die Regel, ueber das Gateway nicht
 
 Aufruf aus dem Mesh:
