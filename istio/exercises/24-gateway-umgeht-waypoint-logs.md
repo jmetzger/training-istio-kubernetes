@@ -313,9 +313,9 @@ Hinweise:
 ## Schritt 6: Beheben mit dem Label ingress-use-waypoint
 
 ```
-kubectl -n bookinfo label service productpage istio.io/ingress-use-waypoint=true
+# kubectl -n bookinfo label service productpage istio.io/ingress-use-waypoint=true
 # besser
-# kubectl label namespace bookinfo istio.io/ingress-use-waypoint
+kubectl label namespace bookinfo istio.io/ingress-use-waypoint=true
 sleep 10
 ```
 
