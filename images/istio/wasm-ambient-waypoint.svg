@@ -1,0 +1,62 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 920 450" width="920" height="450" font-family="Arial, Helvetica, sans-serif">
+  <defs>
+    <marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#37474f"/></marker>
+    <marker id="g" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#78909c"/></marker>
+  </defs>
+  <rect width="920" height="450" fill="#ffffff"/>
+  <text x="460" y="26" text-anchor="middle" font-size="18" font-weight="bold" fill="#263238">Wasm in Ambient: die Erweiterung läuft im Waypoint</text>
+  <text x="460" y="46" text-anchor="middle" font-size="12" fill="#546e7a">Beispiel: Basic Auth vor dem Service reviews</text>
+
+  <!-- Namespace bookinfo -->
+  <rect x="20" y="65" width="880" height="200" rx="8" fill="#f5f9fc" stroke="#78909c" stroke-width="1.5"/>
+  <text x="32" y="84" font-size="13" font-weight="bold" fill="#37474f">Namespace bookinfo</text>
+
+  <rect x="45" y="130" width="170" height="60" rx="6" fill="#e3f2fd" stroke="#1976d2" stroke-width="1.5"/>
+  <text x="130" y="156" text-anchor="middle" font-size="14" font-weight="bold" fill="#0d47a1">Pod productpage</text>
+  <text x="130" y="174" text-anchor="middle" font-size="11" fill="#37474f">ruft reviews auf</text>
+
+  <rect x="295" y="95" width="330" height="155" rx="6" fill="#e8f5e9" stroke="#2e7d32" stroke-width="1.5"/>
+  <text x="460" y="116" text-anchor="middle" font-size="14" font-weight="bold" fill="#1b5e20">Waypoint (Envoy)</text>
+  <rect x="320" y="128" width="280" height="78" rx="6" fill="#fff8e1" stroke="#f9a825" stroke-width="1.5"/>
+  <text x="460" y="148" text-anchor="middle" font-size="13" font-weight="bold" fill="#e65100">Wasm-Sandbox (V8)</text>
+  <text x="460" y="167" text-anchor="middle" font-size="12" fill="#37474f">Modul basic_auth</text>
+  <text x="460" y="186" text-anchor="middle" font-size="11" fill="#37474f">prüft den Header Authorization</text>
+  <text x="460" y="228" text-anchor="middle" font-size="11" fill="#37474f">ohne Zugangsdaten: 401, sonst weiter an reviews</text>
+
+  <rect x="705" y="130" width="170" height="60" rx="6" fill="#e3f2fd" stroke="#1976d2" stroke-width="1.5"/>
+  <text x="790" y="156" text-anchor="middle" font-size="14" font-weight="bold" fill="#0d47a1">Pod reviews</text>
+  <text x="790" y="174" text-anchor="middle" font-size="11" fill="#37474f">Code unverändert</text>
+
+  <!-- Namespace istio-system -->
+  <rect x="20" y="285" width="880" height="105" rx="8" fill="#fdf7f0" stroke="#78909c" stroke-width="1.5"/>
+  <text x="32" y="304" font-size="13" font-weight="bold" fill="#37474f">Namespace istio-system</text>
+
+  <rect x="45" y="320" width="170" height="50" rx="6" fill="#fff3e0" stroke="#ef6c00" stroke-width="1.5"/>
+  <text x="130" y="341" text-anchor="middle" font-size="13" font-weight="bold" fill="#e65100">ztunnel (Node A)</text>
+  <text x="130" y="358" text-anchor="middle" font-size="11" fill="#37474f">mTLS, Layer 4</text>
+
+  <rect x="375" y="320" width="170" height="50" rx="6" fill="#ede7f6" stroke="#5e35b1" stroke-width="1.5"/>
+  <text x="460" y="341" text-anchor="middle" font-size="13" font-weight="bold" fill="#311b92">istiod</text>
+  <text x="460" y="358" text-anchor="middle" font-size="11" fill="#37474f">liest die TrafficExtension</text>
+
+  <rect x="705" y="320" width="170" height="50" rx="6" fill="#fff3e0" stroke="#ef6c00" stroke-width="1.5"/>
+  <text x="790" y="341" text-anchor="middle" font-size="13" font-weight="bold" fill="#e65100">ztunnel (Node B)</text>
+  <text x="790" y="358" text-anchor="middle" font-size="11" fill="#37474f">mTLS, Layer 4</text>
+
+  <!-- Request -->
+  <line x1="130" y1="190" x2="130" y2="318" stroke="#37474f" stroke-width="2" marker-end="url(#a)"/>
+  <text x="140" y="240" font-size="11" fill="#37474f">1</text>
+  <line x1="215" y1="335" x2="318" y2="252" stroke="#37474f" stroke-width="2" marker-end="url(#a)"/>
+  <text x="225" y="300" font-size="11" fill="#37474f">2 HBONE</text>
+  <line x1="602" y1="250" x2="705" y2="333" stroke="#37474f" stroke-width="2" marker-end="url(#a)"/>
+  <text x="640" y="300" font-size="11" fill="#37474f">3 HBONE</text>
+  <line x1="790" y1="320" x2="790" y2="192" stroke="#37474f" stroke-width="2" marker-end="url(#a)"/>
+  <text x="800" y="240" font-size="11" fill="#37474f">4</text>
+
+  <!-- Konfiguration -->
+  <line x1="460" y1="320" x2="460" y2="252" stroke="#78909c" stroke-width="2" stroke-dasharray="6 4" marker-end="url(#g)"/>
+  <text x="470" y="278" font-size="11" fill="#546e7a">Konfiguration</text>
+
+  <text x="460" y="415" text-anchor="middle" font-size="12" font-weight="bold" fill="#263238">Im ztunnel läuft kein Wasm. Ohne Waypoint gibt es in Ambient keine Erweiterung.</text>
+  <text x="460" y="435" text-anchor="middle" font-size="12" fill="#546e7a">durchgezogen: Weg des Requests (1 bis 4), gestrichelt: istiod konfiguriert den Waypoint</text>
+</svg>

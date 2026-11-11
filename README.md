@@ -94,7 +94,7 @@
      * [Istio Federation & Cross-Cluster Traffic](istio/overview/14-federation-cross-cluster-traffic.md)
 
   1. Erweiterbarkeit von Istio (nur Theorie)
-     * WebAssembly (Wasm) für Istio-Erweiterungen
+     * [Was ist Wasm, wofür brauche ich es in Istio, geht es mit Ambient? (mit Anwendungsfall)](istio/wasm/was-ist-wasm-und-ambient.md)
      * [Wo läuft WASM (WebAssembly) im Rahmen von istio ?](istio/wasm/plugins/where-is-the-wasm-runtime.md)
 
   1. Automatisierung mit GitOps & ArgoCD
