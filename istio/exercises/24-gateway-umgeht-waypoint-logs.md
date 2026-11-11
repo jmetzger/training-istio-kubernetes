@@ -18,7 +18,14 @@ kubectl get namespace bookinfo --show-labels
 kubectl -n bookinfo get service productpage --show-labels
 ```
 
-Erwartet: `No resources found in bookinfo namespace.` und nirgends `istio.io/ingress-use-waypoint`.
+Erwartet: `No resources found in bookinfo namespace.` und nirgends `istio.io/ingress-use-waypoint`
+
+```
+# zur Sicherheit führen wir das Kommando aus, um das Label zu entfernen, wenn es da ist
+kubectl label namespace bookinfo istio.io/ingress-use-waypoint-
+```
+
+.
 
 ## Hintergrund
 
