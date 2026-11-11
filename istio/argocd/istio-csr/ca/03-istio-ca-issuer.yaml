@@ -1,0 +1,10 @@
+# Issuer, bei dem istio-csr jede Zertifikatsanfrage unterschreiben laesst.
+# Den Namen istio-ca erwartet istio-csr. In Produktion zeigt er auf Vault oder die Firmen-PKI.
+apiVersion: cert-manager.io/v1
+kind: Issuer
+metadata:
+  name: istio-ca
+  namespace: istio-system
+spec:
+  ca:
+    secretName: istio-ca

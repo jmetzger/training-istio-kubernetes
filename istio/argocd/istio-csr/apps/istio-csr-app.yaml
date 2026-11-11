@@ -1,0 +1,35 @@
+# ArgoCD Application: istio-csr (Helm-Chart des cert-manager-Projekts)
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: istio-csr
+  namespace: argocd
+  annotations:
+    argocd.argoproj.io/sync-wave: "-3"
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: default
+  source:
+    repoURL: https://charts.jetstack.io
+    chart: cert-manager-istio-csr
+    targetRevision: v0.19.1
+    helm:
+      releaseName: cert-manager-istio-csr
+      values: |
+        app:
+          server:
+            # ztunnel darf Zertifikate im Namen der Pods anfragen
+            caTrustedNodeAccounts: istio-system/ztunnel
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: cert-manager
+  syncPolicy:
+    automated:
+      selfHeal: true
+    retry:
+      limit: 5
+      backoff:
+        duration: 10s
+        factor: 2
+        maxDuration: 2m

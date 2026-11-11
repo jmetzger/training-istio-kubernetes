@@ -1,0 +1,8 @@
+# Hilfs-Issuer: stellt nur das Root-Zertifikat aus (selbstsigniert)
+apiVersion: cert-manager.io/v1
+kind: Issuer
+metadata:
+  name: selfsigned
+  namespace: istio-system
+spec:
+  selfSigned: {}
