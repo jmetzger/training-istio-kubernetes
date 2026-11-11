@@ -25,6 +25,30 @@ Zwei Dinge fehlen nach der Installation noch:
 Im Ambient-Mode schreiben nur **Gateway** und **Waypoint** Spans, weil nur sie HTTP verstehen (Layer 7).
 Der `ztunnel` arbeitet auf Layer 4 und erzeugt keine Spans. Ohne Waypoint gibt es deshalb nur den Span vom Gateway.
 
+### Von wo nach wo gehen die Spans?
+
+![Tracing im Ambient-Mesh: Wer schickt die Spans wohin?](../../images/istio/tracing-jaeger-datenfluss.svg)
+
+  1. Eine Anfrage laeuft durch Gateway und Waypoint. Jeder der beiden schreibt dazu einen Span.
+  2. Beide schicken ihre Spans direkt an den Service `jaeger-collector`, Port 4317. Dahinter nimmt der Collector im Pod `jaeger` sie an und speichert sie.
+  3. Die Oberflaeche von Jaeger liest aus demselben Speicher. Du erreichst sie ueber Traefik und den Service `tracing`.
+
+Der Pod `jaeger` aus den Istio-Samples ist "alles in einem": Collector, Speicher und Oberflaeche.
+Der Speicher liegt in einem `emptyDir`. Wird der Pod geloescht, sind die Traces weg. Fuer Produktion ist das nicht gedacht.
+
+### Welche Rolle spielt OpenTelemetry (OTel)?
+
+| Begriff | Was es ist | In dieser Uebung |
+|---------|------------|------------------|
+| OpenTelemetry | Offener Standard fuer Traces, Metriken und Logs | Gibt das Format und das Protokoll der Spans vor |
+| OTLP | Das Protokoll von OpenTelemetry | Gateway und Waypoint schicken ihre Spans per OTLP (gRPC) an Port 4317 |
+| Provider `opentelemetry` | Eintrag in `meshConfig.extensionProviders` | Sagt Istio: "sprich OTLP mit diesem Service". Der Name `jaeger` ist frei gewaehlt |
+| OpenTelemetry Collector | Eigene Komponente, die Spans annimmt und weiterverteilt | **Laeuft hier nicht.** Jaeger nimmt OTLP selbst an |
+
+OTel ist hier also nur die **Sprache** zwischen Istio und Jaeger, keine eigene Komponente im Cluster.
+In Produktion steht oft ein OpenTelemetry Collector dazwischen, z. B. um Spans an mehrere Ziele zu schicken oder zu filtern.
+Dann zeigt der Provider auf den Collector statt auf Jaeger, sonst aendert sich an Istio nichts.
+
 ## Schritt 1: Vorbereitung
 
 ```
@@ -114,6 +138,15 @@ kubectl -n istio-system get telemetry
 ```
 
 Ein `Telemetry` im Namespace `istio-system` gilt fuer das ganze Mesh.
+
+Nachsehen, was beim Waypoint angekommen ist:
+
+```
+istioctl proxy-config listener deploy/waypoint -n bookinfo -o json | grep -m1 -A9 envoy.tracers.opentelemetry
+```
+
+Erwartet: `envoy.tracers.opentelemetry` mit dem Ziel `outbound|4317||jaeger-collector.istio-system.svc.cluster.local`
+und `"serviceName": "waypoint.bookinfo"`. Das ist der Name, unter dem der Waypoint spaeter in Jaeger steht.
 
 ## Schritt 4: Anfragen erzeugen
 
