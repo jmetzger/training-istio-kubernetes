@@ -60,6 +60,60 @@ ArgoCD verwaltet Istio – es muss nicht selbst im Mesh sein.
 
 ![Initiales Ausrollen: Was du tust, was ArgoCD tut](../../images/istio/argocd-ausrollen-ablauf.svg)
 
+### Getestete Fassung: fertiges Repo
+
+Das Repo [jmetzger/istio-ambient-gitops](https://github.com/jmetzger/istio-ambient-gitops) enthält alles, was ArgoCD braucht:
+Root-Application, je Komponente eine Application mit Sync Wave, die Helm-Charts von Istio 1.31.4 und Bookinfo
+(Namespace mit Ambient-Label, Waypoint, Gateway, HTTPRoute). Getestet am 11.11.2026 auf einem leeren kubeadm-Cluster
+(ArgoCD v3.6.1, Istio 1.31.4, Gateway API v1.5.1, Kubernetes v1.37.2, MetalLB). Istio darf vorher **nicht** installiert sein.
+
+```bash
+# 1. ArgoCD installieren
+kubectl create namespace argocd
+kubectl apply --server-side --force-conflicts -n argocd -f \
+  https://raw.githubusercontent.com/argoproj/argo-cd/v3.6.1/manifests/install.yaml
+kubectl -n argocd wait --for=condition=available deployment --all --timeout=240s
+
+# 2. Health-Prüfung für Applications (sonst warten die Sync Waves zwischen den Applications nicht)
+curl -sLO https://raw.githubusercontent.com/jmetzger/istio-ambient-gitops/main/bootstrap/argocd-cm-app-health.yaml
+kubectl -n argocd patch configmap argocd-cm --type merge --patch-file argocd-cm-app-health.yaml
+
+# 3. Root-Application: der einzige Handgriff am Cluster
+kubectl apply -f https://raw.githubusercontent.com/jmetzger/istio-ambient-gitops/main/bootstrap/root-app.yaml
+
+# 4. Zuschauen (rund 3 Minuten), am Ende sieben Applications Synced / Healthy
+kubectl -n argocd get applications -w
+```
+
+```bash
+# Prüfen
+kubectl -n istio-system get pods
+kubectl -n bookinfo get pods,gateway
+IP=$(kubectl -n bookinfo get gateway bookinfo-gateway -o jsonpath='{.status.addresses[0].value}')
+curl -s -o /dev/null -w '%{http_code}\n' http://$IP/productpage
+```
+
+Für eigene Änderungen das Repo forken und in `bootstrap/root-app.yaml` sowie in `apps/*.yaml` die `repoURL` anpassen.
+
+**Was beim Testen aufgefallen ist** (die Lösungen stehen im Repo):
+
+| Beobachtung | Ursache | Lösung |
+|---|---|---|
+| Die Sync Waves zwischen den Applications wirken nicht, alles entsteht fast gleichzeitig. | ArgoCD bewertet den Zustand einer `Application` seit Version 1.8 nicht mehr von sich aus. | Health-Prüfung in `argocd-cm` (Schritt 2) |
+| `istiod` steht auf `Degraded`. | Der HPA bekommt ohne metrics-server keinen Messwert. | `autoscaleEnabled: false` |
+| `istio-base` und `istiod` bleiben `OutOfSync`. | istiod ändert `failurePolicy` und das CA-Bundle seiner Webhooks selbst. | `ignoreDifferences`, `RespectIgnoreDifferences=true` |
+| Die CRD-Applications bleiben `OutOfSync`. | Geschrieben wird per Server-Side Apply, verglichen clientseitig. | Annotation `compare-options: ServerSideDiff=true` |
+| Für Istio 1.31.4 gibt es keine Charts im Helm-Repo. | Stand 11.11.2026 endet der Index bei 1.30.8. | Charts aus dem Release-Archiv liegen im Git-Repo |
+
+> **Achtung bei `argocd-cm`:** Die Einstellung als Patch einspielen, nicht als Teil-ConfigMap mit `kubectl apply --server-side`.
+> Das entfernt alle anderen Felder samt Labels, ArgoCD meldet dann `configmap "argocd-cm" not found`.
+
+Abbauen: `kubectl -n argocd delete application root`. Es bleiben der Namespace `istio-system`, die Istio-CRDs
+(`helm.sh/resource-policy: keep`) und die Gateway-API-CRDs.
+
+Die folgenden Schritte zeigen denselben Aufbau zum Selbermachen. Die Manifeste dort sind **nicht** mit Istio 1.31.4 getestet
+(Version 1.24.2 aus dem Helm-Repo, ohne die Korrekturen aus der Tabelle).
+
 ### Schritt 1: Voraussetzungen prüfen
 
 ```bash
