@@ -188,9 +188,11 @@ Die URL im Browser oeffnen (Benutzer `training`, Passwort `myS3cr3t!`):
 # Oben einen Punkt bzw. einen Trace anklicken
 ```
 
-<img width="436" height="147" alt="image" src="https://github.com/user-attachments/assets/0bb5069b-ee3c-4799-91fa-35b498a3c047" />
+![Jaeger: Suche nach Traces des Gateways](../../images/istio/tracing-jaeger-suche.png)
 
-<img width="444" height="61" alt="image" src="https://github.com/user-attachments/assets/97451972-7070-46ab-a4e4-39dc144f60b1" />
+Ein Klick auf einen Trace zeigt die einzelnen Spans:
+
+![Jaeger: ein Trace mit 5 Spans](../../images/istio/tracing-jaeger-trace.png)
 
 Ein Trace von `/productpage` hat 4 oder 5 Spans:
 
