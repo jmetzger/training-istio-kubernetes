@@ -176,7 +176,9 @@ Ein Trace von `/productpage` hat 4 oder 5 Spans:
 
 ## Loesungen
 
-  1. Im Ambient-Mode hat `productpage` keinen Sidecar. Spans schreiben nur Gateway und Waypoint.
+  1. In Jaeger steht unter "Service" der Proxy, der den Span schreibt. Im Sidecar-Mode hat jeder Pod einen eigenen Proxy,
+     der sich mit dem Namen der Anwendung meldet. Im Ambient-Mode gibt es diese Proxys nicht, HTTP sehen nur Gateway und Waypoint.
+     `productpage` taucht deshalb nur als Ziel im Namen eines Spans auf, nicht als eigener Service.
   2. Nur noch die Spans vom Gateway. Der `ztunnel` (Layer 4) schreibt keine.
   3. Bookinfo reicht die Trace-Header der eingehenden Anfrage (z. B. `traceparent`, `x-b3-traceid`) an seine eigenen Aufrufe weiter.
      Ohne das waeren es einzelne, unverbundene Traces. Das muss die Anwendung tun, Istio kann es nicht fuer sie.
