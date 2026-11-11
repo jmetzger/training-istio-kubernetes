@@ -314,6 +314,8 @@ Hinweise:
 
 ```
 kubectl -n bookinfo label service productpage istio.io/ingress-use-waypoint=true
+# besser
+# kubectl label namespace bookinfo istio.io/ingress-use-waypoint
 sleep 10
 ```
 
@@ -352,26 +354,6 @@ kubectl -n istio-system logs $ZT --since-time=$T0 | grep 'dst.workload="productp
 ```
 
 Erwartet: nur `src.workload="waypoint-..."`
-
-## Schritt 8: Variante - Label am Namespace
-
-Das Label am Service gilt nur fuer diesen Service. Am Namespace gilt es fuer alle Services darin:
-
-```
-kubectl -n bookinfo label service productpage istio.io/ingress-use-waypoint-
-sleep 10
-curl -s -o /dev/null -w "%{http_code}\n" http://$GW/api/v1/products
-```
-
-Erwartet: `200` (wieder die Umgehung)
-
-```
-kubectl label namespace bookinfo istio.io/ingress-use-waypoint=true
-sleep 10
-curl -s -o /dev/null -w "%{http_code}\n" http://$GW/api/v1/products
-```
-
-Erwartet: `403`
 
 ## Aufraeumen
 
