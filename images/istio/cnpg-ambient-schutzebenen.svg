@@ -1,0 +1,87 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 470" width="960" height="470" font-family="Arial, Helvetica, sans-serif">
+<defs>
+<marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#37474f"/></marker>
+</defs>
+<rect width="960" height="470" fill="#ffffff"/>
+<text x="480" y="26" text-anchor="middle" font-size="18" font-weight="bold" fill="#263238">Drei Schutzebenen für die Datenbank: Wer prüft was?</text>
+
+<!-- Weg der Verbindung -->
+<rect x="10" y="48" width="130" height="72" rx="8" fill="#e8f5e9" stroke="#2e7d32" stroke-width="2"/>
+<text x="75" y="78" text-anchor="middle" font-size="15" font-weight="bold" fill="#1b5e20">Client</text>
+<text x="75" y="98" text-anchor="middle" font-size="11" fill="#1b5e20">will an Port 5432</text>
+<line x1="142" y1="84" x2="188" y2="84" stroke="#37474f" stroke-width="3" marker-end="url(#a)"/>
+
+<rect x="192" y="48" width="236" height="72" rx="8" fill="#fff8e1" stroke="#f9a825" stroke-width="2.5"/>
+<text x="310" y="78" text-anchor="middle" font-size="15" font-weight="bold" fill="#e65100">1. NetworkPolicy</text>
+<text x="310" y="98" text-anchor="middle" font-size="11" fill="#e65100">Netzwerk-Plugin (Calico) am Node</text>
+<line x1="430" y1="84" x2="468" y2="84" stroke="#37474f" stroke-width="3" marker-end="url(#a)"/>
+
+<rect x="472" y="48" width="236" height="72" rx="8" fill="#e3f2fd" stroke="#1565c0" stroke-width="2.5"/>
+<text x="590" y="78" text-anchor="middle" font-size="15" font-weight="bold" fill="#0d47a1">2. Mesh (ztunnel)</text>
+<text x="590" y="98" text-anchor="middle" font-size="11" fill="#0d47a1">mTLS und AuthorizationPolicy</text>
+<line x1="710" y1="84" x2="748" y2="84" stroke="#37474f" stroke-width="3" marker-end="url(#a)"/>
+
+<rect x="752" y="48" width="198" height="72" rx="8" fill="#ede7f6" stroke="#5e35b1" stroke-width="2.5"/>
+<text x="851" y="78" text-anchor="middle" font-size="15" font-weight="bold" fill="#311b92">3. Postgres</text>
+<text x="851" y="98" text-anchor="middle" font-size="11" fill="#311b92">TLS, Rollen, Passwort</text>
+
+<!-- Karten -->
+<!-- 1 -->
+<rect x="192" y="140" width="236" height="300" rx="10" fill="#fffdf5" stroke="#f9a825" stroke-width="2"/>
+<text x="310" y="164" text-anchor="middle" font-size="13" font-weight="bold" fill="#e65100">NetworkPolicy</text>
+<text x="204" y="190" font-size="12" font-weight="bold" fill="#263238">Prüft</text>
+<text x="204" y="208" font-size="12" fill="#263238">IP, Namespace, Pod-Labels, Port</text>
+<text x="204" y="236" font-size="12" font-weight="bold" fill="#263238">Stärke</text>
+<text x="204" y="254" font-size="12" fill="#263238">grob, wird vom Node erzwungen</text>
+<text x="204" y="272" font-size="12" fill="#263238">und ist schwer zu umgehen</text>
+<text x="204" y="300" font-size="12" font-weight="bold" fill="#263238">Grenze</text>
+<text x="204" y="318" font-size="12" fill="#263238">kennt keine Identität, nur Labels</text>
+<rect x="204" y="344" width="212" height="84" rx="6" fill="#fff3e0" stroke="#e65100" stroke-width="1.5"/>
+<text x="310" y="364" text-anchor="middle" font-size="12" font-weight="bold" fill="#b71c1c">Stolperfalle</text>
+<text x="310" y="384" text-anchor="middle" font-size="12" fill="#263238">Im Mesh kommt der Verkehr</text>
+<text x="310" y="400" text-anchor="middle" font-size="12" fill="#263238">auf Port 15008 an (HBONE),</text>
+<text x="310" y="416" text-anchor="middle" font-size="12" fill="#263238">nicht auf 5432</text>
+
+<!-- 2 -->
+<rect x="472" y="140" width="236" height="300" rx="10" fill="#f6faff" stroke="#1565c0" stroke-width="2"/>
+<text x="590" y="164" text-anchor="middle" font-size="13" font-weight="bold" fill="#0d47a1">Mesh (Ambient)</text>
+<text x="484" y="190" font-size="12" font-weight="bold" fill="#263238">Prüft</text>
+<text x="484" y="208" font-size="12" fill="#263238">Identität: Namespace + ServiceAccount</text>
+<text x="484" y="236" font-size="12" font-weight="bold" fill="#263238">Stärke</text>
+<text x="484" y="254" font-size="12" fill="#263238">fein, kryptografisch, nicht fälschbar</text>
+<text x="484" y="272" font-size="12" fill="#263238">Verschlüsselung gibt es dazu</text>
+<text x="484" y="300" font-size="12" font-weight="bold" fill="#263238">Grenze</text>
+<text x="484" y="318" font-size="12" fill="#263238">Operator außerhalb hat keine Identität</text>
+<rect x="484" y="344" width="212" height="84" rx="6" fill="#e3f2fd" stroke="#c62828" stroke-width="1.5"/>
+<text x="590" y="364" text-anchor="middle" font-size="12" font-weight="bold" fill="#b71c1c">Stolperfallen</text>
+<text x="590" y="384" text-anchor="middle" font-size="12" fill="#263238">Port 8000 für den Operator</text>
+<text x="590" y="400" text-anchor="middle" font-size="12" fill="#263238">Replikation: SA pg-demo</text>
+<text x="590" y="416" text-anchor="middle" font-size="12" fill="#263238">braucht eine eigene Regel</text>
+
+<!-- 3 -->
+<rect x="752" y="140" width="198" height="300" rx="10" fill="#faf8ff" stroke="#5e35b1" stroke-width="2"/>
+<text x="851" y="164" text-anchor="middle" font-size="13" font-weight="bold" fill="#311b92">Postgres und CNPG</text>
+<text x="764" y="190" font-size="12" font-weight="bold" fill="#263238">Prüft</text>
+<text x="764" y="208" font-size="12" fill="#263238">Passwort, Rolle, Datenbank</text>
+<text x="764" y="236" font-size="12" font-weight="bold" fill="#263238">Stärke</text>
+<text x="764" y="254" font-size="12" fill="#263238">CNPG verwaltet TLS-Zertifikate</text>
+<text x="764" y="272" font-size="12" fill="#263238">selbst, auch ohne Mesh</text>
+<text x="764" y="300" font-size="12" font-weight="bold" fill="#263238">Grenze</text>
+<text x="764" y="318" font-size="12" fill="#263238">jeder Pod darf es versuchen</text>
+
+<!-- linke Spalte: Merksatz -->
+<rect x="10" y="140" width="162" height="300" rx="10" fill="#fafafa" stroke="#78909c" stroke-width="1.5"/>
+<text x="91" y="164" text-anchor="middle" font-size="13" font-weight="bold" fill="#263238">Faustregel</text>
+<text x="22" y="192" font-size="12" fill="#263238">Nur "wer darf an</text>
+<text x="22" y="208" font-size="12" fill="#263238">die DB": eine</text>
+<text x="22" y="224" font-size="12" fill="#263238">NetworkPolicy</text>
+<text x="22" y="240" font-size="12" fill="#263238">reicht.</text>
+<text x="22" y="272" font-size="12" fill="#263238">Mit Mesh kommt</text>
+<text x="22" y="288" font-size="12" fill="#263238">die Identität</text>
+<text x="22" y="304" font-size="12" fill="#263238">dazu.</text>
+<text x="22" y="336" font-size="12" fill="#263238">Beides zusammen:</text>
+<text x="22" y="352" font-size="12" fill="#263238">NetworkPolicy</text>
+<text x="22" y="368" font-size="12" fill="#263238">grob, Mesh fein,</text>
+<text x="22" y="384" font-size="12" fill="#263238">Port 15008 nicht</text>
+<text x="22" y="400" font-size="12" fill="#263238">vergessen.</text>
+</svg>

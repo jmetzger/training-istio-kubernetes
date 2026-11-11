@@ -1,0 +1,96 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 520" width="960" height="520" font-family="Arial, Helvetica, sans-serif">
+<defs>
+<marker id="g" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#2e7d32"/></marker>
+</defs>
+<rect width="960" height="520" fill="#ffffff"/>
+<text x="480" y="26" text-anchor="middle" font-size="18" font-weight="bold" fill="#263238">Die drei Stolperfallen bei CNPG im Ambient-Mesh</text>
+
+<!-- Panel 1 -->
+<rect x="10" y="44" width="300" height="466" rx="10" fill="#fff8f0" stroke="#e65100" stroke-width="2.5"/>
+<text x="160" y="70" text-anchor="middle" font-size="15" font-weight="bold" fill="#e65100">1. Operator gesperrt</text>
+<rect x="26" y="92" width="120" height="56" rx="6" fill="#ffecb3" stroke="#f9a825" stroke-width="2"/>
+<text x="86" y="116" text-anchor="middle" font-size="13" font-weight="bold" fill="#e65100">Operator</text>
+<text x="86" y="134" text-anchor="middle" font-size="10" fill="#e65100">cnpg-system</text>
+<line x1="148" y1="120" x2="200" y2="120" stroke="#c62828" stroke-width="3"/>
+<path d="M163 112 L179 128 M179 112 L163 128" stroke="#c62828" stroke-width="4" stroke-linecap="round"/>
+<text x="174" y="104" text-anchor="middle" font-size="11" font-weight="bold" fill="#b71c1c">8000</text>
+<rect x="204" y="92" width="92" height="56" rx="6" fill="#e3f2fd" stroke="#1565c0" stroke-width="2"/>
+<text x="250" y="116" text-anchor="middle" font-size="13" font-weight="bold" fill="#0d47a1">DB-Pod</text>
+<text x="250" y="134" text-anchor="middle" font-size="10" fill="#0d47a1">db, STRICT</text>
+
+<text x="22" y="184" font-size="12" font-weight="bold" fill="#263238">Warum</text>
+<text x="22" y="203" font-size="12" fill="#263238">Der Operator liegt außerhalb des</text>
+<text x="22" y="219" font-size="12" fill="#263238">Meshes, hat also keine Identität.</text>
+<text x="22" y="235" font-size="12" fill="#263238">STRICT lässt nur mTLS durch.</text>
+<text x="22" y="270" font-size="12" font-weight="bold" fill="#263238">Symptom</text>
+<text x="22" y="289" font-size="12" fill="#b71c1c">Instance Status Extraction Error</text>
+<text x="22" y="305" font-size="12" fill="#263238">Scale-up hängt, kein neuer Pod.</text>
+<text x="22" y="320" font-size="12" fill="#263238">Operator-Log: "Cannot extract</text>
+<text x="22" y="336" font-size="12" fill="#263238">Pod status".</text>
+<rect x="22" y="364" width="276" height="130" rx="8" fill="#f3faf4" stroke="#2e7d32" stroke-width="2"/>
+<text x="160" y="388" text-anchor="middle" font-size="13" font-weight="bold" fill="#1b5e20">Lösung</text>
+<text x="34" y="412" font-size="12" fill="#263238">PeerAuthentication mit selector</text>
+<text x="34" y="430" font-size="12" fill="#263238">cnpg.io/cluster und</text>
+<text x="34" y="448" font-size="12" font-weight="bold" fill="#1b5e20">portLevelMtls "8000": PERMISSIVE</text>
+<text x="34" y="472" font-size="12" fill="#263238">Port 5432 bleibt STRICT.</text>
+
+<!-- Panel 2 -->
+<rect x="330" y="44" width="300" height="466" rx="10" fill="#fff5f5" stroke="#c62828" stroke-width="2.5"/>
+<text x="480" y="70" text-anchor="middle" font-size="15" font-weight="bold" fill="#b71c1c">2. Replikation steht still</text>
+<rect x="346" y="92" width="100" height="56" rx="6" fill="#e3f2fd" stroke="#1565c0" stroke-width="2"/>
+<text x="396" y="116" text-anchor="middle" font-size="13" font-weight="bold" fill="#0d47a1">Primary</text>
+<text x="396" y="134" text-anchor="middle" font-size="10" fill="#0d47a1">SA pg-demo</text>
+<line x1="448" y1="120" x2="500" y2="120" stroke="#c62828" stroke-width="3"/>
+<path d="M463 112 L479 128 M479 112 L463 128" stroke="#c62828" stroke-width="4" stroke-linecap="round"/>
+<text x="474" y="104" text-anchor="middle" font-size="11" font-weight="bold" fill="#b71c1c">5432</text>
+<rect x="504" y="92" width="112" height="56" rx="6" fill="#e3f2fd" stroke="#1565c0" stroke-width="2"/>
+<text x="560" y="116" text-anchor="middle" font-size="13" font-weight="bold" fill="#0d47a1">Replica</text>
+<text x="560" y="134" text-anchor="middle" font-size="10" fill="#0d47a1">SA pg-demo</text>
+
+<text x="342" y="184" font-size="12" font-weight="bold" fill="#263238">Warum</text>
+<text x="342" y="203" font-size="12" fill="#263238">Die AuthorizationPolicy erlaubt nur</text>
+<text x="342" y="219" font-size="12" fill="#263238">die Anwendung. Die DB-Pods sind</text>
+<text x="342" y="235" font-size="12" fill="#263238">untereinander "fremd".</text>
+<text x="342" y="270" font-size="12" font-weight="bold" fill="#263238">Symptom</text>
+<text x="342" y="289" font-size="12" fill="#b71c1c">Cluster "healthy", aber</text>
+<text x="342" y="305" font-size="12" fill="#b71c1c">0 Replikas streamen.</text>
+<text x="342" y="320" font-size="12" fill="#263238">Nach einem Neustart der Replikas,</text>
+<text x="342" y="336" font-size="12" fill="#263238">bestehende Verbindungen laufen weiter.</text>
+<rect x="342" y="364" width="276" height="130" rx="8" fill="#f3faf4" stroke="#2e7d32" stroke-width="2"/>
+<text x="480" y="388" text-anchor="middle" font-size="13" font-weight="bold" fill="#1b5e20">Lösung</text>
+<text x="354" y="412" font-size="12" fill="#263238">Zweite Regel für den</text>
+<text x="354" y="430" font-size="12" font-weight="bold" fill="#1b5e20">ServiceAccount pg-demo</text>
+<text x="354" y="448" font-size="12" fill="#263238">auf Port 5432. Prüfen mit</text>
+<text x="354" y="466" font-size="12" font-weight="bold" fill="#1b5e20">pg_stat_replication</text>
+<text x="354" y="484" font-size="12" fill="#263238">(nicht mit dem Cluster-Status).</text>
+
+<!-- Panel 3 -->
+<rect x="650" y="44" width="300" height="466" rx="10" fill="#f6faff" stroke="#1565c0" stroke-width="2.5"/>
+<text x="800" y="70" text-anchor="middle" font-size="15" font-weight="bold" fill="#0d47a1">3. NetworkPolicy und Port 15008</text>
+<rect x="666" y="92" width="100" height="56" rx="6" fill="#e8f5e9" stroke="#2e7d32" stroke-width="2"/>
+<text x="716" y="116" text-anchor="middle" font-size="13" font-weight="bold" fill="#1b5e20">Client</text>
+<text x="716" y="134" text-anchor="middle" font-size="10" fill="#1b5e20">ztunnel Quelle</text>
+<line x1="768" y1="120" x2="820" y2="120" stroke="#c62828" stroke-width="3"/>
+<path d="M783 112 L799 128 M799 112 L783 128" stroke="#c62828" stroke-width="4" stroke-linecap="round"/>
+<text x="794" y="104" text-anchor="middle" font-size="11" font-weight="bold" fill="#b71c1c">15008</text>
+<rect x="824" y="92" width="112" height="56" rx="6" fill="#e3f2fd" stroke="#1565c0" stroke-width="2"/>
+<text x="880" y="116" text-anchor="middle" font-size="13" font-weight="bold" fill="#0d47a1">DB-Pod</text>
+<text x="880" y="134" text-anchor="middle" font-size="10" fill="#0d47a1">NetworkPolicy</text>
+
+<text x="662" y="184" font-size="12" font-weight="bold" fill="#263238">Warum</text>
+<text x="662" y="203" font-size="12" fill="#263238">Im Mesh packt der ztunnel den</text>
+<text x="662" y="219" font-size="12" fill="#263238">Verkehr in einen HBONE-Tunnel.</text>
+<text x="662" y="235" font-size="12" fill="#263238">Am Ziel-Pod kommt Port 15008 an.</text>
+<text x="662" y="270" font-size="12" font-weight="bold" fill="#263238">Symptom</text>
+<text x="662" y="289" font-size="12" fill="#b71c1c">Neue Verbindungen scheitern,</text>
+<text x="662" y="305" font-size="12" fill="#b71c1c">obwohl 5432 erlaubt ist.</text>
+<text x="662" y="320" font-size="12" fill="#263238">Bestehende Tunnel laufen weiter,</text>
+<text x="662" y="336" font-size="12" fill="#263238">deshalb mit neuem Pod testen.</text>
+<rect x="662" y="364" width="276" height="130" rx="8" fill="#f3faf4" stroke="#2e7d32" stroke-width="2"/>
+<text x="800" y="388" text-anchor="middle" font-size="13" font-weight="bold" fill="#1b5e20">Lösung</text>
+<text x="674" y="412" font-size="12" fill="#263238">In der NetworkPolicy zusätzlich</text>
+<text x="674" y="430" font-size="12" font-weight="bold" fill="#1b5e20">TCP 15008</text>
+<text x="674" y="448" font-size="12" fill="#263238">erlauben, für den Namespace der</text>
+<text x="674" y="466" font-size="12" fill="#263238">Anwendung und für die DB-Pods</text>
+<text x="674" y="484" font-size="12" fill="#263238">untereinander.</text>
+</svg>
