@@ -108,8 +108,7 @@ kubectl -n istio-system apply -f 01-basic-auth-secret.yml -f 02-middleware.yml
 ```
 
 Secret und `Middleware` sind fuer alle Addons dieselben. Hast du sie schon bei Jaeger, Grafana oder Kiali angelegt,
-meldet `kubectl` hier `unchanged`. Das ist in Ordnung.
-
+meldet `kubectl` hier `configured` oder `unchanged`. Beides ist in Ordnung.
 
 ## Schritt 4: HTTPRoute anlegen
 
@@ -172,6 +171,7 @@ curl -s -u 'training:myS3cr3t!' "https://$HOST/api/v1/query?query=count(up)"
 ```
 
 Erwartet: `"status":"success"` und eine Zahl groesser 0 (so viele Ziele fragt Prometheus ab).
+Ist `result` noch leer (`[]`): 30 Sekunden warten und wiederholen, Prometheus hat dann noch nichts abgefragt.
 
 ```
 echo https://$HOST/

@@ -115,8 +115,7 @@ kubectl -n istio-system apply -f 01-basic-auth-secret.yml -f 02-middleware.yml
 ```
 
 Secret und `Middleware` sind fuer alle Addons dieselben. Hast du sie schon bei Jaeger, Prometheus oder Kiali angelegt,
-meldet `kubectl` hier `unchanged`. Das ist in Ordnung.
-
+meldet `kubectl` hier `configured` oder `unchanged`. Beides ist in Ordnung.
 
 ## Schritt 4: HTTPRoute anlegen
 

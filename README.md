@@ -69,13 +69,13 @@
      * [Installation Jaeger](istio/installation/addons/jaeger.md)
      * [Distributed Tracing mit Jaeger](istio/exercises/09-tracing-jaeger.md)
      * Metriken & Dashboards mit Prometheus & Grafana
-     * [Installation Prometheus Addon with Ingress](istio/installation/addons/prometheus.md)
+     * [Installation Prometheus](istio/installation/addons/prometheus.md)
      * [Metriken mit Prometheus auswerten](istio/exercises/10-prometheus.md) 
-     * [Installation Grafana Addon with Ingress](istio/installation/addons/grafana.md)
+     * [Installation Grafana](istio/installation/addons/grafana.md)
      * [Grafana Dashboards für istio](istio/exercises/11-grafana.md)
      * [Sinnvolle istio Metriken und Dashboards - Teil 1](istio/observeability/istio-observability-in-grafana.md)
      * [Sinnvolle istio Metriken und Dashboards - Teil 2](https://github.com/jmetzger/training-istio-kubernetes/blob/main/istio/observeability/istio-observeablity-in-prometheus-2.md)
-     * [Installation Kiali // Installation](istio/installation/addons/kiali.md)
+     * [Installation Kiali](istio/installation/addons/kiali.md)
      * [Visualisierung mit Kiali](istio/exercises/05-kiali-traffic.md)
      * [Analyse & Debugging von Service-Mesh-Daten](istio/strategie/mesh-daten-analysieren-und-debuggen.md)
 

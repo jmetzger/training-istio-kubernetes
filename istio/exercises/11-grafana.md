@@ -3,14 +3,14 @@
 ## Prerequisites 
 
   * bookinfo app is installed
-  * Grafana dashboard is setup here: http://grafana.tlnxx.do.t3isp.de
+  * Grafana dashboard is setup here: https://grafana.tlnxx.do.t3isp.de (Login: training / myS3cr3t!)
   * demo profile is used
 
 ## Walkthrough 
 
 ```
 # Open dashboard
-http://grafana.tlnxx.do.t3isp.de
+https://grafana.tlnxx.do.t3isp.de
 ```
 
 ```

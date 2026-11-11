@@ -17,8 +17,8 @@ watch -n 1 curl -o /dev/null -s -w %{http_code} $GATEWAY_URL/productpage
 
 ```
 in browser:
-# Replace xx with your Teilnehmer-Nr. 
-http://kiali.tlnxx.do.t3isp.de
+# Replace xx with your Teilnehmer-Nr. (Login: training / myS3cr3t!)
+https://kiali.tlnxx.do.t3isp.de/kiali/
 
 # click on Traffic Graph and choose namespace bookinfo
 ```

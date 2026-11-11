@@ -13,7 +13,7 @@ curl "http://$GATEWAY_URL/productpage"
 ### Search for metrics 
 
 ```
-# Login to prometheus.tlnxx.do.t3isp.de
+# Login to https://prometheus.tlnxx.do.t3isp.de (training / myS3cr3t!)
 # Click on Query
 ```
 

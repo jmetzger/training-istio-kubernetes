@@ -115,8 +115,7 @@ kubectl -n istio-system apply -f 01-basic-auth-secret.yml -f 02-middleware.yml
 ```
 
 Secret und `Middleware` sind fuer alle Addons dieselben. Hast du sie schon bei Jaeger, Prometheus oder Grafana angelegt,
-meldet `kubectl` hier `unchanged`. Das ist in Ordnung.
-
+meldet `kubectl` hier `configured` oder `unchanged`. Beides ist in Ordnung.
 
 ## Schritt 4: HTTPRoute anlegen
 
@@ -189,7 +188,7 @@ Erwartet: `200`, danach `301 https://...` (HTTP wird auf HTTPS umgeleitet).
 curl -s -u 'training:myS3cr3t!' https://$HOST/kiali/api/istio/status
 ```
 
-Erwartet: eine Liste mit `istiod` und `prometheus`, beide mit `"status":"Healthy"`.
+Erwartet: eine Liste, darin `istiod` und `prometheus`, beide mit `"status":"Healthy"`.
 
 ```
 echo https://$HOST/kiali/
