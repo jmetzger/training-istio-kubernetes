@@ -159,14 +159,14 @@ Die URL im Browser oeffnen (Benutzer `training`, Passwort `myS3cr3t!`):
 
 <img width="444" height="61" alt="image" src="https://github.com/user-attachments/assets/97451972-7070-46ab-a4e4-39dc144f60b1" />
 
-Ein Trace von `/productpage` hat 5 Spans:
+Ein Trace von `/productpage` hat 4 oder 5 Spans:
 
 | Wer schreibt den Span | Ziel |
 |-----------------------|------|
 | `bookinfo-gateway-istio.bookinfo` | `productpage` (2 Spans: Anfrage und Weiterleitung) |
 | `waypoint.bookinfo` | `details` |
 | `waypoint.bookinfo` | `reviews` |
-| `waypoint.bookinfo` | `ratings` |
+| `waypoint.bookinfo` | `ratings` (fehlt, wenn `reviews-v1` antwortet: v1 ruft `ratings` nicht auf) |
 
 ## Fragen
 
