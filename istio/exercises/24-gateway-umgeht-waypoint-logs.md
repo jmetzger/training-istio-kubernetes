@@ -205,6 +205,62 @@ kubectl -n bookinfo logs deploy/bookinfo-gateway-istio --since-time=$T0 | grep "
 
 Erwartet: `3 connect_originate/<IP von productpage>:9080`. Das Gateway spricht **direkt mit dem Pod** (Port der Anwendung).
 
+#### Woran erkenne ich die direkte Verbindung?
+
+| Feld in der Zeile | Bedeutung |
+|---|---|
+| `200` | Der Pfad ist verboten, die Antwort kommt trotzdem. Die Regel wurde nicht gefragt. |
+| `"envoy://connect_originate/<IP>:9080"` | **Das Ziel des Gateways.** Port `9080` ist der Port der Anwendung, die IP ist die von `productpage`. Ueber den Waypoint stuende hier `<IP des Waypoints>:15008`. |
+| `outbound\|9080\|\|productpage.bookinfo.svc.cluster.local` | Name des Ziels im Envoy (Cluster). Er ist in beiden Faellen gleich und sagt nichts ueber den Weg. |
+| `<IP>:80` danach | Adresse des Gateways selbst, auf der die Anfrage ankam. |
+
+#### Was heisst connect_originate?
+
+`connect_originate` heisst sinngemaess "hier beginnt ein CONNECT-Tunnel". Es ist der Name eines internen Listeners im Envoy des Gateways.
+Das Gateway schickt die Anfrage nicht direkt ins Netz. Es uebergibt sie intern an diesen Listener, und der baut den Tunnel auf:
+HTTP/2 `CONNECT` ueber mTLS, also HBONE. Die Adresse hinter dem Schraegstrich ist das Ziel des Tunnels.
+
+  * `connect` steht fuer die HTTP-Methode `CONNECT`, mit der ein Tunnel geoeffnet wird.
+  * `originate` heisst, dass der Tunnel hier beginnt.
+  * `envoy://...` ist eine Adresse innerhalb des Envoy, keine Netzwerkadresse.
+
+Das Feld zeigt also zweierlei: Der Aufruf geht verschluesselt per HBONE raus, und er geht an den Pod statt an den Waypoint.
+
+#### Was ist ein Listener?
+
+Ein Listener ist in Envoy die Stelle, an der Verbindungen angenommen werden: eine Adresse mit Port, auf der Envoy lauscht,
+dazu die Regeln, was mit dem Verkehr passiert. Envoy arbeitet in einer festen Kette:
+
+| Baustein | Aufgabe | Beispiel im Gateway |
+|---|---|---|
+| Listener | nimmt Verbindungen an | `0.0.0.0:80` |
+| Route | entscheidet nach Host und Pfad, wohin es geht | `/api/v1/products` geht an `productpage` |
+| Cluster | das Ziel als Gruppe, entspricht einem Service | `outbound\|9080\|\|productpage.bookinfo.svc.cluster.local` |
+| Endpoint | die konkrete Adresse hinter dem Cluster | `<IP von productpage>:9080` |
+
+Du schreibst die Listener nicht selbst. istiod erzeugt sie aus deinen Objekten: aus dem Listener im `Gateway` (Port 80) wird der Listener `0.0.0.0:80`,
+aus der `HTTPRoute` die Route, aus dem `Service` der Cluster, aus seinen Pods die Endpoints.
+
+```
+istioctl proxy-config listeners deploy/bookinfo-gateway-istio -n bookinfo
+```
+
+Erwartet:
+
+```
+ADDRESSES PORT  MATCH DESTINATION
+          0     ALL   Cluster: connect_originate
+0.0.0.0   80    ALL   Route: http.80
+0.0.0.0   15021 ALL   Inline Route: /healthz/ready*
+0.0.0.0   15090 ALL   Inline Route: /stats/prometheus*
+```
+
+Die erste Zeile ohne Adresse und mit Port `0` ist der **interne Listener** `connect_originate`. Er lauscht nicht im Netz und nimmt nur Verkehr an,
+den derselbe Envoy ihm uebergibt. Der Weg einer Anfrage im Gateway-Pod: Listener Port 80, Route auf `productpage`, interner Listener `connect_originate`, HBONE-Tunnel nach draussen.
+Das ist ein einziger Envoy-Prozess. Der ztunnel auf dem Node des Gateways ist daran nicht beteiligt.
+
+Die anderen Bausteine siehst du mit `routes`, `clusters` und `endpoints` statt `listeners`.
+
 ### Spur 2: Waypoint-Log - kam der Aufruf vorbei?
 
 ```
