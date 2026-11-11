@@ -100,7 +100,7 @@
      * [Was ist ArgoCD](/istio/argocd/was-ist-argocd.md)
      * [istio ambient und bookinfo mit argocd ausrollen](/istio/argocd/argocd-istio-bookinfo.md)
      * [Übung: Externe CA für Istio mit ArgoCD ausliefern (cert-manager, Secret cacerts)](/istio/argocd/argocd-externe-ca.md)
-     * [Übung (Ambient): cert-manager als CA für das Mesh mit istio-csr (istiod ist keine CA mehr)](istio/exercises/23-istio-csr-cert-manager-ambient.md)
+     * [Übung (Ambient): cert-manager als CA für das Mesh mit istio-csr (istiod ist keine CA mehr; von Hand und mit ArgoCD)](istio/exercises/23-istio-csr-cert-manager-ambient.md)
 
 ## Backlog
 

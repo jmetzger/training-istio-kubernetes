@@ -10,6 +10,9 @@ cert-manager lässt sie vom Issuer unterschreiben. Im Cluster liegt dann kein CA
 
 ![istio-csr im Ambient-Mesh: Wer fragt wen nach einem Zertifikat?](../../images/istio/istio-csr-ambient-ablauf.svg)
 
+Die Übung zeigt zuerst den Weg von Hand (`helm`, `istioctl`), damit jeder Schritt sichtbar ist.
+Wie du dasselbe mit ArgoCD ausrollst, steht im Abschnitt [Variante: Dasselbe mit ArgoCD](#variante-dasselbe-mit-argocd).
+
 | | `cacerts` (Zwischen-CA) | istio-csr |
 |---|---|---|
 | Wer unterschreibt die Workload-Zertifikate? | istiod | der Issuer von cert-manager |
@@ -370,6 +373,158 @@ kubectl -n istio-system rollout status daemonset ztunnel
 
 Danach liefert der Aufruf aus Schritt 6 wieder `200`.
 
+## Variante: Dasselbe mit ArgoCD
+
+Bisher hast du Issuer, Root-CA und istio-csr von Hand angelegt (Schritt 2 bis 4). Mit ArgoCD liegen sie im Git,
+und zwei Applications rollen sie aus. Die Manifeste liegen fertig in diesem Repo unter
+[`istio/argocd/istio-csr/`](../argocd/istio-csr/). Du brauchst kein eigenes Git-Repo.
+
+| Datei | Was | Ersetzt |
+|-------|-----|---------|
+| `ca/01-selfsigned-issuer.yaml`, `ca/02-root-ca.yaml`, `ca/03-istio-ca-issuer.yaml` | Issuer und Root-CA | Schritt 2 |
+| `apps/istio-csr-ca-app.yaml` | Application `istio-csr-ca`, zeigt auf den Ordner `ca/` (Wave -4) | Schritt 2 |
+| `apps/istio-csr-app.yaml` | Application `istio-csr`, Helm-Chart `cert-manager-istio-csr` (Wave -3) | Schritt 4 |
+
+Voraussetzungen: ArgoCD ist installiert (siehe [ArgoCD-Übung](../argocd/argocd-istio-bookinfo.md), Abschnitt 4, Schritt 2),
+cert-manager läuft, und der Stand von Hand ist aufgeräumt (Abschnitt "Aufräumen").
+
+### ArgoCD Schritt 1: Die beiden Applications anlegen
+
+Die Application für istio-csr:
+
+```yaml
+# istio-csr/apps/istio-csr-app.yaml
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: istio-csr
+  namespace: argocd
+  annotations:
+    argocd.argoproj.io/sync-wave: "-3"
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: default
+  source:
+    repoURL: https://charts.jetstack.io
+    chart: cert-manager-istio-csr
+    targetRevision: v0.19.1
+    helm:
+      releaseName: cert-manager-istio-csr
+      values: |
+        app:
+          server:
+            # ztunnel darf Zertifikate im Namen der Pods anfragen
+            caTrustedNodeAccounts: istio-system/ztunnel
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: cert-manager
+  syncPolicy:
+    automated:
+      selfHeal: true
+    retry:
+      limit: 5
+      backoff:
+        duration: 10s
+        factor: 2
+        maxDuration: 2m
+```
+
+```bash
+REPO=https://raw.githubusercontent.com/jmetzger/training-istio-kubernetes/main/istio/argocd/istio-csr
+kubectl apply -f $REPO/apps/istio-csr-ca-app.yaml
+kubectl apply -f $REPO/apps/istio-csr-app.yaml
+```
+
+```bash
+kubectl -n argocd get applications
+```
+
+```
+NAME           SYNC STATUS   HEALTH STATUS
+istio-csr      Synced        Healthy
+istio-csr-ca   Synced        Healthy
+```
+
+Das dauert etwa eine halbe Minute.
+
+```bash
+kubectl -n istio-system get issuer,certificate
+kubectl -n cert-manager get pods
+```
+
+> **Unterschied zum Weg von Hand: keine fest vorgegebene Root-CA**
+>
+> Schritt 3 (Secret `istio-root-ca`) ist ein Handgriff am Cluster und passt nicht zu GitOps. Die Application lässt
+> ihn weg, istio-csr übernimmt die Root-CA dann vom Issuer. In Produktion ist das Zertifikat der Root-CA bekannt
+> und öffentlich: Lege es als ConfigMap ins Git und binde es über `volumes`, `volumeMounts` und
+> `app.tls.rootCAFile` ein (in dieser Übung nicht getestet).
+
+### ArgoCD Schritt 2: Istio umstellen
+
+**Istio ist mit `istioctl` installiert** (Normalfall im Training): Führe Schritt 5 von oben aus, danach Schritt 6 zum Prüfen.
+
+> Schritt 7 und 8 ändern istio-csr mit `helm upgrade`. Unter ArgoCD geht das nicht, ArgoCD stellt den Stand aus dem
+> Git wieder her (`selfHeal`). Solche Änderungen gehören dann in die `values` der Application.
+
+**Istio wird selbst von ArgoCD ausgerollt** (wie in der [ArgoCD-Übung](../argocd/argocd-istio-bookinfo.md)):
+Dann gehören die beiden Einstellungen in die Werte der Helm-Charts im Git-Repo.
+
+```yaml
+# apps/istio/values/istiod-values.yaml
+profile: ambient
+global:
+  # hier holen Waypoint und Gateway ihre Zertifikate
+  caAddress: cert-manager-istio-csr.cert-manager.svc:443
+pilot:
+  env:
+    # istiod ist keine CA mehr
+    ENABLE_CA_SERVER: "false"
+```
+
+```yaml
+# apps/istio/ztunnel-app.yaml (Ausschnitt)
+  source:
+    chart: ztunnel
+    helm:
+      values: |
+        # hier holt ztunnel die Zertifikate für die Pods
+        caAddress: cert-manager-istio-csr.cert-manager.svc:443
+```
+
+Die Reihenfolge regeln die Sync Waves:
+
+| Wave | Application | Inhalt |
+|------|-------------|--------|
+| -5 | `cert-manager` | Helm-Chart cert-manager ([`externe-ca/apps/cert-manager-app.yaml`](../argocd/externe-ca/apps/cert-manager-app.yaml)) |
+| -4 | `istio-csr-ca` | Issuer und Root-CA |
+| -3 | `istio-csr` | Helm-Chart istio-csr, legt auch `istiod-tls` an |
+| -2 | `istio-base` | CRDs von Istio |
+| -1 | `istiod` | startet gleich ohne eigene CA |
+| 0 bis 2 | `istio-cni`, `ztunnel`, `bookinfo` | wie gehabt |
+
+Das ist der Weg, den cert-manager vorsieht: istio-csr ist da, bevor Istio zum ersten Mal startet.
+
+> Dieser zweite Fall ist **nicht** auf dem Trainings-Cluster ausgerollt. Geprüft ist nur, dass die Charts von
+> Istio 1.31.4 mit diesen Werten `ENABLE_CA_SERVER=false` und die neue CA-Adresse erzeugen (`helm template`).
+> Der Namespace `istio-system` muss in Wave -4 schon existieren, weil Issuer und Root-CA dort liegen.
+
+### ArgoCD: Aufräumen
+
+```bash
+kubectl -n argocd delete application istio-csr istio-csr-ca
+```
+
+Das entfernt istio-csr, Issuer und Certificates. Die Secrets und das Lease bleiben liegen, deshalb von Hand:
+
+```bash
+kubectl -n istio-system delete secret istio-ca istiod-tls
+kubectl -n istio-system delete lease istio-csr
+rm -f istio-csr-iop.yaml
+```
+
+Danach Istio zurückstellen wie im Abschnitt "Aufräumen" (`istioctl install --set profile=ambient -y` und die Prüfungen).
+
 ## Gut zu wissen
 
 | Thema | Hinweis |
@@ -382,6 +537,8 @@ Danach liefert der Aufruf aus Schritt 6 wieder `200`.
 | Einfacher | Reicht es, dass das Mesh an der Firmen-PKI hängt, ist die Variante mit `cacerts` einfacher und hängt im Betrieb nicht am Issuer. |
 
 ## Aufräumen
+
+(Hast du die ArgoCD-Variante benutzt, beginne mit "ArgoCD: Aufräumen" weiter oben.)
 
 Zurück zur eigenen CA von istiod. Die Reihenfolge ist wichtig: `istiod-tls` muss weg sein, **bevor** istiod neu startet.
 
